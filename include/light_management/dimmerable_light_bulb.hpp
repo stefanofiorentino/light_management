@@ -1,12 +1,15 @@
 #pragma once
 
-#include "non_copyable.hpp"
 #include "light_bulb.hpp"
 
 #include "components/level.hpp"
 
-struct dimmerable_light_bulb_t final : light_management::non_copyable_t
+struct dimmerable_light_bulb_t final 
 {
+    void setFullScale(float fullScale_)
+    {
+        fullScale = fullScale_;
+    }
     bool reset() const
     {
         std::puts(__FUNCSIG__);
@@ -15,6 +18,7 @@ struct dimmerable_light_bulb_t final : light_management::non_copyable_t
     }
 
 private:
+    float fullScale;
     level_t level;
     light_bulb_t light_bulb;
 };

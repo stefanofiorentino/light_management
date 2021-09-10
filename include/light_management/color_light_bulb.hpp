@@ -1,12 +1,15 @@
 #pragma once
 
-#include "non_copyable.hpp"
 #include "dimmerable_light_bulb.hpp"
 
 #include "components/color.hpp"
 
-struct color_light_bulb_t final : light_management::non_copyable_t
+struct color_light_bulb_t final 
 {
+    void setFullScale(float fullScale_)
+    {
+        dimmer.setFullScale(fullScale_);
+    }
     bool reset() const
     {
         std::puts(__FUNCSIG__);
