@@ -1,9 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include "components/light_concept.hpp"
 
-struct dimmerable_light_bulb_t final : light_concept_t
+struct dimmerable_light_bulb_t final
 {
     void setFullScale(float fullScale_)
     {

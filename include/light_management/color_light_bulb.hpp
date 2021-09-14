@@ -1,10 +1,13 @@
 #pragma once
 
 #include <iostream>
-#include "components/light_concept.hpp"
 
-struct color_light_bulb_t final : light_concept_t
+struct color_light_bulb_t final
 {
+    void setColor()
+    {
+        std::puts(__FUNCSIG__);
+    }
     void setFullScale()
     {
         std::puts(__FUNCSIG__);
@@ -13,9 +16,5 @@ struct color_light_bulb_t final : light_concept_t
     {
         std::puts(__FUNCSIG__);
         return false;
-    }
-    void setColor()
-    {
-        std::puts(__FUNCSIG__);
     }
 };

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <variant>
 
 #include <light_management/type_traits.hpp>
 #include <light_management/light_bulb.hpp>
@@ -20,13 +21,10 @@ struct not_light_but_supported_t
     bool reset() { return true; }
 };
 
-struct my_concept_light_t final : light_concept_t
-{
-
-};
-
 template <typename T>
 using collection = std::vector<T>;
+
+using light_concept_t = std::variant<light_bulb_t, dimmerable_light_bulb_t, color_light_bulb_t>;
 
 int main(int, char **)
 {
@@ -43,14 +41,15 @@ int main(int, char **)
     static_assert(is_color_light_bulb_v<color_light_bulb_t>, "`color_light_bulb_t` should be a supported color light");
     static_assert(has_void_setColor_v<color_light_bulb_t>, "`color_light_bulb_t` should be a supported color light");
 
-    collection<std::shared_ptr<light_concept_t>> c;
-    c.emplace_back(std::make_shared<my_concept_light_t>());
-    c.emplace_back(std::make_shared<light_bulb_t>());
-    c.emplace_back(std::make_shared<dimmerable_light_bulb_t>());
-    c.emplace_back(std::make_shared<color_light_bulb_t>());
+    collection<light_concept_t> c;
+    c.emplace_back(light_bulb_t());
+    c.emplace_back(dimmerable_light_bulb_t());
+    c.emplace_back(color_light_bulb_t());
     
-    std::for_each(c.begin(), c.end(), [](std::shared_ptr<light_concept_t>& light){
-        light->reset();
+    std::for_each(c.begin(), c.end(), [](light_concept_t& light_){
+        std::visit([](auto&& light) {
+            light.reset();
+        }, light_);
     });
 
     return EXIT_SUCCESS;
