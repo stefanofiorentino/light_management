@@ -1,24 +1,17 @@
 #pragma once
 
-#include "light_bulb.hpp"
+#include <iostream>
+#include "components/light_concept.hpp"
 
-#include "components/level.hpp"
-
-struct dimmerable_light_bulb_t final 
+struct dimmerable_light_bulb_t final : light_concept_t
 {
     void setFullScale(float fullScale_)
     {
-        fullScale = fullScale_;
+        std::puts(__FUNCSIG__);
     }
     bool reset() const
     {
         std::puts(__FUNCSIG__);
-        bool rc = level.reset();
-        return rc && light_bulb.reset();
+        return false;
     }
-
-private:
-    float fullScale;
-    level_t level;
-    light_bulb_t light_bulb;
 };

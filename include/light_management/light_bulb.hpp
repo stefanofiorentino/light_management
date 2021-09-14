@@ -1,16 +1,13 @@
 #pragma once
 
-#include "non_copyable.hpp"
-#include "components/relay.hpp"
+#include <iostream>
+#include "components/light_concept.hpp"
 
-struct light_bulb_t final : light_management::non_copyable_t
+struct light_bulb_t final : light_concept_t
 {
     bool reset() const
     {
         std::puts(__FUNCSIG__);
-        return relay.reset();
+        return false;
     }
-
-private:
-    relay_t relay;
 };

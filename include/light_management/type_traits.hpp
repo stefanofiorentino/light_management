@@ -1,42 +1,15 @@
 #pragma once
 
 #include <type_traits>
-
-template <typename T, class Enable>
-struct has_bool_reset_impl : std::false_type
-{
-};
-
-template <typename T>
-struct has_bool_reset_impl<T, decltype(std::declval<T>().reset())> : std::true_type
-{
-};
-
-template <typename T>
-struct has_bool_reset : has_bool_reset_impl<T, bool>
-{
-};
+#include "type_traits/has_void_setColor.hpp"
+#include "type_traits/has_bool_reset.hpp"
+#include "type_traits/has_void_setFullScale.hpp"
 
 template <class T>
-inline constexpr bool has_bool_reset_v = has_bool_reset<T>::value;
-
-template <typename T, class Enable>
-struct has_void_setFullScale_impl : std::false_type
-{
-};
-
-template <typename T>
-struct has_void_setFullScale_impl<T, decltype(std::declval<T>().setFullScale(0.f))> : std::true_type
-{
-};
-
-template <typename T>
-struct has_void_setFullScale : has_void_setFullScale_impl<T, void>
-{
-};
+inline constexpr bool is_light_bulb_v = has_bool_reset_v<T>;
 
 template <class T>
-inline constexpr bool has_void_setFullScale_v = has_void_setFullScale<T>::value;
+inline constexpr bool is_dimmerable_light_bulb_v = has_bool_reset_v<T> && has_void_setFullScale_v<T>;
 
 template <class T>
-inline constexpr bool is_color_light_bulb_v = has_bool_reset_v<T> && has_void_setFullScale_v<T>;
+inline constexpr bool is_color_light_bulb_v = has_bool_reset_v<T> && has_void_setFullScale_v<T> && has_void_setColor_v<T>;
