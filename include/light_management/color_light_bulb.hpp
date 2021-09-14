@@ -1,9 +1,8 @@
 #pragma once
 
 #include <iostream>
-#include "components/light_concept.hpp"
 
-struct color_light_bulb_t final : light_concept_t
+struct color_light_bulb_t
 {
     void setFullScale()
     {

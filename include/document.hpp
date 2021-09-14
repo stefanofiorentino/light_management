@@ -29,7 +29,10 @@ private:
         model_t(T x) : data_(std::move(x)){}
         void draw(std::ostream& out, size_t position) const override
         {
-            ::draw(data_, out, position);
+            if constexpr (has_bool_reset_v<T>)
+            {
+                ::draw(data_, out, position);
+            }
         }
         T data_;
     };

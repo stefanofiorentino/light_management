@@ -7,9 +7,13 @@
 #include <light_management/dimmerable_light_bulb.hpp>
 #include <light_management/color_light_bulb.hpp>
 
-#include <light_management/document.hpp>
+#include <document.hpp>
 
-struct my_class_t {};
+struct my_class_t {
+    bool reset() const {
+        return false;
+    }
+};
 
 void draw(const my_class_t&, std::ostream& out, size_t position)
 {
