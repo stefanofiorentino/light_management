@@ -9,7 +9,11 @@ option(USE_UBSAN "Use address sanitizer by adding -fsanitize=undefined -fno-sani
 
 add_executable(light_management main.cpp)
 target_compile_features(light_management PUBLIC cxx_std_17)
-target_include_directories(light_management PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(
+        light_management 
+    PUBLIC 
+        ${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/3rd/entt/src)
 
 
 if(USE_ASAN)

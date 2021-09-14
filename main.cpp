@@ -1,57 +1,49 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 
-#include <light_management/type_traits.hpp>
-#include <light_management/light_bulb.hpp>
-#include <light_management/dimmerable_light_bulb.hpp>
-#include <light_management/color_light_bulb.hpp>
+#include <entt/entt.hpp>
 
-struct unsupported_light_t
-{
-    bool setFullScale(float fullScale_) {}
-    void reset() { return; }
+struct color_t {};
+struct level_t {};
+struct status_t {
+    bool status;
 };
 
-struct not_light_but_supported_t
-{
-    void setColor() {}
-    void setFullScale() {}
-    bool reset() { return true; }
-};
+void draw(entt::registry& registry) {
+    auto &light_bulb_view = registry.view<status_t>();
+    light_bulb_view.each([&light_bulb_view](auto entity, auto &status) {
+        std::cerr << std::boolalpha << light_bulb_view.get<status_t>(entity).status << std::endl;
+    });
+    std::cerr << "-----" << std::endl;
+}
 
-struct my_concept_light_t final : light_concept_t
-{
-
-};
-
-template <typename T>
-using collection = std::vector<T>;
+void switchStatus(entt::registry &registry, bool status_to_apply) {
+    auto &light_bulb_view = registry.view<status_t>();
+    light_bulb_view.each([&](auto entity, auto &status) {
+        status_t &status_ = light_bulb_view.get<status_t>(entity);
+        status_.status = status_to_apply;
+    });
+}
 
 int main(int, char **)
 {
-    // unsupported
-    static_assert(!is_color_light_bulb_v<void>, "`void` should not be a supported color light");
-    static_assert(!is_color_light_bulb_v<int>, "`int` should not be a supported color light");
-    static_assert(!is_color_light_bulb_v<unsupported_light_t>, "`unsupported_light_t` should not be a supported color light");
-    static_assert(!has_bool_reset_v<unsupported_light_t>, "`unsupported_light_t` should not be a supported color light");
-    static_assert(!has_void_setFullScale_v<unsupported_light_t>, "`unsupported_light_t` should not be a supported color light");
-    static_assert(!has_void_setColor_v<unsupported_light_t>, "`unsupported_light_t` should not be a supported color light");
-
-    // supported
-    static_assert(is_color_light_bulb_v<not_light_but_supported_t>, "`not_light_but_supported_t` should be a supported color light");
-    static_assert(is_color_light_bulb_v<color_light_bulb_t>, "`color_light_bulb_t` should be a supported color light");
-    static_assert(has_void_setColor_v<color_light_bulb_t>, "`color_light_bulb_t` should be a supported color light");
-
-    collection<std::shared_ptr<light_concept_t>> c;
-    c.emplace_back(std::make_shared<my_concept_light_t>());
-    c.emplace_back(std::make_shared<light_bulb_t>());
-    c.emplace_back(std::make_shared<dimmerable_light_bulb_t>());
-    c.emplace_back(std::make_shared<color_light_bulb_t>());
+    entt::registry registry;
     
-    std::for_each(c.begin(), c.end(), [](std::shared_ptr<light_concept_t>& light){
-        light->reset();
-    });
+    const auto color_light_bulb = registry.create();
+    const auto dimmerable_light_bulb = registry.create();
+    const auto light_bulb = registry.create();
+
+    registry.emplace<color_t>(color_light_bulb);
+    registry.emplace<level_t>(color_light_bulb);
+    registry.emplace<status_t>(color_light_bulb, true);
+
+    registry.emplace<level_t>(dimmerable_light_bulb);
+    registry.emplace<status_t>(dimmerable_light_bulb, true);
+
+    registry.emplace<status_t>(light_bulb, true);
+
+    draw(registry);
+    switchStatus(registry, false);
+    draw(registry);
 
     return EXIT_SUCCESS;
 }
