@@ -1,11 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
-#include <light_management/type_traits.hpp>
-#include <light_management/light_bulb.hpp>
-#include <light_management/dimmerable_light_bulb.hpp>
-#include <light_management/color_light_bulb.hpp>
+#include <gmock/gmock.h>
 
 #include <document.hpp>
 
@@ -35,8 +28,16 @@ void test_helper(std::ostream& out)
     draw(document, out, 0);
 }
 
-
-int main()
+struct TestFixture : ::testing::Test
 {
-    test_helper(std::cout);
+    std::ostringstream oss;
+};
+
+TEST_F(TestFixture, runtime_polymorphism)
+{
+    test_helper(oss);
+    ASSERT_EQ(R"(<document>
+  my_class_t
+</document>
+)", oss.str());
 }

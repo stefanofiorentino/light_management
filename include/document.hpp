@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 
+#include <light_management/type_traits/has_bool_reset.hpp>
+
 template <typename T>
 void draw(const T& x, std::ostream& out, size_t position)
 {
