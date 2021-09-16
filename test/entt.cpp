@@ -10,12 +10,12 @@ struct status_t {
     bool status;
 };
 
-void draw(entt::registry& registry) {
+void draw(entt::registry& registry, std::ostream& out) {
     auto &light_bulb_view = registry.view<status_t>();
-    light_bulb_view.each([&light_bulb_view](auto entity, auto &status) {
-        std::cerr << std::boolalpha << light_bulb_view.get<status_t>(entity).status << std::endl;
+    light_bulb_view.each([&light_bulb_view, &out](auto entity, auto &status) {
+        out << std::boolalpha << light_bulb_view.get<status_t>(entity).status << std::endl;
     });
-    std::cerr << "-----" << std::endl;
+    out << "-----" << std::endl;
 }
 
 void switchStatus(entt::registry &registry, bool status_to_apply) {
@@ -43,7 +43,9 @@ TEST(light_management, entt)
 
     registry.emplace<status_t>(light_bulb, true);
 
-    draw(registry);
+    std::ostringstream oss;
+    draw(registry, oss);
     switchStatus(registry, false);
-    draw(registry);
+    draw(registry, oss);
+    ASSERT_EQ("true\ntrue\ntrue\n-----\nfalse\nfalse\nfalse\n-----\n", oss.str());
 }
