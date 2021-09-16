@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-struct light_bulb_t
+struct light_bulb_t final 
 {
     bool reset() const
     {

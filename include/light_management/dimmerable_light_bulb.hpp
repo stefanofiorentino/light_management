@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-struct dimmerable_light_bulb_t
+struct dimmerable_light_bulb_t final
 {
     void setFullScale(float fullScale_)
     {

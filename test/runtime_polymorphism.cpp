@@ -28,12 +28,12 @@ void test_helper(std::ostream& out)
     draw(document, out, 0);
 }
 
-struct TestFixture : ::testing::Test
+struct light_management_fixture : ::testing::Test
 {
     std::ostringstream oss;
 };
 
-TEST_F(TestFixture, runtime_polymorphism)
+TEST_F(light_management_fixture, runtime_polymorphism)
 {
     test_helper(oss);
     ASSERT_EQ(R"(<document>

@@ -64,6 +64,7 @@ endfunction()
 
 option(BUILD_GOOGLE_BASED_TESTS "Enable building googletest-based unit tests." OFF)
 if (${BUILD_GOOGLE_BASED_TESTS})
-    ADD_UNIT_TEST(light_management light_management.cpp)
+    ADD_UNIT_TEST(runtime_polymorphism runtime_polymorphism.cpp)
     ADD_UNIT_TEST(brown_bag_tdd_demo brown_bag_tdd_demo.cpp)
+    ADD_UNIT_TEST(std_variant std_variant.cpp)
 endif (${BUILD_GOOGLE_BASED_TESTS})
