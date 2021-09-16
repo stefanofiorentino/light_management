@@ -3,14 +3,16 @@
 #include <document.hpp>
 
 struct my_class_t {
-    bool reset() const {
-        return false;
+    void draw(std::ostream& out) const {
+        out << "my_class_t";
     }
 };
 
-void draw(const my_class_t&, std::ostream& out, size_t position)
+void draw(const my_class_t& my_class, std::ostream& out, size_t position)
 {
-    out << std::string(position, ' ') << "my_class_t" << "\n";
+    out << std::string(position, ' ');
+    my_class.draw(out);
+    out << "\n";
 }
 
 void test_helper(std::ostream& out)

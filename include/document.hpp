@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 
-#include <light_management/type_traits/has_bool_reset.hpp>
+#include <light_management/type_traits/has_void_draw.hpp>
 
 template <typename T>
 void draw(const T& x, std::ostream& out, size_t position)
@@ -31,7 +31,7 @@ private:
         model_t(T x) : data_(std::move(x)){}
         void draw(std::ostream& out, size_t position) const override
         {
-            if constexpr (has_bool_reset_v<T>)
+            if constexpr (has_void_draw_v<T>)
             {
                 ::draw(data_, out, position);
             }
