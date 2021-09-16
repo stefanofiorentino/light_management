@@ -9,6 +9,19 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 FetchContent_Declare(
+    entt
+    GIT_REPOSITORY https://github.com/skypjack/entt.git
+    GIT_TAG master
+    GIT_SHALLOW 1
+)
+
+FetchContent_GetProperties(entt)
+
+if(NOT entt_POPULATED)
+    FetchContent_Populate(entt)
+endif()
+
+FetchContent_Declare(
     googletest
     GIT_REPOSITORY https://github.com/google/googletest.git
     GIT_TAG master
@@ -48,6 +61,7 @@ function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
         ${TEST_NAME}
             PRIVATE
         "${CMAKE_SOURCE_DIR}/include"
+        "${entt_SOURCE_DIR}/src"
     )
     add_test(NAME gtest_${TEST_NAME} COMMAND $<TARGET_FILE:${TEST_NAME}>)
 
@@ -67,4 +81,5 @@ if (${BUILD_GOOGLE_BASED_TESTS})
     ADD_UNIT_TEST(runtime_polymorphism runtime_polymorphism.cpp)
     ADD_UNIT_TEST(brown_bag_tdd_demo brown_bag_tdd_demo.cpp)
     ADD_UNIT_TEST(std_variant std_variant.cpp)
+    ADD_UNIT_TEST(entt entt.cpp)
 endif (${BUILD_GOOGLE_BASED_TESTS})
