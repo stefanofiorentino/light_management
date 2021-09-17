@@ -3,38 +3,44 @@
 # test based on googletest
 #
 
+option(FETCH_3RD_PARTY_REPOS "Fetch 3rd repos" OFF)
 include(FetchContent)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-FetchContent_Declare(
-    entt
-    GIT_REPOSITORY https://github.com/skypjack/entt.git
-    GIT_TAG master
-    GIT_SHALLOW 1
-)
+if (FETCH_3RD_PARTY_REPOS)
+    FetchContent_Declare(
+        entt
+        GIT_REPOSITORY https://github.com/skypjack/entt.git
+        GIT_TAG master
+        GIT_SHALLOW 1
+    )
 
-FetchContent_GetProperties(entt)
+    FetchContent_GetProperties(entt)
 
-if(NOT entt_POPULATED)
-    FetchContent_Populate(entt)
-endif()
+    if(NOT entt_POPULATED)
+        FetchContent_Populate(entt)
+    endif()
 
-FetchContent_Declare(
-    googletest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG master
-    GIT_SHALLOW 1
-)
+    FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG master
+        GIT_SHALLOW 1
+    )
 
-FetchContent_GetProperties(googletest)
+    FetchContent_GetProperties(googletest)
 
-if(NOT googletest_POPULATED)
-    FetchContent_Populate(googletest)
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-    add_subdirectory("${googletest_SOURCE_DIR}" "${googletest_BINARY_DIR}" EXCLUDE_FROM_ALL)
-endif()
+    if(NOT googletest_POPULATED)
+        FetchContent_Populate(googletest)
+        set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+        add_subdirectory("${googletest_SOURCE_DIR}" "${googletest_BINARY_DIR}" EXCLUDE_FROM_ALL)
+    endif()
+else(FETCH_3RD_PARTY_REPOS)
+    set(entt_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/entt-src")
+    add_subdirectory("${CMAKE_SOURCE_DIR}/3rd/googletest-src" "${CMAKE_BUILD_DIR}/_deps/googletest-build" EXCLUDE_FROM_ALL)
+endif(FETCH_3RD_PARTY_REPOS)
 
 add_library(GTest::Main ALIAS gtest_main)
 add_library(GMock::Main ALIAS gmock_main)
