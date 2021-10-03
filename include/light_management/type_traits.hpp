@@ -4,6 +4,8 @@
 #include "type_traits/has_void_setColor.hpp"
 #include "type_traits/has_bool_reset.hpp"
 #include "type_traits/has_void_setFullScale.hpp"
+#include "type_traits/has_void_draw.hpp"
+#include "type_traits/has_void_switchOff.hpp"
 
 template <class T>
 inline constexpr bool is_light_bulb_v = has_bool_reset_v<T>;

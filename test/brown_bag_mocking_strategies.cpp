@@ -1,43 +1,96 @@
 #include <gmock/gmock.h>
 
 #include <iostream>
+#include <cstdio>
 
-struct my_singleton_t 
+using ::testing::Return;
+
+struct my_singleton_base
 {
-    static my_singleton_t* instance() 
-    {
-        static my_singleton_t my_singleton;
-        return &my_singleton;
-    }
+    virtual bool to_be_called_as_first() const = 0;
+    virtual bool to_be_called_as_second() const = 0;
+    virtual ~my_singleton_base() = default;
+};
 
-    bool to_be_called_as_first() const {
+struct my_singleton_t final : my_singleton_base
+{
+    my_singleton_t() = default;
+    my_singleton_t(my_singleton_t const&) = delete;
+    my_singleton_t& operator=(my_singleton_t const&) = delete;
+    my_singleton_t(my_singleton_t &&) = default;
+    my_singleton_t& operator=(my_singleton_t &&) = default;
+
+    bool to_be_called_as_first() const override {
         std::puts(__FUNCSIG__);
         return false;
     }
-    bool to_be_called_as_second() const {
+    bool to_be_called_as_second() const override {
         std::puts(__FUNCSIG__);
         return true;
     }
 };
 
-bool perform_action()
+bool perform_action(bool &first_attempt, my_singleton_base &msbase)
 {
-    static bool first_attempt{true};
     bool return_value{};
     if (first_attempt)
     {
-        return_value = my_singleton_t::instance()->to_be_called_as_first();
+        return_value = msbase.to_be_called_as_first();
         first_attempt = !first_attempt;
     }
     else
     {
-        return_value = my_singleton_t::instance()->to_be_called_as_second();
+        return_value = msbase.to_be_called_as_second();
     }
     return return_value;
 }
 
-TEST(brown_bag, mocking_strategy)
+bool perform_action()
+{
+    static bool first_attempt{true};
+    my_singleton_t mst;
+    return perform_action(first_attempt, mst);
+}
+
+TEST(brown_bag, e2e)
 {
     ASSERT_FALSE(perform_action());
     ASSERT_TRUE(perform_action());
 }
+
+TEST(brown_bag, mocking_strategy_true)
+{
+    bool first_attempt{true};
+    my_singleton_t mst;
+    ASSERT_FALSE(perform_action(first_attempt, mst));
+}
+
+TEST(brown_bag, mocking_strategy_false)
+{
+    bool first_attempt{false};
+    my_singleton_t mst;
+    ASSERT_TRUE(perform_action(first_attempt, mst));
+}
+
+struct my_singleton_mock : my_singleton_base
+{
+    MOCK_METHOD(bool, to_be_called_as_first, (), (const));
+    MOCK_METHOD(bool, to_be_called_as_second, (), (const));
+};
+
+TEST(brown_bag, mock_true)
+{
+    my_singleton_mock msm;
+    EXPECT_CALL(msm, to_be_called_as_first).WillRepeatedly(Return(false));
+    bool first_attempt{true};
+    ASSERT_FALSE(perform_action(first_attempt, msm));
+}
+
+TEST(brown_bag, mock_false)
+{
+    my_singleton_mock msm;
+    EXPECT_CALL(msm, to_be_called_as_second).WillRepeatedly(Return(true));
+    bool first_attempt{false};
+    ASSERT_TRUE(perform_action(first_attempt, msm));
+}
+

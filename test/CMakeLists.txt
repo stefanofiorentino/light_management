@@ -35,12 +35,14 @@ if (FETCH_3RD_PARTY_REPOS)
     if(NOT googletest_POPULATED)
         FetchContent_Populate(googletest)
         set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-        add_subdirectory("${googletest_SOURCE_DIR}" "${googletest_BINARY_DIR}" EXCLUDE_FROM_ALL)
+        
     endif()
 else(FETCH_3RD_PARTY_REPOS)
     set(entt_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/entt-src")
-    add_subdirectory("${CMAKE_SOURCE_DIR}/3rd/googletest-src" "${CMAKE_BUILD_DIR}/_deps/googletest-build" EXCLUDE_FROM_ALL)
+    set(googletest_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/googletest-src")
+    set(googletest_BINARY_DIR "${CMAKE_BUILD_DIR}/_deps/googletest-build")
 endif(FETCH_3RD_PARTY_REPOS)
+add_subdirectory("${googletest_SOURCE_DIR}" "${googletest_BINARY_DIR}" EXCLUDE_FROM_ALL)
 
 add_library(GTest::Main ALIAS gtest_main)
 add_library(GMock::Main ALIAS gmock_main)
@@ -67,6 +69,7 @@ function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
         ${TEST_NAME}
             PRIVATE
         "${CMAKE_SOURCE_DIR}/include"
+        "${googletest_SOURCE_DIR}/googlemock/include"
         "${entt_SOURCE_DIR}/src"
     )
     add_test(NAME gtest_${TEST_NAME} COMMAND $<TARGET_FILE:${TEST_NAME}>)
@@ -89,4 +92,6 @@ if (${BUILD_GOOGLE_BASED_TESTS})
     ADD_UNIT_TEST(std_variant std_variant.cpp)
     ADD_UNIT_TEST(entt entt.cpp)
     ADD_UNIT_TEST(brown_bag_mocking_strategies brown_bag_mocking_strategies.cpp)
+    ADD_UNIT_TEST(lights_collection lights_collection.cpp)
+    ADD_UNIT_TEST(integral_type integral_type.cpp)
 endif (${BUILD_GOOGLE_BASED_TESTS})
