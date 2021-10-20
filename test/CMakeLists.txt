@@ -35,10 +35,23 @@ if (FETCH_3RD_PARTY_REPOS)
     if(NOT googletest_POPULATED)
         FetchContent_Populate(googletest)
         set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-        
+    endif()
+
+    FetchContent_Declare(
+        stlab
+        GIT_REPOSITORY https://github.com/stlab/libraries.git
+        GIT_TAG main
+        GIT_SHALLOW 1
+    )
+
+    FetchContent_GetProperties(stlab)
+
+    if(NOT stlab_POPULATED)
+        FetchContent_Populate(stlab)
     endif()
 else(FETCH_3RD_PARTY_REPOS)
     set(entt_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/entt-src")
+    set(stlab_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/stlab-src")
     set(googletest_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/googletest-src")
     set(googletest_BINARY_DIR "${CMAKE_BUILD_DIR}/_deps/googletest-build")
 endif(FETCH_3RD_PARTY_REPOS)
@@ -55,6 +68,10 @@ target_compile_features(gmock_main PUBLIC cxx_std_17)
 option(USE_ASAN "Use address sanitizer by adding -fsanitize=address -fno-omit-frame-pointer flags" OFF)
 option(USE_UBSAN "Use address sanitizer by adding -fsanitize=undefined -fno-sanitize-recover=all -fno-omit-frame-pointer flags" OFF)
 
+if(WIN32)
+    set(WINSOCK2 ws2_32)
+endif()
+
 function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
     add_executable(${TEST_NAME} "${TEST_SOURCE}")
 
@@ -64,6 +81,8 @@ function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
         PRIVATE
             GMock::Main
             Threads::Threads
+            ${LIBRT}
+            ${WINSOCK2}
     )
     target_include_directories(
         ${TEST_NAME}
@@ -71,6 +90,7 @@ function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
         "${CMAKE_SOURCE_DIR}/include"
         "${googletest_SOURCE_DIR}/googlemock/include"
         "${entt_SOURCE_DIR}/src"
+        "${stlab_SOURCE_DIR}"
     )
     add_test(NAME gtest_${TEST_NAME} COMMAND $<TARGET_FILE:${TEST_NAME}>)
 
@@ -87,12 +107,13 @@ endfunction()
 
 option(BUILD_GOOGLE_BASED_TESTS "Enable building googletest-based unit tests." ON)
 if (${BUILD_GOOGLE_BASED_TESTS})
-    ADD_UNIT_TEST(runtime_polymorphism runtime_polymorphism.cpp)
-    ADD_UNIT_TEST(brown_bag_tdd_demo brown_bag_tdd_demo.cpp)
-    ADD_UNIT_TEST(std_variant std_variant.cpp)
-    ADD_UNIT_TEST(entt entt.cpp)
-    ADD_UNIT_TEST(brown_bag_mocking_strategies brown_bag_mocking_strategies.cpp)
-    ADD_UNIT_TEST(lights_collection lights_collection.cpp)
-    ADD_UNIT_TEST(integral_type integral_type.cpp)
-    ADD_UNIT_TEST(pragmatic_type_erasure pragmatic_type_erasure.cpp)
+    # ADD_UNIT_TEST(runtime_polymorphism runtime_polymorphism.cpp)
+    # ADD_UNIT_TEST(brown_bag_tdd_demo brown_bag_tdd_demo.cpp)
+    # ADD_UNIT_TEST(std_variant std_variant.cpp)
+    # ADD_UNIT_TEST(entt entt.cpp)
+    # ADD_UNIT_TEST(brown_bag_mocking_strategies brown_bag_mocking_strategies.cpp)
+    # ADD_UNIT_TEST(lights_collection lights_collection.cpp)
+    # ADD_UNIT_TEST(integral_type integral_type.cpp)
+    # ADD_UNIT_TEST(pragmatic_type_erasure pragmatic_type_erasure.cpp)
+    ADD_UNIT_TEST(stlab_serial_queue stlab_serial_queue.cpp)
 endif (${BUILD_GOOGLE_BASED_TESTS})

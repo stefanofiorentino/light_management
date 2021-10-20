@@ -21,11 +21,11 @@ struct my_singleton_t final : my_singleton_base
     my_singleton_t& operator=(my_singleton_t &&) = default;
 
     bool to_be_called_as_first() const override {
-        std::puts(__FUNCSIG__);
+        
         return false;
     }
     bool to_be_called_as_second() const override {
-        std::puts(__FUNCSIG__);
+        
         return true;
     }
 };
