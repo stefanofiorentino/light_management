@@ -4,9 +4,9 @@
 #include <limits>
 #include <mutex>
 
-struct stack_t
+struct my_stack_t
 {
-    stack_t() noexcept : size_(0) {
+    my_stack_t() noexcept : size_(0) {
         for (int i = 0; i<N; i++)
         {
             v_[i] = std::numeric_limits<int>::min();
@@ -42,7 +42,7 @@ struct stack_t
 
 struct stack_fixture_t : ::testing::Test
 {
-    stack_t s;
+    my_stack_t s;
 };
 
 TEST_F(stack_fixture_t, isEmpty)

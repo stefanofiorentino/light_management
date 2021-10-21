@@ -11,7 +11,7 @@ struct status_t {
 };
 
 void draw(entt::registry& registry, std::ostream& out) {
-    auto &light_bulb_view = registry.view<status_t>();
+    const auto &light_bulb_view = registry.view<status_t>();
     light_bulb_view.each([&light_bulb_view, &out](auto entity, auto &status) {
         out << std::boolalpha << light_bulb_view.get<status_t>(entity).status << std::endl;
     });
@@ -19,7 +19,7 @@ void draw(entt::registry& registry, std::ostream& out) {
 }
 
 void switchStatus(entt::registry &registry, bool status_to_apply) {
-    auto &light_bulb_view = registry.view<status_t>();
+    const auto &light_bulb_view = registry.view<status_t>();
     light_bulb_view.each([&](auto entity, auto &status) {
         status_t &status_ = light_bulb_view.get<status_t>(entity);
         status_.status = status_to_apply;
