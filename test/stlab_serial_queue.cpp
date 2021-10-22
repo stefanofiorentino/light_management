@@ -4,6 +4,7 @@
 #include <string>
 #include <thread>
 #include <numeric>
+#include <unordered_map>
 
 #include <stlab/concurrency/default_executor.hpp>
 #include <stlab/concurrency/immediate_executor.hpp>
