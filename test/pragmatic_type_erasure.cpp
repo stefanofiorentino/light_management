@@ -97,14 +97,5 @@ TEST(pragmatic_type_erasure, visit_with_constexpr_checks_success) {
 struct foo_without_value {};
 
 TEST(pragmatic_type_erasure, visit_with_constexpr_checks_failing) {
-  // anything f = foo_without_value(); // DOES NOT COMPILE!! (missing int value())
-
-  // auto rc = EXIT_FAILURE;
-  // visit([](auto const &v, auto &&rc) {
-  //   if
-  //     constexpr(has_int_value_v<std::remove_cv_t<decltype(v)>>) {
-  //       rc = v.value();
-  //     }
-  // }, f, rc);
-  // ASSERT_EQ(EXIT_FAILURE, rc);
+  static_assert(!has_int_value_v<foo_without_value>, "Assert failed!");
 }
