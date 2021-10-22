@@ -53,6 +53,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Create Build folder
+      run: md build    
     - name: Compile tests
       working-directory: build
       run: |
