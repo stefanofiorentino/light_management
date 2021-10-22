@@ -27,6 +27,8 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install clang-8 -y
+    - name: Create Build folder
+      run: mkdir -p build
     - name: Compile tests
       working-directory: build
       env:
@@ -67,6 +69,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Create Build folder
+      run: mkdir -p build
     - name: Compile tests
       working-directory: build
       run: |
