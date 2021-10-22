@@ -2,6 +2,7 @@
 
 #include <document.hpp>
 
+// https://www.youtube.com/watch?v=QGcVXgEVMJg
 struct my_class_t {
   void draw(std::ostream &out) const { out << "my_class_t"; }
 };
