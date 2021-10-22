@@ -7,3 +7,6 @@ The goal is to have a single collection of light objects using  them polymorphic
 A second goal is to give the ability to the users of the lib to extend the kind of managed objects.
 
 A third goad is the ability to serialize the content of the collection to be able to dump it to a storage location.
+
+# ATTENTION
+The git history will be broken several time.
