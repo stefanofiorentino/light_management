@@ -47,7 +47,7 @@ jobs:
       env:
         CXX: ${{ matrix.compiler }}
       run: |
-        cmake ${{ matrix.mode }} -DBUILD_TESTING=ON -Dlibuv_buildtests=OFF ..
+        cmake ${{ matrix.mode }} ..
         make -j2
     - name: Run tests
       working-directory: build
