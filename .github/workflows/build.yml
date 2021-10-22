@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         compiler: [
-            g++, clang++
+            g++-7, clang++-8
         ]
         mode: [-DFETCH_3RD_PARTY_REPOS=ON]
 
@@ -22,26 +22,11 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install g++-7 -y
-    - name: Install g++-8
-      if: ${{ matrix.compiler == 'g++-8' }}
-      run: |
-        sudo apt-get update
-        sudo apt-get install g++-8 -y
     - name: Install clang-8
       if: ${{ matrix.compiler == 'clang++-8' }}
       run: |
         sudo apt-get update
         sudo apt-get install clang-8 -y
-    - name: Install clang-9
-      if: ${{ matrix.compiler == 'clang++-9' }}
-      run: |
-        sudo apt-get update
-        sudo apt-get install clang-9 -y
-    - name: Install clang-10
-      if: ${{ matrix.compiler == 'clang++-10' }}
-      run: |
-        sudo apt-get update
-        sudo apt-get install clang-10 -y
     - name: Compile tests
       working-directory: build
       env:
