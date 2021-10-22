@@ -10,19 +10,6 @@
 #include <light_management/dimmerable_light_bulb.hpp>
 #include <light_management/color_light_bulb.hpp>
 
-struct unsupported_light_t
-{
-    bool setFullScale(float fullScale_) {}
-    void reset() { return; }
-};
-
-struct not_light_but_supported_t
-{
-    void setColor() {}
-    void setFullScale() {}
-    bool reset() { return true; }
-};
-
 template <typename T>
 using collection = std::vector<T>;
 
