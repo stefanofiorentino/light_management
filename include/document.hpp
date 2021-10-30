@@ -35,7 +35,7 @@ private:
     std::shared_ptr<const concept_t> self_;
 };
 
-using document_t = std::vector<object_t>;
+using collection_t = std::vector<object_t>;
 
 template <typename T>
 void draw(const T& x, std::ostream& out, size_t position)
@@ -44,7 +44,7 @@ void draw(const T& x, std::ostream& out, size_t position)
 }
 
 template <>
-void draw(const document_t& x, std::ostream& out, size_t position)
+void draw(const collection_t& x, std::ostream& out, size_t position)
 {
     out << std::string(position, ' ') << "<document>\n" ;
     for (const auto& e: x) draw(e, out, position + 2);
