@@ -2,19 +2,10 @@
 
 #include <iostream>
 
-struct color_light_bulb_t final
+struct color_dimmable_light_bulb_t final
 {
-    void setColor()
+    void draw(std::ostream &oss)
     {
-        
-    }
-    void setFullScale()
-    {
-        
-    }
-    bool reset() const
-    {
-        
-        return false;
+        oss << "<color_dimmable_light_bulb_t/>\n";
     }
 };

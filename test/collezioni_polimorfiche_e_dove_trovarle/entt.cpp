@@ -31,15 +31,15 @@ TEST(light_management, entt)
     entt::registry registry;
     
     const auto color_light_bulb = registry.create();
-    const auto dimmerable_light_bulb = registry.create();
+    const auto dimmable_light_bulb = registry.create();
     const auto light_bulb = registry.create();
 
     registry.emplace<color_t>(color_light_bulb);
     registry.emplace<level_t>(color_light_bulb);
     registry.emplace<status_t>(color_light_bulb, true);
 
-    registry.emplace<level_t>(dimmerable_light_bulb);
-    registry.emplace<status_t>(dimmerable_light_bulb, true);
+    registry.emplace<level_t>(dimmable_light_bulb);
+    registry.emplace<status_t>(dimmable_light_bulb, true);
 
     registry.emplace<status_t>(light_bulb, true);
 

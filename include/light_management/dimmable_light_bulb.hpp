@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-struct light_bulb_t final 
+struct dimmable_light_bulb_t final
 {
     void draw(std::ostream &oss)
     {
-        oss << "<light_bulb_t/>\n";
+        oss << "<dimmable_light_bulb_t/>\n";
     }
 };
