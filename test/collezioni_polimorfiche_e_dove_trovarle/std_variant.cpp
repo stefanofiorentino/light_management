@@ -17,6 +17,7 @@ using light_concept_t = std::variant<light_bulb_t, dimmable_light_bulb_t, color_
 
 void dump(collection_t<light_concept_t> & collection, std::ostream& os)
 {
+    os << "<document>\n";
     std::for_each(collection.begin(), collection.end(), [&os](light_concept_t& light_){
         std::visit([&os](auto&& light) {
             if constexpr (has_void_draw_v<decltype(light)>)
@@ -25,6 +26,7 @@ void dump(collection_t<light_concept_t> & collection, std::ostream& os)
             }
         }, light_);
     });
+    os << "</document>\n";
 }
 
 TEST(light_management, std_variant)
@@ -36,5 +38,5 @@ TEST(light_management, std_variant)
     
     std::ostringstream oss;
     dump(c, oss);
-    ASSERT_EQ("<light_bulb_t/>\n<dimmable_light_bulb_t/>\n<color_dimmable_light_bulb_t/>\n", oss.str());
+    ASSERT_EQ("<document>\n<light_bulb_t/>\n<dimmable_light_bulb_t/>\n<color_dimmable_light_bulb_t/>\n</document>\n", oss.str());
 }
