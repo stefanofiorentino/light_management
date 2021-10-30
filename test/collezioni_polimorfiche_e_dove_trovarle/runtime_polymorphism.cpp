@@ -7,18 +7,18 @@
 #include <light_management/color_dimmable_light_bulb.hpp>
 
 template <>
-void draw(const light_bulb_t &light, std::ostream &out, size_t position) {
+void draw(const light_bulb_t &light, std::ostream &out, size_t /*position*/) {
   light.draw(out);
 }
 
 
 template <>
-void draw(const color_dimmable_light_bulb_t &light, std::ostream &out, size_t position) {
+void draw(const color_dimmable_light_bulb_t &light, std::ostream &out, size_t /*position*/) {
   light.draw(out);
 }
 
 template <>
-void draw(const dimmable_light_bulb_t &light, std::ostream &out, size_t position) {
+void draw(const dimmable_light_bulb_t &light, std::ostream &out, size_t /*position*/) {
   light.draw(out);
 }
 
