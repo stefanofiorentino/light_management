@@ -42,24 +42,24 @@ jobs:
         CTEST_OUTPUT_ON_FAILURE: 1
       run: ctest --timeout 5 -C Debug -j2
 
-  windows:
-    timeout-minutes: 60
-    runs-on: windows-latest
+  # windows:
+  #   timeout-minutes: 60
+  #   runs-on: windows-latest
 
-    strategy:
-      matrix:
-        generator: [Visual Studio 16 2019]
-        mode: [-DFETCH_3RD_PARTY_REPOS=ON]
+  #   strategy:
+  #     matrix:
+  #       generator: [Visual Studio 16 2019]
+  #       mode: [-DFETCH_3RD_PARTY_REPOS=ON]
 
-    steps:
-    - uses: actions/checkout@v1
-    - name: Create Build folder
-      run: md build    
-    - name: Compile tests
-      working-directory: build
-      run: |
-        cmake ${{ matrix.mode }} -DCMAKE_CXX_FLAGS=/W1 -G"${{ matrix.generator }}" ..
-        cmake --build . -j 2
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #   - name: Create Build folder
+  #     run: md build    
+  #   - name: Compile tests
+  #     working-directory: build
+  #     run: |
+  #       cmake ${{ matrix.mode }} -DCMAKE_CXX_FLAGS=/W1 -G"${{ matrix.generator }}" ..
+  #       cmake --build . -j 2
 
   macos:
     timeout-minutes: 60
