@@ -73,3 +73,16 @@ TEST(stlab, async_registry) {
 
   ASSERT_EQ("value", result.get_try());
 }
+
+TEST(stlab, continuation) {
+  async_registry registry;
+  auto f = registry.set("key", "value");
+  auto result = f | [&] { return registry.get("key"); };
+
+    // Waiting just for illustration purpose
+  while (!result.get_try()) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
+
+  ASSERT_EQ("value", result.get_try());
+}
