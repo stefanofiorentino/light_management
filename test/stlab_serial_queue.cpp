@@ -20,7 +20,7 @@ struct registry_base {
   using map_t = std::unordered_map<key_type, value_type>;
 };
 
-struct mutex_registry : public registry_base {
+struct sync_registry : public registry_base {
   mutable std::mutex mtx;
   map_t _map;
 
@@ -35,17 +35,17 @@ struct mutex_registry : public registry_base {
 };
 
 TEST(stlab, mutex_registry) {
-  mutex_registry registry;
+  sync_registry registry;
   registry.set("key", "value");
 
   ASSERT_EQ("value", registry.get("key"));
 };
 
-struct serial_queue_registry : public registry_base {
+struct async_registry : public registry_base {
   serial_queue_t _q;
   std::shared_ptr<map_t> _map;
 
-  serial_queue_registry()
+  async_registry()
       : _q(default_executor, schedule_mode::all),
         _map(std::make_shared<map_t>()) {}
 
@@ -60,7 +60,7 @@ struct serial_queue_registry : public registry_base {
 };
 
 TEST(stlab, serial_queue_registry) {
-  serial_queue_registry registry;
+  async_registry registry;
   std::size_t i = 0;
   auto f = registry.set("key", "value");
 
