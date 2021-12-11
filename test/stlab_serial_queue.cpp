@@ -59,7 +59,7 @@ struct async_registry : public registry_base {
   }
 };
 
-TEST(stlab, serial_queue_registry) {
+TEST(stlab, async_registry) {
   async_registry registry;
   std::size_t i = 0;
   auto f = registry.set("key", "value");
