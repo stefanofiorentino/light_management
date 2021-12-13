@@ -45,7 +45,7 @@ TEST(stlab, sync_registry) {
   ASSERT_EQ("value", registry.get("key"));
 };
 
-TEST(stlab, DISABLED_sync_registry_brute_force) {
+TEST(stlab, sync_registry_brute_force) {
   sync_registry registry;
   for (auto i = 0; i < N; ++i) {
     auto th = std::thread(
