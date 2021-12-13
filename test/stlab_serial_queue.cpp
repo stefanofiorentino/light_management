@@ -1,5 +1,8 @@
+#include "stlab/concurrency/optional.hpp"
+#include <chrono>
 #include <gmock/gmock.h>
 
+#include <future>
 #include <iostream>
 #include <numeric>
 #include <string>
@@ -12,6 +15,7 @@
 #include <stlab/concurrency/utility.hpp>
 
 using namespace stlab;
+constexpr int N = 100000;
 
 struct registry_base {
   virtual ~registry_base() = default;
@@ -34,12 +38,27 @@ struct sync_registry : public registry_base {
   }
 };
 
-TEST(stlab, mutex_registry) {
+TEST(stlab, sync_registry) {
   sync_registry registry;
   registry.set("key", "value");
 
   ASSERT_EQ("value", registry.get("key"));
 };
+
+TEST(stlab, DISABLED_sync_registry_brute_force) {
+  sync_registry registry;
+  for (auto i = 0; i < N; ++i) {
+    auto th = std::thread(
+        [i, &registry] { registry.set(std::to_string(i), "value"); });
+    th.detach();
+  }
+
+  while (registry._map.size() != N) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
+
+  ASSERT_EQ("value", registry.get("0"));
+}
 
 struct async_registry : public registry_base {
   serial_queue_t _q;
@@ -56,6 +75,10 @@ struct async_registry : public registry_base {
   }
   [[nodiscard]] auto get(key_type k) const -> future<value_type> {
     return _q([&](key_type k) { return _map->at(k); }, std::move(k));
+  }
+
+  auto size() const -> future<decltype(_map->size())> {
+    return _q([&]() { return _map->size(); });
   }
 };
 
@@ -79,7 +102,29 @@ TEST(stlab, continuation) {
   auto f = registry.set("key", "value");
   auto result = f | [&] { return registry.get("key"); };
 
-    // Waiting just for illustration purpose
+  // Waiting just for illustration purpose
+  while (!result.get_try()) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
+
+  ASSERT_EQ("value", result.get_try());
+}
+
+TEST(stlab, async_registry_brute_force) {
+  async_registry registry;
+  for (auto i = 0; i < N; ++i) {
+    auto f = registry.set(std::to_string(i), "value");
+    f.detach();
+  }
+
+  auto size_future = registry.size();
+  while (!size_future.is_ready() || size_future.get_try().value() != N) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
+
+  auto result = registry.get("0");
+
+  // Waiting just for illustration purpose
   while (!result.get_try()) {
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
