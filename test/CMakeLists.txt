@@ -64,8 +64,9 @@ target_compile_features(gtest_main PUBLIC cxx_std_17)
 target_compile_features(gmock PUBLIC cxx_std_17)
 target_compile_features(gmock_main PUBLIC cxx_std_17)
 
-option(USE_ASAN "Use address sanitizer by adding -fsanitize=address -fno-omit-frame-pointer flags" OFF)
-option(USE_UBSAN "Use address sanitizer by adding -fsanitize=undefined -fno-sanitize-recover=all -fno-omit-frame-pointer flags" OFF)
+option(USE_ASAN "Use address sanitizer by adding -fsanitize=address " OFF)
+option(USE_UBSAN "Use undefined behavior sanitizer by adding -fsanitize=undefined" OFF)
+option(USE_THSAN "Use thread sanitizer by adding -fsanitize=thread" OFF)
 
 if(WIN32)
     set(WINSOCK2 ws2_32)
@@ -94,13 +95,18 @@ function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
     add_test(NAME gtest_${TEST_NAME} COMMAND $<TARGET_FILE:${TEST_NAME}>)
 
     if(USE_ASAN)
-        target_compile_options(${TEST_NAME} PUBLIC -fsanitize=address -fno-omit-frame-pointer)
+        target_compile_options(${TEST_NAME} PUBLIC -fsanitize=address -fno-sanitize-recover=all -fno-omit-frame-pointer)
         target_link_libraries(${TEST_NAME} PUBLIC -fsanitize=address)
     endif()
 
     if(USE_UBSAN)
         target_compile_options(${TEST_NAME} PUBLIC -fsanitize=undefined -fno-sanitize-recover=all -fno-omit-frame-pointer)
         target_link_libraries(${TEST_NAME} PUBLIC -fsanitize=undefined)
+    endif()
+
+    if(USE_THSAN)
+        target_compile_options(${TEST_NAME} PUBLIC -fsanitize=thread -fno-sanitize-recover=all -fno-omit-frame-pointer)
+        target_link_libraries(${TEST_NAME} PUBLIC -fsanitize=thread)
     endif()
 
     target_compile_features(${TEST_NAME} PUBLIC cxx_std_17)
