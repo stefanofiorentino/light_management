@@ -13,7 +13,7 @@ jobs:
         compiler: [
             g++-7, clang++-8
         ]
-        mode: [-DFETCH_3RD_PARTY_REPOS=ON]
+        mode: [""] # "-DUSE_ASAN=ON", "-DUSE_UBSAN=ON", "-DUSE_THSAN=ON"
 
     steps:
     - uses: actions/checkout@v2
@@ -34,7 +34,7 @@ jobs:
       env:
         CXX: ${{ matrix.compiler }}
       run: |
-        cmake ${{ matrix.mode }} ..
+        cmake -DFETCH_3RD_PARTY_REPOS=ON ${{ matrix.mode }} ..
         make -j2
     - name: Run tests
       working-directory: build
@@ -42,32 +42,9 @@ jobs:
         CTEST_OUTPUT_ON_FAILURE: 1
       run: ctest --timeout 30 -C Debug -j2
 
-  # windows:
-  #   timeout-minutes: 60
-  #   runs-on: windows-latest
-
-  #   strategy:
-  #     matrix:
-  #       generator: [Visual Studio 16 2019]
-  #       mode: [-DFETCH_3RD_PARTY_REPOS=ON]
-
-  #   steps:
-  #   - uses: actions/checkout@v1
-  #   - name: Create Build folder
-  #     run: md build    
-  #   - name: Compile tests
-  #     working-directory: build
-  #     run: |
-  #       cmake ${{ matrix.mode }} -DCMAKE_CXX_FLAGS=/W1 -G"${{ matrix.generator }}" ..
-  #       cmake --build . -j 2
-
   macos:
     timeout-minutes: 60
     runs-on: macOS-latest
-
-    strategy:
-      matrix:
-        mode: [-DFETCH_3RD_PARTY_REPOS=ON]
 
     steps:
     - uses: actions/checkout@v1
@@ -76,5 +53,5 @@ jobs:
     - name: Compile tests
       working-directory: build
       run: |
-        cmake ${{ matrix.mode }} ..
+        cmake -DFETCH_3RD_PARTY_REPOS=ON ..
         make -j2

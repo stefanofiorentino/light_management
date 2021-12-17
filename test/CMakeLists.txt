@@ -118,6 +118,7 @@ if (${BUILD_GOOGLE_BASED_TESTS})
     ADD_UNIT_TEST(brown_bag_mocking_strategies brown_bag_mocking_strategies.cpp)
     ADD_UNIT_TEST(integral_type integral_type.cpp)
     ADD_UNIT_TEST(stlab_serial_queue stlab_serial_queue.cpp)
+    ADD_UNIT_TEST(elvis elvis.cpp)
 endif (${BUILD_GOOGLE_BASED_TESTS})
 
 add_subdirectory(collezioni_polimorfiche_e_dove_trovarle)
