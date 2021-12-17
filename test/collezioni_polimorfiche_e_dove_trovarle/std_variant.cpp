@@ -38,5 +38,5 @@ TEST(light_management, std_variant)
     
     std::ostringstream oss;
     dump(c, oss);
-    ASSERT_EQ("<document>\n<light_bulb_t/>\n<dimmable_light_bulb_t/>\n<color_dimmable_light_bulb_t/>\n</document>\n", oss.str());
+    ASSERT_EQ("<document>\n<light_bulb_t>false</light_bulb_t>\n<dimmable_light_bulb_t/>\n<color_dimmable_light_bulb_t/>\n</document>\n", oss.str());
 }
