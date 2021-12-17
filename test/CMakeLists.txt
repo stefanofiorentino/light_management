@@ -120,6 +120,7 @@ if (${BUILD_GOOGLE_BASED_TESTS})
     ADD_UNIT_TEST(stlab_serial_queue stlab_serial_queue.cpp)
     ADD_UNIT_TEST(elvis elvis.cpp)
     ADD_UNIT_TEST(signals signals.cpp)
+    ADD_UNIT_TEST(pure_virtual_call pure_virtual_call.cpp)
 endif (${BUILD_GOOGLE_BASED_TESTS})
 
 add_subdirectory(collezioni_polimorfiche_e_dove_trovarle)
