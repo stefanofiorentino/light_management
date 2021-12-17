@@ -27,18 +27,6 @@ void do_switch(light_bulb_t& light, bool status)
   light.do_switch(status);
 }
 
-// template <>
-// void do_switch(dimmable_light_bulb_t& light, bool status)
-// {
-//   light.do_switch(status);
-// }
-
-// template <>
-// void do_switch(color_dimmable_light_bulb_t& light, bool status)
-// {
-//   light.do_switch(status);
-// }
-
 TEST(runtime_polymorphism, draw) {
     collection_t c;
     c.emplace_back(light_bulb_t());
