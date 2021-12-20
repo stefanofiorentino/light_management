@@ -10,33 +10,56 @@
 #include <light_management/dimmable_light_bulb.hpp>
 #include <light_management/color_dimmable_light_bulb.hpp>
 
-template <typename T>
-using collection_t = std::vector<T>;
-
 using light_concept_t = std::variant<light_bulb_t, dimmable_light_bulb_t, color_dimmable_light_bulb_t>;
+using collection_t = std::vector<light_concept_t>;
 
-void dump(collection_t<light_concept_t> & collection, std::ostream& os)
+void draw(collection_t & collection, std::ostream& os)
 {
     os << "<document>\n";
-    std::for_each(collection.begin(), collection.end(), [&os](light_concept_t& light_){
+    std::for_each(collection.begin(), collection.end(), [&os](auto const& light_){
         std::visit([&os](auto&& light) {
             if constexpr (has_void_draw_v<decltype(light)>)
             {
                 light.draw(os);
             }
-        }, light_);
+        }, std::move(light_));
     });
     os << "</document>\n";
 }
 
-TEST(light_management, std_variant)
+void do_switch(collection_t & collection, bool status)
 {
-    collection_t<light_concept_t> c;
+    std::for_each(collection.begin(), collection.end(), [status](auto&& light_){
+        std::visit([status](auto&& light) {
+            if constexpr (has_void_do_switch_v<decltype(light)>)
+            {
+                light.do_switch(status);
+            }
+        }, light_);
+    });
+}
+
+TEST(std_variant, draw)
+{
+    collection_t c;
     c.emplace_back(light_bulb_t());
     c.emplace_back(dimmable_light_bulb_t());
     c.emplace_back(color_dimmable_light_bulb_t());
     
     std::ostringstream oss;
-    dump(c, oss);
-    ASSERT_EQ("<document>\n<light_bulb_t/>\n<dimmable_light_bulb_t/>\n<color_dimmable_light_bulb_t/>\n</document>\n", oss.str());
+    draw(c, oss);
+    ASSERT_EQ("<document>\n<light_bulb_t>false</light_bulb_t>\n<dimmable_light_bulb_t/>\n<color_dimmable_light_bulb_t/>\n</document>\n", oss.str());
+}
+
+TEST(std_variant, do_switch)
+{
+    collection_t c;
+    c.emplace_back(light_bulb_t());
+    c.emplace_back(dimmable_light_bulb_t());
+    c.emplace_back(color_dimmable_light_bulb_t());
+    
+    std::ostringstream oss;
+    do_switch(c, true);
+    draw(c, oss);
+    ASSERT_EQ("<document>\n<light_bulb_t>true</light_bulb_t>\n<dimmable_light_bulb_t/>\n<color_dimmable_light_bulb_t/>\n</document>\n", oss.str());
 }
