@@ -34,13 +34,13 @@ jobs:
       env:
         CXX: ${{ matrix.compiler }}
       run: |
-        cmake -DFETCH_3RD_PARTY_REPOS=ON ${{ matrix.mode }} ..
+        cmake -DCMAKE_BUILD_TYPE:STRING=MinSizeRel -DFETCH_3RD_PARTY_REPOS=ON ${{ matrix.mode }} ..
         make -j2
     - name: Run tests
       working-directory: build
       env:
         CTEST_OUTPUT_ON_FAILURE: 1
-      run: ctest --timeout 30 -C Debug -j2
+      run: ctest --timeout 30 -C Debug -j2 --output-on-failure
 
   macos:
     timeout-minutes: 60
@@ -53,5 +53,5 @@ jobs:
     - name: Compile tests
       working-directory: build
       run: |
-        cmake -DFETCH_3RD_PARTY_REPOS=ON ..
+        cmake -DCMAKE_BUILD_TYPE:STRING=MinSizeRel -DFETCH_3RD_PARTY_REPOS=ON ..
         make -j2
