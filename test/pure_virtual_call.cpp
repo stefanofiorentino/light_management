@@ -16,5 +16,5 @@ TEST(pure_virtual_call, simple) {
     derived d;
     b = &d;
   }
-  ASSERT_DEATH({ b->foo(); }, "");
+  ASSERT_DEATH_IF_SUPPORTED({ b->foo(); }, "");
 }
