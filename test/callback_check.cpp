@@ -9,12 +9,13 @@
 static uv_timer_t timeout_handle;
 static uv_prepare_t prepare_handle;
 static volatile std::atomic_bool callback_called_with_success;
+static volatile std::atomic_bool to_be_skipped;
 static std::thread th;
 static constexpr std::size_t TIMEOUT = 5;
 static constexpr std::size_t REPEAT = 5;
-static constexpr std::size_t TASK_EXECUTION_TIME = 25;
-static constexpr std::size_t SUCCESS_ALLOWED_TASK_EXECUTION_TIME = 50;
-static constexpr std::size_t FAILING_ALLOWED_TASK_EXECUTION_TIME = 15;
+static constexpr std::size_t TASK_EXECUTION_TIME = 100;
+static constexpr std::size_t SUCCESS_ALLOWED_TASK_EXECUTION_TIME = 200;
+static constexpr std::size_t FAILING_ALLOWED_TASK_EXECUTION_TIME =  50;
 static std::size_t counter = 0;
 
 static void pass_through_cb(uv_handle_t *handle) {}
@@ -29,6 +30,7 @@ static void timeout_cb(uv_timer_t *handle) {
   ASSERT_EQ(handle, &timeout_handle);
   auto &timeout = *static_cast<std::size_t *>(handle->data);
   if ((counter++) * REPEAT > timeout) {
+    atomic_store(&to_be_skipped, true);
     uv_timer_stop(handle);
     if (!uv_is_closing((uv_handle_t *)handle)) {
       uv_close((uv_handle_t *)handle, failing_cb);
@@ -52,6 +54,8 @@ static void prepare_cb(uv_prepare_t *handle) {
   // a more libuv way would be to create a `work' request
   th = std::thread([] {
     std::this_thread::sleep_for(std::chrono::milliseconds(TASK_EXECUTION_TIME));
+    if (atomic_load(&to_be_skipped))
+      return;
     OnAsyncResult();
   });
 
@@ -60,10 +64,17 @@ static void prepare_cb(uv_prepare_t *handle) {
   uv_close((uv_handle_t *)handle, pass_through_cb);
 }
 
-TEST(callback_check, success) {
-  int rc;
+struct callback_check_fixture: ::testing::Test{
+  callback_check_fixture()
+  {
+    counter = 0;
+    atomic_store(&callback_called_with_success, false);
+    atomic_store(&to_be_skipped, false);
+  }
+};
 
-  atomic_store(&callback_called_with_success, false);
+TEST_F(callback_check_fixture, success) {
+  int rc;
 
   rc = uv_prepare_init(uv_default_loop(), &prepare_handle);
   ASSERT_TRUE(EXIT_SUCCESS == rc);
@@ -85,10 +96,8 @@ TEST(callback_check, success) {
   th.join();
 }
 
-TEST(callback_check, timeout) {
+TEST_F(callback_check_fixture, timeout) {
   int rc;
-
-  atomic_store(&callback_called_with_success, false);
 
   rc = uv_prepare_init(uv_default_loop(), &prepare_handle);
   ASSERT_TRUE(EXIT_SUCCESS == rc);
@@ -105,6 +114,7 @@ TEST(callback_check, timeout) {
   rc = uv_run(uv_default_loop(), UV_RUN_DEFAULT);
   ASSERT_TRUE(EXIT_SUCCESS == rc);
 
+  ASSERT_FALSE(atomic_load(&callback_called_with_success));
   ASSERT_TRUE(th.joinable());
   th.join();
 }
