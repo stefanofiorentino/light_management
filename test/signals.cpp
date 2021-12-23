@@ -24,16 +24,16 @@ TEST(signals, signals)
         ASSERT_TRUE(false);
     }
 
-    bool called{false};
+    std::atomic_bool called{false};
     std::thread th([&called]{
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
         kill(getpid(),SIGUSR1);
-        called = true;
+        std::atomic_store(&called, true);
     });
     th.detach();
 
     while(!atomic_load(&ready)){
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
-    ASSERT_TRUE(called);
+    ASSERT_TRUE(std::atomic_load(&called));
 }
