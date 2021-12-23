@@ -37,6 +37,20 @@ if (FETCH_3RD_PARTY_REPOS)
     endif()
 
     FetchContent_Declare(
+        libuv
+        GIT_REPOSITORY https://github.com/libuv/libuv.git
+        GIT_TAG master
+        GIT_SHALLOW 1
+    )
+
+    FetchContent_GetProperties(libuv)
+
+    if(NOT libuv_POPULATED)
+        FetchContent_Populate(libuv)
+        add_subdirectory(${libuv_SOURCE_DIR} ${libuv_BINARY_DIR})
+    endif()
+
+    FetchContent_Declare(
         stlab
         GIT_REPOSITORY https://github.com/stlab/libraries.git
         GIT_TAG main
@@ -83,6 +97,7 @@ function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
             Threads::Threads
             ${LIBRT}
             ${WINSOCK2}
+            uv_a
     )
     target_include_directories(
         ${TEST_NAME}
@@ -121,6 +136,7 @@ if (${BUILD_GOOGLE_BASED_TESTS})
     ADD_UNIT_TEST(elvis elvis.cpp)
     ADD_UNIT_TEST(signals signals.cpp)
     ADD_UNIT_TEST(pure_virtual_call pure_virtual_call.cpp)
+    ADD_UNIT_TEST(callback_check callback_check.cpp)
 endif (${BUILD_GOOGLE_BASED_TESTS})
 
 add_subdirectory(collezioni_polimorfiche_e_dove_trovarle)
