@@ -21,12 +21,12 @@ jobs:
       if: ${{ matrix.compiler == 'g++-7' }}
       run: |
         sudo apt-get update
-        sudo apt-get install g++-7 -y
+        sudo apt-get install g++-7 libubsan0 -y
     - name: Install clang-8
       if: ${{ matrix.compiler == 'clang++-8' }}
       run: |
         sudo apt-get update
-        sudo apt-get install clang-8 -y
+        sudo apt-get install clang-8 libubsan0 -y
     - name: Create Build folder
       run: mkdir -p build
     - name: Compile tests
