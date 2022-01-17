@@ -61,9 +61,7 @@ void draw(const T& x, std::ostream& out, size_t position)
 template <>
 void draw(const collection_t& x, std::ostream& out, size_t position)
 {
-    out << std::string(position, ' ') << "<document>\n" ;
     for (const auto& e: x) draw(e, out, position + 2);
-    out << std::string(position, ' ') << "</document>\n" ;
 }
 
 template <typename T>

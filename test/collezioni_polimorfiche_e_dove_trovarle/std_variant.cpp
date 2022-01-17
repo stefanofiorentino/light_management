@@ -11,9 +11,9 @@
 #include <light_management/color_dimmable_light_bulb.hpp>
 
 using light_concept_t = std::variant<light_bulb_t, dimmable_light_bulb_t, color_dimmable_light_bulb_t>;
-using collection_t = std::vector<light_concept_t>;
+using variant_collection_t = std::vector<light_concept_t>;
 
-void draw(collection_t & collection, std::ostream& os)
+void draw(variant_collection_t & collection, std::ostream& os)
 {
     os << "<document>\n";
     std::for_each(collection.begin(), collection.end(), [&os](auto const& light_){
@@ -27,7 +27,7 @@ void draw(collection_t & collection, std::ostream& os)
     os << "</document>\n";
 }
 
-void do_switch(collection_t & collection, bool status)
+void do_switch(variant_collection_t & collection, bool status)
 {
     std::for_each(collection.begin(), collection.end(), [status](auto&& light_){
         std::visit([status](auto&& light) {
@@ -41,7 +41,7 @@ void do_switch(collection_t & collection, bool status)
 
 TEST(std_variant, draw)
 {
-    collection_t c;
+    variant_collection_t c;
     c.emplace_back(light_bulb_t());
     c.emplace_back(dimmable_light_bulb_t());
     c.emplace_back(color_dimmable_light_bulb_t());
@@ -53,7 +53,7 @@ TEST(std_variant, draw)
 
 TEST(std_variant, do_switch)
 {
-    collection_t c;
+    variant_collection_t c;
     c.emplace_back(light_bulb_t());
     c.emplace_back(dimmable_light_bulb_t());
     c.emplace_back(color_dimmable_light_bulb_t());

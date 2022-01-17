@@ -5,29 +5,9 @@
 #include <light_management/light_bulb.hpp>
 #include <light_management/dimmable_light_bulb.hpp>
 #include <light_management/color_dimmable_light_bulb.hpp>
+#include <light_management/room.hpp>
 
-template <>
-void draw(const light_bulb_t &light, std::ostream &out, size_t /*position*/) {
-  light.draw(out);
-}
-
-template <>
-void draw(const color_dimmable_light_bulb_t &light, std::ostream &out, size_t /*position*/) {
-  light.draw(out);
-}
-
-template <>
-void draw(const dimmable_light_bulb_t &light, std::ostream &out, size_t /*position*/) {
-  light.draw(out);
-}
-
-template <>
-void do_switch(light_bulb_t& light, bool status)
-{
-  light.do_switch(status);
-}
-
-TEST(runtime_polymorphism, draw) {
+TEST(runtime_polymorphism, draw_plain_plant) {
     collection_t c;
     c.emplace_back(light_bulb_t());
     c.emplace_back(dimmable_light_bulb_t());
@@ -35,7 +15,21 @@ TEST(runtime_polymorphism, draw) {
     
     std::ostringstream oss;
     draw(c, oss, 0);
-    ASSERT_EQ("<document>\n<light_bulb_t>false</light_bulb_t>\n<dimmable_light_bulb_t/>\n<color_dimmable_light_bulb_t/>\n</document>\n", oss.str());
+    ASSERT_EQ("<light_bulb_t>false</light_bulb_t>\n<dimmable_light_bulb_t/>\n<color_dimmable_light_bulb_t/>\n", oss.str());
+}
+
+TEST(runtime_polymorphism, draw_nested_plant) {
+    collection_t c;
+    c.emplace_back(light_bulb_t());
+    c.emplace_back(dimmable_light_bulb_t());
+    c.emplace_back(color_dimmable_light_bulb_t());
+    room_t r;
+    r.emplace_back(light_bulb_t());
+    c.emplace_back(std::move(r));
+    
+    std::ostringstream oss;
+    draw(c, oss, 0);
+    ASSERT_EQ("<light_bulb_t>false</light_bulb_t>\n<dimmable_light_bulb_t/>\n<color_dimmable_light_bulb_t/>\n<room_t>\n<light_bulb_t>false</light_bulb_t>\n</room_t>\n", oss.str());
 }
 
 TEST(runtime_polymorphism, do_switch) {
@@ -47,5 +41,5 @@ TEST(runtime_polymorphism, do_switch) {
     std::ostringstream oss;
     do_switch(c, true);
     draw(c, oss, 0);        
-    ASSERT_EQ("<document>\n<light_bulb_t>true</light_bulb_t>\n<dimmable_light_bulb_t/>\n<color_dimmable_light_bulb_t/>\n</document>\n", oss.str());
+    ASSERT_EQ("<light_bulb_t>true</light_bulb_t>\n<dimmable_light_bulb_t/>\n<color_dimmable_light_bulb_t/>\n", oss.str());
 }
