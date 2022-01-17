@@ -3,8 +3,6 @@
 START_TEST(test)
 {
     ck_assert_str_eq("1", "1");
-    ck_assert_str_eq("1", "2");
-    ck_assert_str_eq("1", "1");
 }
 END_TEST
 
