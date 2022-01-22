@@ -15,8 +15,14 @@ void do_switch(T& x, bool status);
 class object_t {
 public: 
     template <typename T>
-    object_t(T x) : self_(std::make_shared<model_t<T>>(std::move(x))) {}
-    
+    explicit object_t(T x) : self_(std::make_unique<model_t<T>>(std::move(x))) {}
+
+    object_t(object_t const& x) = delete;
+    object_t& operator=(object_t const& x) = delete;
+
+    object_t(object_t && x) = default;
+    object_t& operator=(object_t && x) = default;
+
     friend void draw(const object_t&x, std::ostream& out, size_t position)
     { x.self_->draw(out, position); }
 
@@ -47,7 +53,7 @@ private:
         }
         T data_;
     };
-    std::shared_ptr<concept_t> self_;
+    std::unique_ptr<concept_t> self_;
 };
 
 using collection_t = std::vector<object_t>;
