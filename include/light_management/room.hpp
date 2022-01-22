@@ -16,7 +16,7 @@ struct room_t final {
   {
     if (children_.empty())
     {
-    oss << "</room_t>\n" ;
+    oss << "<room_t/>\n" ;
     return;  
     }
     oss << "<room_t>\n" ;
