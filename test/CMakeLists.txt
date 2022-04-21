@@ -43,12 +43,11 @@ if (FETCH_3RD_PARTY_REPOS)
         GIT_SHALLOW 1
     )
 
-    FetchContent_GetProperties(libuv)
-
     if(NOT libuv_POPULATED)
         FetchContent_Populate(libuv)
-        add_subdirectory(${libuv_SOURCE_DIR} ${libuv_BINARY_DIR})
     endif()
+
+    FetchContent_GetProperties(libuv)
 
     FetchContent_Declare(
         stlab
@@ -67,7 +66,12 @@ else(FETCH_3RD_PARTY_REPOS)
     set(stlab_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/stlab-src")
     set(googletest_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/googletest-src")
     set(googletest_BINARY_DIR "${CMAKE_BINARY_DIR}/_deps/googletest-build")
+    set(libuv_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/libuv-src")
+    set(libuv_BINARY_DIR "${CMAKE_BINARY_DIR}/_deps/libuv-build")
 endif(FETCH_3RD_PARTY_REPOS)
+
+
+add_subdirectory(${libuv_SOURCE_DIR} ${libuv_BINARY_DIR} EXCLUDE_FROM_ALL)
 add_subdirectory("${googletest_SOURCE_DIR}" "${googletest_BINARY_DIR}" EXCLUDE_FROM_ALL)
 
 add_library(GTest::Main ALIAS gtest_main)
