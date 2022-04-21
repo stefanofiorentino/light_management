@@ -66,7 +66,7 @@ else(FETCH_3RD_PARTY_REPOS)
     set(entt_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/entt-src")
     set(stlab_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/stlab-src")
     set(googletest_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/googletest-src")
-    set(googletest_BINARY_DIR "${CMAKE_BUILD_DIR}/_deps/googletest-build")
+    set(googletest_BINARY_DIR "${CMAKE_BINARY_DIR}/_deps/googletest-build")
 endif(FETCH_3RD_PARTY_REPOS)
 add_subdirectory("${googletest_SOURCE_DIR}" "${googletest_BINARY_DIR}" EXCLUDE_FROM_ALL)
 
