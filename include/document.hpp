@@ -35,7 +35,7 @@ private:
   };
   template <typename T> struct model_t final : concept_t {
     model_t(T x) : data_(std::move(x)) {}
-    concept_t *copy_() override { return new model_t(*this); }
+    concept_t *copy_() override { return std::make_unique<model_t>(*this).release(); }
     void draw(std::ostream &out, size_t position) const override {
       ::draw(data_, out, position);
     }
