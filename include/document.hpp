@@ -14,9 +14,8 @@ public:
   template <typename T>
   explicit object_t(T x) : self_(std::make_unique<model_t<T>>(std::move(x))) {}
 
-  object_t(object_t const &x) : self_(x.self_->copy_()) { std::puts("ctor"); }
+  object_t(object_t const &x) : self_(x.self_->copy_()) {}
   object_t &operator=(object_t x) {
-    std::puts("copy");
     self_ = std::move(x.self_);
     return *this;
   };
