@@ -15,3 +15,5 @@ https://github.com/stefanofiorentino/experimental/blob/develop/test/collezioni_p
 - [] 2021-04-21-add_a_second_type
 - [] comparison with std::variant
 - [] comparison with entt (ECS) or even std::any
+- [] check boost::type_erasure
+- [] check if nested collection are possible

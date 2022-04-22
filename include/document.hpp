@@ -48,6 +48,10 @@ inline void draw(const T &x, std::ostream &out, size_t position) {
 
 template <>
 inline void draw(const collection_t &x, std::ostream &out, size_t position) {
+  out << std::string(position, ' ') << "<collection>\n";
   for (const auto &e : x)
-    draw(e, out, position);
+  {
+    draw(e, out, position + 2);
+  }
+  out << std::string(position, ' ') << "</collection>\n";
 }
