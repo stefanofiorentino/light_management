@@ -8,9 +8,7 @@ TEST(runtime_polymorphism, draw_plain_plant) {
   auto s = std::string("a_string");
   c.emplace_back(s);
 
-  collection_t c1;
-  c1.emplace_back(24);
-  c.emplace_back(std::move(c1));
+  c.emplace_back(c);
 
   std::ostringstream oss;
   draw(c, oss, 0);
@@ -18,7 +16,8 @@ TEST(runtime_polymorphism, draw_plain_plant) {
   42
   a_string
   <collection>
-    24
+    42
+    a_string
   </collection>
 </collection>
 )",
