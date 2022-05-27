@@ -5,8 +5,8 @@
 #include <string>
 
 namespace details {
-char *print_foo() { return strdup(__PRETTY_FUNCTION__); }
-char *print_bar() { return strdup(__PRETTY_FUNCTION__); }
+char *print_foo() { return strdup("char* details::print_foo()"); }
+char *print_bar() { return strdup("char* details::print_bar()"); }
 } // namespace details
 
 char *perform_action_based_on_type(std::string const &action_to_perform) {
