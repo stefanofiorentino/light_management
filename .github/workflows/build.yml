@@ -17,6 +17,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Install Check
+      run: |
+        sudo apt-get update
+        sudo apt-get install check -y
     - name: Install g++-7
       if: ${{ matrix.compiler == 'g++-7' }}
       run: |
