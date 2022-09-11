@@ -3,6 +3,7 @@
 #include <cstring>
 #include <memory>
 #include <string>
+#include <exception>
 
 namespace details {
 std::string print_foo() { return "char* details::print_foo()"; }
@@ -15,6 +16,7 @@ std::string perform_action_based_on_type(std::string const &action_to_perform) {
   } else if ("bar" == action_to_perform) {
     return details::print_bar();
   }
+  throw std::runtime_error("");
 }
 
 TEST(from_switch_case_to_polymorphism, C_style_polymorphism) {
@@ -43,6 +45,7 @@ std::shared_ptr<base> factory(std::string const &action_to_perform) {
   } else if ("bar" == action_to_perform) {
     return std::make_shared<bar>();
   }
+  throw std::runtime_error("");
 }
 
 TEST(from_switch_case_to_polymorphism, Cpp_style_polymorphism) {
