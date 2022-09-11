@@ -43,11 +43,12 @@ if (FETCH_3RD_PARTY_REPOS)
         GIT_SHALLOW 1
     )
 
+    FetchContent_GetProperties(libuv)
+
     if(NOT libuv_POPULATED)
         FetchContent_Populate(libuv)
     endif()
 
-    FetchContent_GetProperties(libuv)
 else(FETCH_3RD_PARTY_REPOS)
     set(entt_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/entt-src")
     set(stlab_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/stlab-src")

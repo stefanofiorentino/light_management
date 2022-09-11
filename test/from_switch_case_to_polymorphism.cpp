@@ -4,6 +4,7 @@
 #include <exception>
 #include <memory>
 #include <string>
+#include <exception>
 
 namespace details {
 std::string print_foo() { return "char* details::print_foo()"; }
