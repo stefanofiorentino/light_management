@@ -22,6 +22,7 @@ std::string perform_action_based_on_type(std::string const &action_to_perform) {
 TEST(from_switch_case_to_polymorphism, C_style_polymorphism) {
   ASSERT_EQ("char* details::print_foo()", perform_action_based_on_type("foo"));
   ASSERT_EQ("char* details::print_bar()", perform_action_based_on_type("bar"));
+  ASSERT_THROW(perform_action_based_on_type(""), std::runtime_error);
 }
 
 class base {
@@ -51,4 +52,5 @@ std::shared_ptr<base> factory(std::string const &action_to_perform) {
 TEST(from_switch_case_to_polymorphism, Cpp_style_polymorphism) {
   ASSERT_EQ("char* details::print_foo()", factory("foo")->print());
   ASSERT_EQ("char* details::print_bar()", factory("bar")->print());
+  ASSERT_THROW(factory(""), std::runtime_error);
 }
