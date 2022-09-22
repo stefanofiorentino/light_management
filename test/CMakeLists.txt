@@ -118,7 +118,7 @@ function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
         target_link_libraries(${TEST_NAME} PUBLIC -fsanitize=undefined)
     endif()
 
-    if(USE_THSAN)
+    if(USE_THSAN AND NOT ${TEST_NAME} MATCHES "memory_allocation")
         target_compile_options(${TEST_NAME} PUBLIC -fsanitize=thread -fno-sanitize-recover=all -fno-omit-frame-pointer)
         target_link_libraries(${TEST_NAME} PUBLIC -fsanitize=thread)
     endif()
