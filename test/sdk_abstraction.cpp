@@ -10,7 +10,7 @@ struct DirectiveSequencerInterface {
 struct DirectiveSequencer final
     : public DirectiveSequencerInterface { // check 2 classi final
   virtual ~DirectiveSequencer() = default; // check 1 distruttore virtuale
-  void onDirective(const std::string &directive) const override {
+  void onDirective(const std::string &/*directive*/) const override {
     std::puts(__PRETTY_FUNCTION__);
   }
 };
