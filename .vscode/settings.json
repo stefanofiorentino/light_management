@@ -8,7 +8,7 @@
     "cmake.configureOnEdit": false,
     "cmake.ctestArgs": [
         "--timeout",
-        "30"
+        "1"
     ],
     "cmake.generator": "Unix Makefiles",
     "cmake.buildDirectory": "${workspaceFolder}/cmake-build-debug",
