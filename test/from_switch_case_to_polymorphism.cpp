@@ -1,6 +1,7 @@
 #include <gmock/gmock.h>
 
 #include <cstring>
+#include <exception>
 #include <memory>
 #include <string>
 
@@ -15,11 +16,13 @@ std::string perform_action_based_on_type(std::string const &action_to_perform) {
   } else if ("bar" == action_to_perform) {
     return details::print_bar();
   }
+  throw std::runtime_error("");
 }
 
 TEST(from_switch_case_to_polymorphism, C_style_polymorphism) {
   ASSERT_EQ("char* details::print_foo()", perform_action_based_on_type("foo"));
   ASSERT_EQ("char* details::print_bar()", perform_action_based_on_type("bar"));
+  ASSERT_THROW(perform_action_based_on_type(""), std::runtime_error);
 }
 
 class base {
@@ -43,9 +46,11 @@ std::shared_ptr<base> factory(std::string const &action_to_perform) {
   } else if ("bar" == action_to_perform) {
     return std::make_shared<bar>();
   }
+  throw std::runtime_error("");
 }
 
 TEST(from_switch_case_to_polymorphism, Cpp_style_polymorphism) {
   ASSERT_EQ("char* details::print_foo()", factory("foo")->print());
   ASSERT_EQ("char* details::print_bar()", factory("bar")->print());
+  ASSERT_THROW(factory("")->print(), std::runtime_error);
 }

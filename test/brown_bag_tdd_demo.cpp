@@ -7,7 +7,7 @@
 struct my_stack_t
 {
     my_stack_t() noexcept : size_(0) {
-        for (int i = 0; i<N; i++)
+        for (auto i = 0u; i<N; i++)
         {
             v_[i] = std::numeric_limits<int>::min();
         }
