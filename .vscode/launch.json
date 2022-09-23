@@ -6,7 +6,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${command:cmake.launchTargetPath}",
-            "args": [""],
+            "args": ["--gtest_filter=whenDestroyThenSpaceIsFreed*"],
             "stopAtEntry": false,
             "cwd": "${command:cmake.launchTargetDirectory}",
             "externalConsole": false,
