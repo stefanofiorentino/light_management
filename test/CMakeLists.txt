@@ -48,19 +48,6 @@ if (FETCH_3RD_PARTY_REPOS)
     endif()
 
     FetchContent_GetProperties(libuv)
-
-    FetchContent_Declare(
-        stlab
-        GIT_REPOSITORY https://github.com/stlab/libraries.git
-        GIT_TAG main
-        GIT_SHALLOW 1
-    )
-
-    FetchContent_GetProperties(stlab)
-
-    if(NOT stlab_POPULATED)
-        FetchContent_Populate(stlab)
-    endif()
 else(FETCH_3RD_PARTY_REPOS)
     set(entt_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/entt-src")
     set(stlab_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/stlab-src")
@@ -142,13 +129,11 @@ if (${BUILD_GOOGLE_BASED_TESTS})
     ADD_UNIT_TEST(brown_bag_tdd_demo brown_bag_tdd_demo.cpp)
     ADD_UNIT_TEST(brown_bag_mocking_strategies brown_bag_mocking_strategies.cpp)
     ADD_UNIT_TEST(integral_type integral_type.cpp)
-    ADD_UNIT_TEST(stlab_serial_queue stlab_serial_queue.cpp)
     ADD_UNIT_TEST(elvis elvis.cpp)
     ADD_UNIT_TEST(signals signals.cpp)
     ADD_UNIT_TEST(memory_allocation memory_allocation.cpp)
     ADD_UNIT_TEST(from_switch_case_to_polymorphism from_switch_case_to_polymorphism.cpp)
-    ADD_UNIT_TEST(checkcheck checkcheck.cpp)
-    target_link_libraries(checkcheck PUBLIC check)
+    ADD_UNIT_TEST(visitor_guide_allocators visitor_guide_allocators.cpp)
     if(NOT USE_UBSAN AND NOT USE_ASAN)
         ADD_UNIT_TEST(pure_virtual_call pure_virtual_call.cpp)
     endif(NOT USE_UBSAN AND NOT USE_ASAN)
