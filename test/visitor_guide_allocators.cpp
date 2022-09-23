@@ -1,3 +1,5 @@
+// https://rawgit.com/google/cxx-std-draft/allocator-paper/allocator_example_usage.html
+
 #include <gmock/gmock.h>
 
 #include <scoped_allocator>
