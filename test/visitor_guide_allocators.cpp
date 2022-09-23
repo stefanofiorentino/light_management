@@ -11,8 +11,9 @@
 
 namespace experimental {
 namespace constants {
-static const std::string &VERY_LONG_STRING = "Very looooooooooooooong string";
-}
+static std::string const &VERY_LONG_STRING = "Very looooooooooooooong string";
+static char const *const VERY_LONG_STRING_C_STR = VERY_LONG_STRING.c_str();
+} // namespace constants
 } // namespace experimental
 
 class Arena {
@@ -23,24 +24,15 @@ class Arena {
 public:
   explicit Arena(std::size_t s)
       : data(static_cast<unsigned char *>(::operator new(s))), size(s),
-        offset(0) {
-    std::cout << "arena[" << this << "] of size " << size << " created.\n";
-  }
+        offset(0) {}
 
   Arena(Arena const &) = delete;
   Arena &operator=(Arena const &) = delete;
 
-  ~Arena() {
-    std::cout << "arena[" << this
-              << "] destroyed; final fill level was: " << offset << "\n";
-    ::operator delete(data);
-  }
+  ~Arena() { ::operator delete(data); }
 
   void *allocate(std::size_t n, std::size_t a) {
     offset = (offset + a - 1) / a * a;
-
-    std::cout << "arena[" << this << "] allocating " << n << " bytes at offset "
-              << offset << ".\n";
 
     if (offset + n > size) {
       throw std::bad_alloc();
@@ -51,9 +43,7 @@ public:
     return result;
   }
 
-  void deallocate(void *, std::size_t n) {
-    std::cout << "arena[" << this << "] may deallocate " << n << " bytes.\n";
-  }
+  void deallocate(void *, std::size_t n) {}
 };
 
 template <typename T> struct ArenaAllocator {
@@ -95,9 +85,23 @@ template <typename T>
 using SA = std::scoped_allocator_adaptor<ArenaAllocator<T>>;
 using astring = std::basic_string<char, std::char_traits<char>, SA<char>>;
 
-TEST(visitor_guide_allocators, visitor_guide_allocators) {
+astring make_astring(std::string const &rhs,
+                     ArenaAllocator<void> &arenaAllocator) {
+  return astring(rhs, arenaAllocator);
+}
+
+TEST(visitor_guide_allocators, std_string) {
   Arena arena(1024);
-  ArenaAllocator<void> a(&arena);
-  astring s2(experimental::constants::VERY_LONG_STRING, a);
+  ArenaAllocator<void> arenaAllocator(&arena);
+  auto s2 =
+      make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator);
+  ASSERT_EQ(experimental::constants::VERY_LONG_STRING, s2.c_str());
+}
+
+TEST(visitor_guide_allocators, const_char_pointer) {
+  Arena arena(1024);
+  ArenaAllocator<void> arenaAllocator(&arena);
+  auto s2 = make_astring(experimental::constants::VERY_LONG_STRING_C_STR,
+                         arenaAllocator);
   ASSERT_EQ(experimental::constants::VERY_LONG_STRING, s2.c_str());
 }
