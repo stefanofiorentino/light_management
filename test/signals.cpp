@@ -7,7 +7,7 @@
 
 volatile std::atomic_bool ready;
 
-static void catch_function(int signo) {
+static void catch_function(int /*signo*/) {
     atomic_store(&ready, true);
 }
 

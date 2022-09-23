@@ -47,6 +47,7 @@ private:
         }
         void do_switch(bool status) override
         {
+            (void)status;
             if constexpr (has_void_do_switch_v<T>) {
                 ::do_switch(data_, status);
             }

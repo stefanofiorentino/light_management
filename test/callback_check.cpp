@@ -21,8 +21,8 @@ static std::thread th;
 static std::size_t counter = 0;
 static std::size_t timeout = 0;
 
-static void pass_through_cb(uv_handle_t *handle) {}
-static void failing_cb(uv_handle_t *handle) {
+static void pass_through_cb(uv_handle_t */*handle*/) {}
+static void failing_cb(uv_handle_t */*handle*/) {
   ASSERT_FALSE(atomic_load(&callback_called_with_success));
 }
 
