@@ -114,7 +114,7 @@ function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
     endif()
 
     if(USE_UBSAN)
-        target_compile_options(${TEST_NAME} PUBLIC -fsanitize=undefined -fno-sanitize-recover=all -fno-omit-frame-pointer)
+        target_compile_options(${TEST_NAME} PUBLIC -fsanitize=undefined -fsanitize-undefined-trap-on-error -fno-sanitize-recover=all -fno-omit-frame-pointer)
         target_link_libraries(${TEST_NAME} PUBLIC -fsanitize=undefined -fsanitize-undefined-trap-on-error)
     endif()
 
