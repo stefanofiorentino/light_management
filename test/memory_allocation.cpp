@@ -63,7 +63,7 @@ END
 START
     int* p = static_cast<int*>(malloc(sizeof(int)));
     int a = 0;
-    auto f = [&a](int*){
+    auto f = [](int*){
         std::puts(__PRETTY_FUNCTION__);
     };
     std::unique_ptr<int, decltype(f)> v(p, f);
