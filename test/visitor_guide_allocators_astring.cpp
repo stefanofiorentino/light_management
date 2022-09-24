@@ -11,9 +11,6 @@
 #include "visitor_guide_allocators/scoped_arena_allocator.h"
 
 using astring = std::basic_string<char, std::char_traits<char>, SA<char>>;
-using aunordered_map =
-    std::unordered_map<astring const, int, std::hash<astring>, std::less<>,
-                       SA<std::pair<astring const, int>>>;
 
 astring make_astring(std::string const &rhs,
                      ArenaAllocator<void> &arenaAllocator) {
