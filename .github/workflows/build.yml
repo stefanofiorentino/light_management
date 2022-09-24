@@ -13,7 +13,7 @@ jobs:
         compiler: [
             g++-7, clang++-8
         ]
-        mode: [""]
+        mode: ["", "-DUSE_ASAN=ON", "-DUSE_UBSAN=ON", "-DUSE_THSAN=ON"]
 
     steps:
     - uses: actions/checkout@v2
