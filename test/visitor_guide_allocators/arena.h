@@ -33,8 +33,7 @@ public:
 
   void deallocate(void *p, std::size_t n) {
     unsigned char *d = static_cast<unsigned char *>(p);
-    memmove(d, d + n, size - offset + 1);
+    memmove(d, d + n, size-(d-data)-n);
     offset -= n;
-    memset(d + offset, '\0', size - offset + 1);
   }
 };

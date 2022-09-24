@@ -54,8 +54,8 @@ TEST(visitor_guide_allocators, whenDestroyThenSpaceIsFreed) {
   auto s2 =
       make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator);
   
-  s0.clear();
-  s0.shrink_to_fit();
+  s1.clear();
+  s1.shrink_to_fit();
   
   ASSERT_NO_THROW(
       make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator));
