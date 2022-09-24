@@ -21,7 +21,7 @@ jobs:
       run: |
         sudo apt-get update \
         && sudo apt-get install clang-8 g++-7 libubsan0 -y \
-        && rm -rf /var/lib/apt/lists/*
+        && sudo rm -rf /var/lib/apt/lists/*
     - name: Create Build folder
       run: mkdir -p build
     - name: Compile tests
