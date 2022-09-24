@@ -45,11 +45,6 @@ END
 
 START
     int* p = static_cast<int*>(malloc(sizeof(int)));
-    std::shared_ptr<int> v(p);
-END
-
-START
-    int* p = static_cast<int*>(malloc(sizeof(int)));
     std::unique_ptr<int> v(p);
     std::cout << sizeof(v) << std::endl;
 END
@@ -62,8 +57,7 @@ END
 
 START
     int* p = static_cast<int*>(malloc(sizeof(int)));
-    int a = 0;
-    auto f = [&a](int*){
+    auto f = [](int*){
         std::puts(__PRETTY_FUNCTION__);
     };
     std::unique_ptr<int, decltype(f)> v(p, f);

@@ -10,7 +10,6 @@ struct derived final : base {
 };
 
 [[noreturn]] void onTerminate() noexcept {
-    ASSERT_TRUE(true);
     std::_Exit( EXIT_SUCCESS );
 }
 

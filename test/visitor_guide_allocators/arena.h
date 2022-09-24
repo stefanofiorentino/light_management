@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <cstring>
 #include <stdexcept>
 
 class Arena {
@@ -30,5 +31,9 @@ public:
     return result;
   }
 
-  void deallocate(void *, std::size_t /*n*/) {}
+  void deallocate(void *p, std::size_t n) {
+    unsigned char *d = static_cast<unsigned char *>(p);
+    memmove(d, d + n, size-(d-data)-n);
+    offset -= n;
+  }
 };

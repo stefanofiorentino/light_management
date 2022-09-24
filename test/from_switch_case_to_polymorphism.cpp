@@ -32,6 +32,7 @@ protected:
 
 public:
   std::string print() const { return do_print(); }
+  virtual ~base() = default;
 };
 class foo : public base {
   std::string do_print() const override { return details::print_foo(); }

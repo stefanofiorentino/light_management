@@ -38,6 +38,25 @@ TEST(visitor_guide_allocators, whenCharPointerIsUsedThenItWorks) {
 TEST(visitor_guide_allocators, whenExceedingSizeThenAnExceptionIsThrown) {
   Arena arena(100);
   ArenaAllocator<void> arenaAllocator(&arena);
-  ASSERT_THROW(make_astring(experimental::constants::VERY_LONG_STRING_CAUSING_EXCEPTION,
-                         arenaAllocator), std::bad_alloc);
+  ASSERT_THROW(
+      make_astring(experimental::constants::VERY_LONG_STRING_CAUSING_EXCEPTION,
+                   arenaAllocator),
+      std::bad_alloc);
+}
+
+TEST(visitor_guide_allocators, whenDestroyThenSpaceIsFreed) {
+  Arena arena(100);
+  ArenaAllocator<void> arenaAllocator(&arena);
+  auto s0 =
+      make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator);
+  auto s1 =
+      make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator);
+  auto s2 =
+      make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator);
+  
+  s1.clear();
+  s1.shrink_to_fit();
+  
+  ASSERT_NO_THROW(
+      make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator));
 }
