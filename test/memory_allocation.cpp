@@ -45,11 +45,6 @@ END
 
 START
     int* p = static_cast<int*>(malloc(sizeof(int)));
-    std::shared_ptr<int> v(p);
-END
-
-START
-    int* p = static_cast<int*>(malloc(sizeof(int)));
     std::unique_ptr<int> v(p);
     std::cout << sizeof(v) << std::endl;
 END
