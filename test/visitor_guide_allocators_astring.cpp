@@ -2,16 +2,14 @@
 
 #include <gmock/gmock.h>
 
-#include <scoped_allocator>
 #include <string>
 #include <utility>
 
 #include "visitor_guide_allocators/arena.h"
 #include "visitor_guide_allocators/arena_allocator.h"
 #include "visitor_guide_allocators/constants.h"
+#include "visitor_guide_allocators/scoped_arena_allocator.h"
 
-template <typename T>
-using SA = std::scoped_allocator_adaptor<ArenaAllocator<T>>;
 using astring = std::basic_string<char, std::char_traits<char>, SA<char>>;
 
 astring make_astring(std::string const &rhs,
@@ -19,7 +17,7 @@ astring make_astring(std::string const &rhs,
   return astring(rhs, arenaAllocator);
 }
 
-TEST(visitor_guide_allocators, whenStdStringIsUsedThenItWorks) {
+TEST(visitor_guide_allocators_astring, whenStdStringIsUsedThenItWorks) {
   Arena arena(1024);
   ArenaAllocator<void> arenaAllocator(&arena);
   auto s2 =
@@ -27,7 +25,7 @@ TEST(visitor_guide_allocators, whenStdStringIsUsedThenItWorks) {
   ASSERT_EQ(experimental::constants::VERY_LONG_STRING, s2.c_str());
 }
 
-TEST(visitor_guide_allocators, whenCharPointerIsUsedThenItWorks) {
+TEST(visitor_guide_allocators_astring, whenCharPointerIsUsedThenItWorks) {
   Arena arena(1024);
   ArenaAllocator<void> arenaAllocator(&arena);
   auto s2 = make_astring(experimental::constants::VERY_LONG_STRING_C_STR,
@@ -35,7 +33,7 @@ TEST(visitor_guide_allocators, whenCharPointerIsUsedThenItWorks) {
   ASSERT_EQ(experimental::constants::VERY_LONG_STRING, s2.c_str());
 }
 
-TEST(visitor_guide_allocators, whenExceedingSizeThenAnExceptionIsThrown) {
+TEST(visitor_guide_allocators_astring, whenExceedingSizeThenAnExceptionIsThrown) {
   Arena arena(100);
   ArenaAllocator<void> arenaAllocator(&arena);
   ASSERT_THROW(
@@ -44,7 +42,7 @@ TEST(visitor_guide_allocators, whenExceedingSizeThenAnExceptionIsThrown) {
       std::bad_alloc);
 }
 
-TEST(visitor_guide_allocators, whenDestroyThenSpaceIsFreed) {
+TEST(visitor_guide_allocators_astring, whenDestroyThenSpaceIsFreed) {
   Arena arena(100);
   ArenaAllocator<void> arenaAllocator(&arena);
   auto s0 =
@@ -53,10 +51,10 @@ TEST(visitor_guide_allocators, whenDestroyThenSpaceIsFreed) {
       make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator);
   auto s2 =
       make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator);
-  
+
   s1.clear();
   s1.shrink_to_fit();
-  
+
   ASSERT_NO_THROW(
       make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator));
 }
