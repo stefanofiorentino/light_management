@@ -62,7 +62,6 @@ END
 
 START
     int* p = static_cast<int*>(malloc(sizeof(int)));
-    int a = 0;
     auto f = [](int*){
         std::puts(__PRETTY_FUNCTION__);
     };
