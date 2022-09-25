@@ -85,5 +85,13 @@ TEST(visitor_guide_allocators_astring, whenDestroyThenSpaceIsFreed) {
                       s0.c_str(), 100));
 
   ASSERT_NO_THROW(
-      make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator));
+      s1 = make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator));
+
+  ASSERT_EQ(0, memcmp("Very looooooooooooooong string\0"
+                      "Very looooooooooooooong string\0"
+                      "Very looooooooooooooong string\0"
+                      "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+                      "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+                      "\0\0\0\0",
+                      s0.c_str(), 100));
 }
