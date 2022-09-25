@@ -14,6 +14,8 @@
     "cmake.generator": "Unix Makefiles",
     "cmake.buildDirectory": "${workspaceFolder}/cmake-build-debug",
     "files.associations": {
-        "scoped_allocator": "cpp"
+        "scoped_allocator": "cpp",
+        "*.tcc": "cpp",
+        "string": "cpp"
     }
 }

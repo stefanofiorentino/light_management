@@ -33,7 +33,8 @@ TEST(visitor_guide_allocators_astring, whenCharPointerIsUsedThenItWorks) {
   ASSERT_EQ(experimental::constants::VERY_LONG_STRING, s2.c_str());
 }
 
-TEST(visitor_guide_allocators_astring, whenExceedingSizeThenAnExceptionIsThrown) {
+TEST(visitor_guide_allocators_astring,
+     whenExceedingSizeThenAnExceptionIsThrown) {
   Arena arena(100);
   ArenaAllocator<void> arenaAllocator(&arena);
   ASSERT_THROW(
@@ -47,13 +48,41 @@ TEST(visitor_guide_allocators_astring, whenDestroyThenSpaceIsFreed) {
   ArenaAllocator<void> arenaAllocator(&arena);
   auto s0 =
       make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator);
+  ASSERT_EQ(0, memcmp("Very looooooooooooooong string\0"
+                      "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+                      "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+                      "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+                      "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+                      "\0\0\0\0",
+                      s0.c_str(), 100));
   auto s1 =
       make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator);
+  ASSERT_EQ(0, memcmp("Very looooooooooooooong string\0"
+                      "Very looooooooooooooong string\0"
+                      "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+                      "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+                      "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+                      "\0\0\0\0",
+                      s0.c_str(), 100));
   auto s2 =
       make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator);
-
+  ASSERT_EQ(0, memcmp("Very looooooooooooooong string\0"
+                      "Very looooooooooooooong string\0"
+                      "Very looooooooooooooong string\0"
+                      "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+                      "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+                      "\0\0\0\0",
+                      s0.c_str(), 100));
   s1.clear();
   s1.shrink_to_fit();
+
+  ASSERT_EQ(0, memcmp("Very looooooooooooooong string\0"
+                      "Very looooooooooooooong string\0"
+                      "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+                      "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+                      "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+                      "\0\0\0\0",
+                      s0.c_str(), 100));
 
   ASSERT_NO_THROW(
       make_astring(experimental::constants::VERY_LONG_STRING, arenaAllocator));

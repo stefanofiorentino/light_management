@@ -12,7 +12,9 @@ class Arena {
 public:
   explicit Arena(std::size_t s)
       : data(static_cast<unsigned char *>(::operator new(s))), size(s),
-        offset(0) {}
+        offset(0) {
+          memset(data, '\0', s);
+        }
 
   Arena(Arena const &) = delete;
   Arena &operator=(Arena const &) = delete;
@@ -33,7 +35,8 @@ public:
 
   void deallocate(void *p, std::size_t n) {
     unsigned char *d = static_cast<unsigned char *>(p);
-    memmove(d, d + n, size-(d-data)-n);
+    memmove(d, d + n, size - (d - data) - n);
     offset -= n;
+    memset(data+offset, '\0', size-offset);
   }
 };
