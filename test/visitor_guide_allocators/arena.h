@@ -10,9 +10,11 @@ class Arena {
   std::size_t offset;
 
 public:
-  explicit Arena(std::size_t s)
+  explicit Arena(std::size_t s) noexcept
       : data(static_cast<unsigned char *>(::operator new(s))), size(s),
-        offset(0) {}
+        offset(0) {
+          memset(data, '\0', s);
+        }
 
   Arena(Arena const &) = delete;
   Arena &operator=(Arena const &) = delete;
@@ -31,9 +33,10 @@ public:
     return result;
   }
 
-  void deallocate(void *p, std::size_t n) {
+  void deallocate(void *p, std::size_t n) noexcept {
     unsigned char *d = static_cast<unsigned char *>(p);
-    memmove(d, d + n, size-(d-data)-n);
+    memmove(d, d + n, size - (d - data) - n);
     offset -= n;
+    memset(data+offset, '\0', size-offset);
   }
 };
