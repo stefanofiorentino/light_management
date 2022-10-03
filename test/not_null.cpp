@@ -5,22 +5,19 @@ struct base {
   virtual bool foo() const noexcept { return true; }
 };
 
-template <typename T> struct not_null {
-  explicit not_null(T t) : pointee(t) {
-    static_assert(std::is_pointer_v<T>,
-                  "not_null accepts only pointer types as template parameter");
-  }
+template <typename T> struct not_null_ptr {
+  explicit not_null_ptr(T *t) : pointee(t) {}
 
-  explicit not_null(std::nullptr_t) = delete;
+  explicit not_null_ptr(std::nullptr_t) = delete;
 
-  T operator->() { return pointee; }
+  T *operator->() { return pointee; }
 
 private:
-  T pointee;
+  T *pointee;
 };
 
-TEST(not_null, simple) {
+TEST(not_null_ptr, simple) {
   base b;
-  not_null<base *> pb(&b);
+  not_null_ptr<base> pb(&b);
   ASSERT_TRUE(pb->foo());
 }
