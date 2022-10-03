@@ -16,6 +16,7 @@
     "files.associations": {
         "scoped_allocator": "cpp",
         "*.tcc": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "random": "cpp"
     }
 }
