@@ -12,6 +12,11 @@ template <typename T> struct not_null_ptr {
 
   explicit not_null_ptr(std::nullptr_t) = delete;
 
+  T &operator*() const {
+    if (!pointee)
+      throw std::runtime_error("");
+    return *pointee;
+  }
   T *operator->() const {
     if (!pointee)
       throw std::runtime_error("");
@@ -59,4 +64,16 @@ TEST(not_null_ptr, whenPassedByCopyThenWorks) {
   base b;
   not_null_ptr<base> pb(&b);
   ASSERT_TRUE(invokeFooOnPbByCopy(pb));
+}
+
+TEST(not_null_ptr, whenDereferenceThenWorks) {
+  base b;
+  not_null_ptr<base> pb(&b);
+  auto &deref = *pb;
+  ASSERT_TRUE(deref.foo());
+}
+
+TEST(not_null_ptr, whenDereferenceNullPtrThenThrows) {
+  not_null_ptr<base> pb(getPtr());
+  ASSERT_THROW(*pb, std::runtime_error);
 }
