@@ -34,3 +34,29 @@ TEST(not_null_ptr, whenOwnsANullptrThenThrows) {
   not_null_ptr<base> pb(getPtr());
   ASSERT_THROW(pb->foo(), std::runtime_error);
 }
+
+static bool invokeFooOnConstRefPb(not_null_ptr<base> const &pb) {
+  return pb->foo();
+}
+
+TEST(not_null_ptr, whenPassedByConstRefThenWorks) {
+  base b;
+  not_null_ptr<base> pb(&b);
+  ASSERT_TRUE(invokeFooOnConstRefPb(pb));
+}
+
+static bool invokeFooOnRefPb(not_null_ptr<base> &pb) { return pb->foo(); }
+
+TEST(not_null_ptr, whenPassedByRefThenWorks) {
+  base b;
+  not_null_ptr<base> pb(&b);
+  ASSERT_TRUE(invokeFooOnRefPb(pb));
+}
+
+static bool invokeFooOnPbByCopy(not_null_ptr<base> pb) { return pb->foo(); }
+
+TEST(not_null_ptr, whenPassedByCopyThenWorks) {
+  base b;
+  not_null_ptr<base> pb(&b);
+  ASSERT_TRUE(invokeFooOnPbByCopy(pb));
+}
