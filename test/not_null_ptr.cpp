@@ -9,7 +9,6 @@ struct base {
 
 template <typename T> struct not_null_ptr {
   explicit not_null_ptr(T *t) : pointee(t) {}
-
   explicit not_null_ptr(std::nullptr_t) = delete;
 
   T &operator*() const {
@@ -17,6 +16,7 @@ template <typename T> struct not_null_ptr {
       throw std::runtime_error("");
     return *pointee;
   }
+
   T *operator->() const {
     if (!pointee)
       throw std::runtime_error("");
