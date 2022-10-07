@@ -1,4 +1,4 @@
-// integer stack LIFO 
+// integer stack LIFO
 
 #include <gmock/gmock.h>
 #include <limits>

@@ -11,7 +11,7 @@ void *operator new(std::size_t)
     std::puts(__PRETTY_FUNCTION__);
     throw std::bad_alloc();
 }
-void *operator new(std::size_t, std::nothrow_t) noexcept 
+void *operator new(std::size_t, std::nothrow_t) noexcept
 {
     std::puts(__PRETTY_FUNCTION__);
     std::terminate();

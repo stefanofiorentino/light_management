@@ -34,7 +34,7 @@ void do_switch(entt::registry &registry, bool status_to_apply) {
 TEST(entt, draw)
 {
     entt::registry registry;
-    
+
     const auto light_bulb = registry.create();
     registry.emplace<drawable_t>(light_bulb);
     registry.emplace<status_t>(light_bulb, false);
@@ -56,7 +56,7 @@ TEST(entt, draw)
 TEST(entt, do_switch)
 {
     entt::registry registry;
-    
+
     const auto light_bulb = registry.create();
     registry.emplace<drawable_t>(light_bulb);
     registry.emplace<status_t>(light_bulb, false);
