@@ -11,7 +11,7 @@ static void catch_function(int /*signo*/) {
     atomic_store(&ready, true);
 }
 
-// C# fa partire il test 
+// C# fa partire il test
 // - manda DO7 alto su PADA
 // - legge dalla emulator board il valore corrispondente a DO7
 // - manda segnale per spegnere su PADA

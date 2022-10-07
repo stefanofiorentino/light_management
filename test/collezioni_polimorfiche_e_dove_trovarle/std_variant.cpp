@@ -45,7 +45,7 @@ TEST(std_variant, draw)
     c.emplace_back(light_bulb_t());
     c.emplace_back(dimmable_light_bulb_t());
     c.emplace_back(color_dimmable_light_bulb_t());
-    
+
     std::ostringstream oss;
     draw(c, oss);
     ASSERT_EQ("<document>\n<light_bulb_t>false</light_bulb_t>\n<dimmable_light_bulb_t/>\n<color_dimmable_light_bulb_t/>\n</document>\n", oss.str());
@@ -57,7 +57,7 @@ TEST(std_variant, do_switch)
     c.emplace_back(light_bulb_t());
     c.emplace_back(dimmable_light_bulb_t());
     c.emplace_back(color_dimmable_light_bulb_t());
-    
+
     std::ostringstream oss;
     do_switch(c, true);
     draw(c, oss);
