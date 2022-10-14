@@ -12,7 +12,7 @@ if (FETCH_3RD_PARTY_REPOS)
     FetchContent_Declare(
         entt
         GIT_REPOSITORY https://github.com/skypjack/entt.git
-        GIT_TAG master
+        GIT_TAG v3.10.3
         GIT_SHALLOW 1
     )
 
