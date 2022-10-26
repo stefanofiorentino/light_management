@@ -37,6 +37,32 @@ jobs:
         CTEST_OUTPUT_ON_FAILURE: 1
       run: ctest --timeout 30 -C Debug -j2 --output-on-failure
 
+  coverage:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install compilers and deps
+      run: |
+        sudo apt-get update \
+        && sudo apt-get install clang-8 libubsan0 -y \
+        && sudo rm -rf /var/lib/apt/lists/*
+    - name: Create Build folder
+      run: mkdir -p build
+    - name: Compile tests
+      working-directory: build
+      env:
+        CXX: clang++-8
+      run: |
+        cmake -DCMAKE_BUILD_TYPE:STRING=Debug -DFETCH_3RD_PARTY_REPOS:BOOL=TRUE -DUSE_TEST_COVERAGE:BOOL=TRUE ..
+        make -j2
+    - name: Run tests
+      working-directory: build
+      env:
+        CTEST_OUTPUT_ON_FAILURE: 1
+      run: ctest --timeout 30 -T Test -T Coverage -C Debug -j2 --output-on-failure      
+
   macos:
     timeout-minutes: 60
     runs-on: macOS-latest
