@@ -63,7 +63,7 @@ jobs:
         CTEST_OUTPUT_ON_FAILURE: 1
       run: |
         ctest --timeout 30 -T Test -T Coverage -C Debug -j2 --output-on-failure
-        gcovr -x -r .. --exclude-directories 'build/_deps$' > coverage.xml
+        gcovr -x -r .. --gcov-exclude 'build/_deps$' > coverage.xml
     - name: Code Coverage Report
       uses: irongut/CodeCoverageSummary@v1.3.0
       with:
