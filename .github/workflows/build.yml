@@ -13,7 +13,7 @@ jobs:
         compiler: [
             g++-7, clang++-8
         ]
-        mode: ["", "-DUSE_ASAN=ON", "-DUSE_UBSAN=ON", "-DUSE_THSAN=ON"]
+        mode: ["", "-DUSE_ASAN:BOOL=TRUE", "-DUSE_UBSAN:BOOL=TRUE", "-DUSE_THSAN:BOOL=TRUE", "-DUSE_TEST_COVERAGE:BOOL=TRUE"]
 
     steps:
     - uses: actions/checkout@v2
@@ -29,7 +29,7 @@ jobs:
       env:
         CXX: ${{ matrix.compiler }}
       run: |
-        cmake -DCMAKE_BUILD_TYPE:STRING=MinSizeRel -DFETCH_3RD_PARTY_REPOS=ON ${{ matrix.mode }} ..
+        cmake -DCMAKE_BUILD_TYPE:STRING=MinSizeRel -DFETCH_3RD_PARTY_REPOS:BOOL=TRUE ${{ matrix.mode }} ..
         make -j2
     - name: Run tests
       working-directory: build
