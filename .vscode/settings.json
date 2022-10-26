@@ -3,13 +3,18 @@
         "-DENABLE_COVERAGE:BOOL=TRUE",
         "-DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE",
         "-DFETCH_3RD_PARTY_REPOS:BOOL=TRUE",
-        "-DUSE_UBSAN:BOOL=FALSE"
+        "-DUSE_UBSAN:BOOL=FALSE",
+        "-DUSE_TEST_COVERAGE:BOOL=TRUE"
     ],
     "cmake.configureOnOpen": false,
     "cmake.configureOnEdit": false,
     "cmake.ctestArgs": [
         "--timeout",
-        "1"
+        "1",
+        "-T",
+        "Test",
+        "-T",
+        "Coverage"
     ],
     "cmake.generator": "Unix Makefiles",
     "cmake.buildDirectory": "${workspaceFolder}/cmake-build-debug",

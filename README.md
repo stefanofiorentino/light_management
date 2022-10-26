@@ -1,3 +1,5 @@
+![example workflow](https://github.com/stefanofiorentino/experimental/actions/workflows/build.yml/badge.svg)
+
 # Experimental repo
 
 This is a test-driven development experimental repo

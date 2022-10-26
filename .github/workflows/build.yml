@@ -13,7 +13,7 @@ jobs:
         compiler: [
             g++-7, clang++-8
         ]
-        mode: ["", "-DUSE_ASAN=ON", "-DUSE_UBSAN=ON", "-DUSE_THSAN=ON"]
+        mode: ["", "-DUSE_ASAN:BOOL=TRUE", "-DUSE_UBSAN:BOOL=TRUE", "-DUSE_THSAN:BOOL=TRUE"]
 
     steps:
     - uses: actions/checkout@v2
@@ -29,13 +29,62 @@ jobs:
       env:
         CXX: ${{ matrix.compiler }}
       run: |
-        cmake -DCMAKE_BUILD_TYPE:STRING=MinSizeRel -DFETCH_3RD_PARTY_REPOS=ON ${{ matrix.mode }} ..
+        cmake -DCMAKE_BUILD_TYPE:STRING=MinSizeRel -DFETCH_3RD_PARTY_REPOS:BOOL=TRUE ${{ matrix.mode }} ..
         make -j2
     - name: Run tests
       working-directory: build
       env:
         CTEST_OUTPUT_ON_FAILURE: 1
       run: ctest --timeout 30 -C Debug -j2 --output-on-failure
+
+  coverage:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install compilers and deps
+      run: |
+        sudo apt-get update \
+        && sudo apt-get install g++-9 libubsan0 gcovr -y \
+        && sudo rm -rf /var/lib/apt/lists/*
+    - name: Create Build folder
+      run: mkdir -p build
+    - name: Compile tests
+      working-directory: build
+      env:
+        CXX: g++-9
+      run: |
+        cmake -DCMAKE_BUILD_TYPE:STRING=Debug -DFETCH_3RD_PARTY_REPOS:BOOL=TRUE -DUSE_TEST_COVERAGE:BOOL=TRUE ..
+        make -j2
+    - name: Run tests
+      working-directory: build
+      env:
+        CTEST_OUTPUT_ON_FAILURE: 1
+      run: |
+        ctest --timeout 30 -T Test -T Coverage -C Debug -j2 --output-on-failure
+    - name: Calculate coverage
+      run: |
+        gcovr --xml-pretty --exclude "build/_deps*" --exclude-directories "build/_deps*" --gcov-exclude "build/_deps*" > build/coverage.xml        
+    - name: Code Coverage Report
+      uses: irongut/CodeCoverageSummary@v1.3.0
+      with:
+        filename: build/coverage.xml
+        badge: true
+        fail_below_min: true
+        format: markdown
+        hide_branch_rate: false
+        hide_complexity: true
+        indicators: true
+        output: both
+        thresholds: '60 80'
+    - name: Add Coverage PR Comment
+      uses: marocchino/sticky-pull-request-comment@v2
+      if: github.event_name == 'pull_request'
+      with:
+        recreate: true
+        path: code-coverage-results.md        
+
 
   macos:
     timeout-minutes: 60

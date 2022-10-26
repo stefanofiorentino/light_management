@@ -108,6 +108,11 @@ function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
     )
     add_test(NAME gtest_${TEST_NAME} COMMAND $<TARGET_FILE:${TEST_NAME}>)
 
+    if(USE_TEST_COVERAGE)
+        target_compile_options(${TEST_NAME} PUBLIC --coverage)
+        target_link_libraries(${TEST_NAME} PUBLIC --coverage)
+    endif()
+
     if(USE_ASAN AND NOT ${TEST_NAME} MATCHES "memory_allocation")
         target_compile_options(${TEST_NAME} PUBLIC -fsanitize=address -fno-sanitize-recover=all -fno-omit-frame-pointer)
         target_link_libraries(${TEST_NAME} PUBLIC -fsanitize=address)
