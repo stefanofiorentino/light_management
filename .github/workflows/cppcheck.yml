@@ -8,3 +8,18 @@ jobs:
     - uses: actions/checkout@v2
     - name: cppcheck-action
       uses: deep5050/cppcheck-action@v3.0
+    - name: Deploy
+      uses: exuanbo/actions-deploy-gist@v1
+      with:
+        token: ${{ secrets.GIST_SECRET }}
+        gist_id: 8bbff6da2e3c92e00414d698b4345248
+        file_path: cppcheck_report.txt
+    - name: Create Awesome Badge
+      uses: schneegans/dynamic-badges-action@v1.6.0
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: 8bbff6da2e3c92e00414d698b4345248
+        filename: cppcheck.json
+        label: CppCheck
+        message: Report
+        color: Orange        
