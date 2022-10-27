@@ -39,7 +39,7 @@ private:
 //===================================================
 struct SampleApp
 {
-  SampleApp(DirectiveSequencerInterface& directiveSequencer)
+  explicit SampleApp(DirectiveSequencerInterface& directiveSequencer)
     : m_directiveSequencer(directiveSequencer)
   {
     m_directiveSequencer.onDirective("");
