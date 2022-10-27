@@ -1,0 +1,10 @@
+name: CppCheck Check
+on: [push, pull_request]
+jobs:
+  cppcheck:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest           
+    steps:
+    - uses: actions/checkout@v2
+    - name: cppcheck-action
+      uses: deep5050/cppcheck-action@v3.0

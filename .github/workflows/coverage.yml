@@ -1,0 +1,69 @@
+name: Coverage Check
+on: [push, pull_request]
+jobs:
+  coverage:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      COVERAGE_LOW_THRESHOLD: 60         
+      COVERAGE_HIGH_THRESHOLD: 80         
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install compilers and deps
+      run: |
+        sudo apt-get update \
+        && sudo apt-get install g++-9 libubsan0 gcovr -y \
+        && sudo rm -rf /var/lib/apt/lists/*
+    - name: Create Build folder
+      run: mkdir -p build
+    - name: Compile tests
+      working-directory: build
+      env:
+        CXX: g++-9
+      run: |
+        cmake -DCMAKE_BUILD_TYPE:STRING=Debug -DFETCH_3RD_PARTY_REPOS:BOOL=TRUE -DUSE_TEST_COVERAGE:BOOL=TRUE ..
+        make -j2
+    - name: Run tests
+      working-directory: build
+      env:
+        CTEST_OUTPUT_ON_FAILURE: 1
+      run: |
+        ctest --timeout 30 -T Test -T Coverage -C Debug -j2 --output-on-failure
+    - name: Calculate coverage
+      run: |
+        gcovr --xml-pretty --exclude "build/_deps*" --exclude-directories "build/_deps*" --gcov-exclude "build/_deps*" > build/coverage.xml        
+    - name: Code Coverage Report
+      uses: irongut/CodeCoverageSummary@v1.3.0
+      with:
+        filename: build/coverage.xml
+        badge: true
+        fail_below_min: true
+        format: markdown
+        hide_branch_rate: false
+        hide_complexity: true
+        indicators: true
+        output: both
+        thresholds: '${{ env.COVERAGE_LOW_THRESHOLD }} ${{ env.COVERAGE_HIGH_THRESHOLD }}'
+    - name: Add Coverage PR Comment
+      uses: marocchino/sticky-pull-request-comment@v2
+      if: github.event_name == 'pull_request'
+      with:
+        recreate: true
+        path: code-coverage-results.md   
+    - name: Extract Coverage Percentage
+      run: |
+        cat code-coverage-results.md | egrep "\*\*Summary" | awk '{print $3}' | sed 's/\*//g' | sed 's/%//g' > coverage_percentage.txt
+        if [ "$(cat coverage_percentage.txt)" -ge "${{ env.COVERAGE_LOW_THRESHOLD }}" ]; then echo -n "Orange" > coverage_color.txt; fi
+        if [ "$(cat coverage_percentage.txt)" -ge "${{ env.COVERAGE_HIGH_THRESHOLD }}" ]; then echo -n "Green" > coverage_color.txt; fi
+        if [ "$(cat coverage_percentage.txt)" -lt "${{ env.COVERAGE_LOW_THRESHOLD }}" ]; then echo -n "Red" > coverage_color.txt; fi
+        echo "GITHUB_TEST_COVERAGE=$(cat coverage_percentage.txt)" >> $GITHUB_ENV
+        echo "GITHUB_TEST_COVERAGE_COLOR=$(cat coverage_color.txt)" >> $GITHUB_ENV
+    - name: Create Awesome Badge
+      uses: schneegans/dynamic-badges-action@v1.6.0
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: 8bbff6da2e3c92e00414d698b4345248
+        filename: coverage.json
+        label: Coverage
+        message: ${{ env.GITHUB_TEST_COVERAGE }} %
+        color: ${{ env.GITHUB_TEST_COVERAGE_COLOR }}
