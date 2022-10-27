@@ -106,7 +106,7 @@ jobs:
         gistID: 8bbff6da2e3c92e00414d698b4345248
         filename: coverage.json
         label: Coverage
-        message: ${{ env.GITHUB_TEST_COVERAGE }}
+        message: ${{ env.GITHUB_TEST_COVERAGE }} %
         color: ${{ env.GITHUB_TEST_COVERAGE_COLOR }}            
     - name: Run clang-format style check for C/C++/Protobuf programs.
       uses: jidicula/clang-format-action@v4.9.0
