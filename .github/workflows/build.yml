@@ -116,6 +116,8 @@ jobs:
         fallback-style: 'Mozilla' # optional   
     - name: cppcheck-action
       uses: deep5050/cppcheck-action@v3.0
+      with: 
+        exclude_check: ./build
 
 
 
