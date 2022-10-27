@@ -40,7 +40,11 @@ jobs:
   metrics:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        path:
+          - 'include'
+          - 'test'
     steps:
     - uses: actions/checkout@v2
     - name: Install compilers and deps
@@ -88,7 +92,7 @@ jobs:
       uses: jidicula/clang-format-action@v4.9.0
       with:
         clang-format-version: '13'
-        check-path: 'src'
+        check-path: ${{ matrix.path }}
         fallback-style: 'Mozilla' # optional        
 
 
