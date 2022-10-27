@@ -37,14 +37,9 @@ jobs:
         CTEST_OUTPUT_ON_FAILURE: 1
       run: ctest --timeout 30 -C Debug -j2 --output-on-failure
 
-  metrics:
+  coverage:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        path:
-          - 'include'
-          - 'test'
     env:
       COVERAGE_LOW_THRESHOLD: 60         
       COVERAGE_HIGH_THRESHOLD: 80         
@@ -107,14 +102,34 @@ jobs:
         filename: coverage.json
         label: Coverage
         message: ${{ env.GITHUB_TEST_COVERAGE }} %
-        color: ${{ env.GITHUB_TEST_COVERAGE_COLOR }}            
+        color: ${{ env.GITHUB_TEST_COVERAGE_COLOR }}
+
+  clang-format:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest  
+    strategy:
+      matrix:
+        path:
+          - 'include'
+          - 'test'          
+    steps:
+    - uses: actions/checkout@v2
     - name: Run clang-format style check for C/C++/Protobuf programs.
       uses: jidicula/clang-format-action@v4.9.0
       with:
         clang-format-version: '10'
         check-path: ${{ matrix.path }}
-        fallback-style: 'Mozilla' # optional        
+        fallback-style: 'Mozilla' # optional
 
+  cppcheck:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest           
+    steps:
+    - uses: actions/checkout@v2
+    - name: cppcheck-action
+      uses: deep5050/cppcheck-action@v3.0
+      with: 
+        exclude_check: ./build
 
   macos:
     timeout-minutes: 60
