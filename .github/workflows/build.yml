@@ -87,7 +87,16 @@ jobs:
       if: github.event_name == 'pull_request'
       with:
         recreate: true
-        path: code-coverage-results.md       
+        path: code-coverage-results.md   
+    - name: Create Awesome Badge
+      uses: schneegans/dynamic-badges-action@v1.6.0
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: 8bbff6da2e3c92e00414d698b4345248
+        filename: coverage.json
+        label: Hello
+        message: World
+        color: orange            
     - name: Run clang-format style check for C/C++/Protobuf programs.
       uses: jidicula/clang-format-action@v4.9.0
       with:
