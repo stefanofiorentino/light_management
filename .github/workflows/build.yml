@@ -37,10 +37,14 @@ jobs:
         CTEST_OUTPUT_ON_FAILURE: 1
       run: ctest --timeout 30 -C Debug -j2 --output-on-failure
 
-  coverage:
+  metrics:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        path:
+          - 'include'
+          - 'test'
     steps:
     - uses: actions/checkout@v2
     - name: Install compilers and deps
@@ -83,7 +87,13 @@ jobs:
       if: github.event_name == 'pull_request'
       with:
         recreate: true
-        path: code-coverage-results.md        
+        path: code-coverage-results.md       
+    - name: Run clang-format style check for C/C++/Protobuf programs.
+      uses: jidicula/clang-format-action@v4.9.0
+      with:
+        clang-format-version: '10'
+        check-path: ${{ matrix.path }}
+        fallback-style: 'Mozilla' # optional        
 
 
   macos:

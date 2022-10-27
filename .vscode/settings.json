@@ -16,6 +16,7 @@
         "-T",
         "Coverage"
     ],
+    "C_Cpp.formatting": "clangFormat",
     "cmake.generator": "Unix Makefiles",
     "cmake.buildDirectory": "${workspaceFolder}/cmake-build-debug",
     "files.associations": {
@@ -79,7 +80,11 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "bit": "cpp"
+        "bit": "cpp",
+        "bitset": "cpp",
+        "regex": "cpp",
+        "future": "cpp",
+        "shared_mutex": "cpp"
     },
     "pomodoro.workTime": 7
 }
