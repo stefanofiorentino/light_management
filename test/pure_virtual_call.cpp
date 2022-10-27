@@ -8,7 +8,7 @@ struct base
 
 struct derived final : base
 {
-  void foo() const {}
+  void foo() const override {}
 };
 
 [[noreturn]] void
