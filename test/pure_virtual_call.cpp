@@ -23,10 +23,10 @@ TEST(pure_virtual_call, simple)
 {
   base* b;
   {
+    // cppcheck-suppress invalidLifetime
     derived d;
     b = &d;
   }
-  // cppcheck-suppress invalidLifetime
   b->foo();
   ASSERT_TRUE(false);
 }
