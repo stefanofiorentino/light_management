@@ -45,6 +45,9 @@ jobs:
         path:
           - 'include'
           - 'test'
+    env:
+      COVERAGE_LOW_THRESHOLD: 60         
+      COVERAGE_HIGH_THRESHOLD: 80         
     steps:
     - uses: actions/checkout@v2
     - name: Install compilers and deps
@@ -81,7 +84,7 @@ jobs:
         hide_complexity: true
         indicators: true
         output: both
-        thresholds: '60 80'
+        thresholds: '${{ env.COVERAGE_LOW_THRESHOLD }} ${{ env.COVERAGE_HIGH_THRESHOLD }}'
     - name: Add Coverage PR Comment
       uses: marocchino/sticky-pull-request-comment@v2
       if: github.event_name == 'pull_request'
@@ -89,8 +92,13 @@ jobs:
         recreate: true
         path: code-coverage-results.md   
     - name: Extract Coverage Percentage
-      run: echo "GITHUB_TEST_COVERAGE=$(cat code-coverage-results.md | egrep '\*\*Summary' | awk '{print $3}' | sed 's/\*//g')" >> $GITHUB_ENV
-      run: [[ "$(cat tmp.txt | egrep "\*\*Summary" | awk '{print $3}' | sed 's/\*//g' | sed 's/%//g')" -lt 60 ]] && echo -n "GITHUB_TEST_COVERAGE=Red" >> $GITHUB_ENV || echo -n "GITHUB_TEST_COVERAGE=Green" >> $GITHUB_ENV
+      run: |
+        cat tmp.txt | egrep "\*\*Summary" | awk '{print $3}' | sed 's/\*//g' | sed 's/%//g' > coverage_percentage.txt
+        if [ "$(cat coverage_percentage.txt)" -ge "${{ env.COVERAGE_LOW_THRESHOLD }}" ]; then echo -n "Orange" > coverage_color.txt; fi
+        if [ "$(cat coverage_percentage.txt)" -ge "${{ env.COVERAGE_HIGH_THRESHOLD }}" ]; then echo -n "Green" > coverage_color.txt; fi
+        if [ "$(cat coverage_percentage.txt)" -lt "${{ env.COVERAGE_LOW_THRESHOLD }}" ]; then echo -n "Red" > coverage_color.txt; fi
+        echo "GITHUB_TEST_COVERAGE=$(cat coverage_percentage.txt)" >> $GITHUB_ENV
+        echo "GITHUB_TEST_COVERAGE_COLOR=$(cat coverage_color.txt)" >> $GITHUB_ENV
     - name: Create Awesome Badge
       uses: schneegans/dynamic-badges-action@v1.6.0
       with:
@@ -99,7 +107,7 @@ jobs:
         filename: coverage.json
         label: Coverage
         message: ${{ env.GITHUB_TEST_COVERAGE }}
-        color: orange            
+        color: ${{ env.GITHUB_TEST_COVERAGE_COLOR }}            
     - name: Run clang-format style check for C/C++/Protobuf programs.
       uses: jidicula/clang-format-action@v4.9.0
       with:
