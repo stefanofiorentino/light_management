@@ -26,5 +26,6 @@ TEST(pure_virtual_call, simple)
     derived d;
     b = &d;
   }
-  b->foo();
+  b->foo(); // cppcheck-suppress invalidLifetime
+  ASSERT_TRUE(false);
 }
