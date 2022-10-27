@@ -17,10 +17,9 @@ onTerminate() noexcept
   std::_Exit(EXIT_SUCCESS);
 }
 
-const auto installed{ std::set_terminate(onTerminate) };
-
 TEST(pure_virtual_call, simple)
 {
+  std::set_terminate(onTerminate);
   base* b;
   {
     derived d;
