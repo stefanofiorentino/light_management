@@ -8,3 +8,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: cppcheck-action
       uses: deep5050/cppcheck-action@v3.0
+    - name: Deploy
+      uses: exuanbo/actions-deploy-gist@v1
+      with:
+        token: ${{ secrets.GIST_SECRET }}
+        gist_id: 8bbff6da2e3c92e00414d698b4345248
+        file_path: cppcheck_report.txt
