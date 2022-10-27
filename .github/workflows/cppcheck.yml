@@ -14,3 +14,4 @@ jobs:
         token: ${{ secrets.GIST_SECRET }}
         gist_id: 8bbff6da2e3c92e00414d698b4345248
         file_path: cppcheck_report.txt
+        inline_suppression: enable
