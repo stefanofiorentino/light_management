@@ -77,6 +77,7 @@ prepare_cb(uv_prepare_t* handle)
 struct base_callback_check_fixture : ::testing::Test
 {
   base_callback_check_fixture()
+    : rc(0)
   {
     counter = 0;
     atomic_store(&callback_called_with_success, false);
