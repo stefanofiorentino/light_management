@@ -3,7 +3,9 @@
 
 using namespace std;
 
-void alloc_data(int **data, int *count) {
+void
+alloc_data(int** data, int* count)
+{
   *count = 10;
   (*data) = new int[10];
   ;
@@ -14,10 +16,16 @@ void alloc_data(int **data, int *count) {
   }
 }
 
-void free_data(int *data) { delete[] data; }
+void
+free_data(int* data)
+{
+  delete[] data;
+}
 
-void free_data_and_clear(int **data) {
-  int *p;
+void
+free_data_and_clear(int** data)
+{
+  int* p;
 
   p = *data;
   if (p) {
@@ -25,11 +33,16 @@ void free_data_and_clear(int **data) {
     delete[] p;
   }
 }
-void use_data(int *data) { cout << *data << endl; }
+void
+use_data(int* data)
+{
+  cout << *data << endl;
+}
 
-TEST(elvis_2, free_data) {
+TEST(elvis_2, free_data)
+{
   int cnt;
-  int *data;
+  int* data;
 
   alloc_data(&data, &cnt);
   use_data(&data[3]);
@@ -38,9 +51,10 @@ TEST(elvis_2, free_data) {
   ASSERT_NE(nullptr, data); // anche se clang-tidy lo becca subito
 }
 
-TEST(elvis_2, free_data_and_clear) {
+TEST(elvis_2, free_data_and_clear)
+{
   int cnt;
-  int *data;
+  int* data;
 
   alloc_data(&data, &cnt);
   use_data(&data[3]);
