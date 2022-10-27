@@ -21,7 +21,7 @@ draw(entt::registry& registry, std::ostream& os)
   os << "<document>\n";
   const auto& light_bulb_view = registry.view<drawable_t, status_t>();
   light_bulb_view.each([&light_bulb_view, &os](auto entity, auto&) {
-    status_t& status_ = light_bulb_view.get<status_t>(entity);
+    status_t const& status_ = light_bulb_view.get<status_t>(entity);
     os << "<light_bulb_t>";
     os << std::boolalpha << status_.status;
     os << "</light_bulb_t>\n";
