@@ -40,11 +40,6 @@ jobs:
   coverage:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        path:
-          - 'include'
-          - 'test'
     env:
       COVERAGE_LOW_THRESHOLD: 60         
       COVERAGE_HIGH_THRESHOLD: 80         
