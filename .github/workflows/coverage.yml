@@ -69,10 +69,7 @@ jobs:
         filename: coverage.json
         label: Coverage
         message: ${{ env.GITHUB_TEST_COVERAGE }} %
-        color: ${{ env.GITHUB_TEST_COVERAGE_COLOR }}
-    - name: Get branch names
-      id: branch-name
-      uses: tj-actions/branch-names@v6        
+        color: ${{ env.GITHUB_TEST_COVERAGE_COLOR }}       
     - uses: actions/checkout@v3
       with:
         ref: ${{ steps.branch-name.outputs.default_branch }}
