@@ -1,0 +1,43 @@
+test/elvis.cpp:15:12: warning: The address of local variable 'data' might be accessed at non-zero index. [objectIndex]
+    (*data)[i] = i;
+           ^
+test/elvis.cpp:47:14: note: Address of variable taken here.
+  alloc_data(&data, &cnt);
+             ^
+test/elvis.cpp:47:14: note: Calling function 'alloc_data', 1st argument '&data' value is lifetime=data
+  alloc_data(&data, &cnt);
+             ^
+test/elvis.cpp:15:12: note: The address of local variable 'data' might be accessed at non-zero index.
+    (*data)[i] = i;
+           ^
+test/elvis.cpp:15:12: warning: The address of local variable 'data' might be accessed at non-zero index. [objectIndex]
+    (*data)[i] = i;
+           ^
+test/elvis.cpp:59:14: note: Address of variable taken here.
+  alloc_data(&data, &cnt);
+             ^
+test/elvis.cpp:59:14: note: Calling function 'alloc_data', 1st argument '&data' value is lifetime=data
+  alloc_data(&data, &cnt);
+             ^
+test/elvis.cpp:15:12: note: The address of local variable 'data' might be accessed at non-zero index.
+    (*data)[i] = i;
+           ^
+test/pure_virtual_call.cpp:29:3: error: Using pointer to local variable 'd' that is out of scope. [invalidLifetime]
+  b->foo();
+  ^
+test/pure_virtual_call.cpp:26:9: note: Address of variable taken here.
+    b = &d;
+        ^
+test/pure_virtual_call.cpp:25:13: note: Variable created here.
+    derived d;
+            ^
+test/pure_virtual_call.cpp:29:3: note: Using pointer to local variable 'd' that is out of scope.
+  b->foo();
+  ^
+test/test_video_series.cpp:5:8: performance:inconclusive: Technically the member function 'base::empty' can be static (but you may consider moving to unnamed namespace). [functionStatic]
+  bool empty() const { return true; }
+       ^
+test/visitor_guide_allocators_astring.cpp:75:11: style: Variable 's2' is assigned a value that is never used. [unreadVariable]
+  auto s2 =
+          ^
+nofile:0:0: information: Cppcheck cannot find all the include files (use --check-config for details) [missingInclude]
