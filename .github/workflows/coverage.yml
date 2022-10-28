@@ -109,4 +109,4 @@ jobs:
         echo "GITHUB_DEFAULT_TEST_COVERAGE=$(cat coverage_percentage.txt)" >> $GITHUB_ENV
     - name: Check if Coverage is monotonically increasing
       if: ${{ env.GITHUB_DEFAULT_TEST_COVERAGE }} > ${{ env.GITHUB_TEST_COVERAGE }}
-      run: return 1
+      run: exit 1
