@@ -3,7 +3,7 @@ on: [push, pull_request]
 jobs:
   cppcheck:
     timeout-minutes: 60
-    runs-on: ubuntu-latest           
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: cppcheck-action
@@ -31,14 +31,14 @@ jobs:
         filename: cppcheck_error.json
         label: CppCheck Errors
         message: ${{ env.GITHUB_CPPCHECK_ERROR }}
-        color: ${{ env.GITHUB_CPPCHECK_ERROR_COLOR }}    
+        color: ${{ env.GITHUB_CPPCHECK_ERROR_COLOR }}
     - name: Prepare Warning badge data
       run: |
         cat cppcheck_report.txt | grep "warning:" | wc -l > cppcheck_warning.txt
-        echo -n "green" > cppcheck_warning_color.txt;        
+        echo -n "green" > cppcheck_warning_color.txt;
         if [ "$(cat cppcheck_warning.txt)" -gt 0 ]; then echo -n "orange" > cppcheck_warning_color.txt; fi
         echo "GITHUB_CPPCHECK_WARNING=$(cat cppcheck_warning.txt)" >> $GITHUB_ENV
-        echo "GITHUB_CPPCHECK_WARNING_COLOR=$(cat cppcheck_warning_color.txt)" >> $GITHUB_ENV            
+        echo "GITHUB_CPPCHECK_WARNING_COLOR=$(cat cppcheck_warning_color.txt)" >> $GITHUB_ENV
     - name: Create Awesome Warning Badge
       uses: schneegans/dynamic-badges-action@v1.6.0
       with:
@@ -47,4 +47,4 @@ jobs:
         filename: cppcheck_warning.json
         label: CppCheck Warnings
         message: ${{ env.GITHUB_CPPCHECK_WARNING }}
-        color: ${{ env.GITHUB_CPPCHECK_WARNING_COLOR }}           
+        color: ${{ env.GITHUB_CPPCHECK_WARNING_COLOR }}

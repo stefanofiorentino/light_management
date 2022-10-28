@@ -1,5 +1,12 @@
 #include <gmock/gmock.h>
 
+struct CoverageFailure
+{
+  virtual bool inCall() const = 0;
+  bool status() const { return false; }
+  virtual ~CoverageFailure() = default;
+};
+
 struct InPort
 {
   virtual bool inCall() const = 0;
