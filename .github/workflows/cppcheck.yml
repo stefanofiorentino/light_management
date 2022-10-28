@@ -14,12 +14,4 @@ jobs:
         token: ${{ secrets.GIST_SECRET }}
         gist_id: 8bbff6da2e3c92e00414d698b4345248
         file_path: cppcheck_report.txt
-    - name: Create Awesome Badge
-      uses: schneegans/dynamic-badges-action@v1.6.0
-      with:
-        auth: ${{ secrets.GIST_SECRET }}
-        gistID: 8bbff6da2e3c92e00414d698b4345248
-        filename: cppcheck.json
-        label: CppCheck
-        message: Report
-        color: Orange        
+        inline_suppression: enable

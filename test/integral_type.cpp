@@ -19,5 +19,6 @@ int
 main()
 {
   B b;
+  (void)b;
   return 0;
 }

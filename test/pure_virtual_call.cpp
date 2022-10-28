@@ -8,7 +8,7 @@ struct base
 
 struct derived final : base
 {
-  void foo() const {}
+  void foo() const override {}
 };
 
 [[noreturn]] void
@@ -17,14 +17,14 @@ onTerminate() noexcept
   std::_Exit(EXIT_SUCCESS);
 }
 
-const auto installed{ std::set_terminate(onTerminate) };
-
 TEST(pure_virtual_call, simple)
 {
+  std::set_terminate(onTerminate);
   base* b;
   {
     derived d;
     b = &d;
   }
+  // cppcheck-suppress invalidLifetime
   b->foo();
 }

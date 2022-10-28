@@ -23,7 +23,8 @@ struct DirectiveSequencer final : public DirectiveSequencerInterface
 // worst case scenario
 struct DirectiveSequencerWrapper : public DirectiveSequencerInterface
 {
-  DirectiveSequencerWrapper(DirectiveSequencerInterface& directiveSequencer)
+  explicit DirectiveSequencerWrapper(
+    DirectiveSequencerInterface& directiveSequencer)
     : m_directiveSequencer(directiveSequencer)
   {}
   void onDirective(const std::string& directive) const override
@@ -39,7 +40,7 @@ private:
 //===================================================
 struct SampleApp
 {
-  SampleApp(DirectiveSequencerInterface& directiveSequencer)
+  explicit SampleApp(DirectiveSequencerInterface& directiveSequencer)
     : m_directiveSequencer(directiveSequencer)
   {
     m_directiveSequencer.onDirective("");

@@ -25,7 +25,7 @@ struct my_singleton_t final : my_singleton_base
 };
 
 bool
-perform_action(bool& first_attempt, my_singleton_base& msbase)
+perform_action(bool& first_attempt, my_singleton_base const& msbase)
 {
   bool return_value{};
   if (first_attempt) {
