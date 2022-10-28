@@ -7,6 +7,15 @@
 #include "type_traits/has_void_setFullScale.hpp"
 #include <type_traits>
 
+struct CoverageFailure
+{
+  virtual bool inCall() const = 0;
+  bool status() const {
+    return false;
+  }
+  virtual ~CoverageFailure() = default;
+};
+
 template<class T>
 inline constexpr bool is_light_bulb_v = has_bool_reset_v<T>;
 
