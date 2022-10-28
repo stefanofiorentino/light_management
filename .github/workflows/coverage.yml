@@ -35,7 +35,7 @@ jobs:
     - name: Extract Coverage Percentage
       working-directory: build
       run: |
-        cat coverage.log | grep "Percentage Coverage:" | awk '{print $3}' | sed 's/%//g > coverage_percentage.txt
+        cat coverage.log | grep "Percentage Coverage:" | awk '{print $3}' | sed 's/%//g' > coverage_percentage.txt
         if [ "$(cat coverage_percentage.txt)" -ge "${{ env.COVERAGE_LOW_THRESHOLD }}" ]; then echo -n "orange" > coverage_color.txt; fi
         if [ "$(cat coverage_percentage.txt)" -ge "${{ env.COVERAGE_HIGH_THRESHOLD }}" ]; then echo -n "green" > coverage_color.txt; fi
         if [ "$(cat coverage_percentage.txt)" -lt "${{ env.COVERAGE_LOW_THRESHOLD }}" ]; then echo -n "red" > coverage_color.txt; fi
