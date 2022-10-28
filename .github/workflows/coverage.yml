@@ -33,6 +33,7 @@ jobs:
       run: |
         ctest --timeout 30 -T Test -T Coverage -C Debug -j2 --output-on-failure 2>&1 | tee -a coverage.log
     - name: Extract Coverage Percentage
+      working-directory: build
       run: |
         cat coverage.log | grep "Percentage Coverage:" | awk '{print $3}' | sed 's/%//g > coverage_percentage.txt
         if [ "$(cat coverage_percentage.txt)" -ge "${{ env.COVERAGE_LOW_THRESHOLD }}" ]; then echo -n "orange" > coverage_color.txt; fi
