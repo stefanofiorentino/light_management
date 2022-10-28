@@ -24,6 +24,7 @@ TEST(pure_virtual_call, simple)
   {
     derived d;
     b = &d;
+    d.~derived();
   }
   // cppcheck-suppress invalidLifetime
   b->foo();
