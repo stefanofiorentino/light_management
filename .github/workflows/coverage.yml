@@ -33,10 +33,10 @@ jobs:
       working-directory: build
       run: |
         cat coverage.log | grep "Percentage Coverage:" | awk '{print $3}' | sed 's/%//g' > coverage_percentage.txt
-        echo "$(cat coverage_percentage.txt)" | perl -nl -MPOSIX -e 'print floor($_);' > coverage_percentage_int.txt
+        echo -n "$(cat coverage_percentage.txt)" | perl -nl -MPOSIX -e 'print floor($_);' > coverage_percentage_int.txt
         echo -n "orange" > coverage_color.txt
-        if [ $(echo "$(cat coverage_percentage_int.txt) >= 80" |bc -l) ]; then echo -n "green" > coverage_color.txt; fi
-        if [ $(echo "$(cat coverage_percentage_int.txt) < 60" |bc -l) ]; then echo -n "red" > coverage_color.txt; fi
+        if (( $(echo "$(cat coverage_percentage_int.txt) >= 80" |bc -l) )); then echo -n "green" > coverage_color.txt; fi
+        if (( $(echo "$(cat coverage_percentage_int.txt) < 60" |bc -l) )); then echo -n "red" > coverage_color.txt; fi
         echo "GITHUB_TEST_COVERAGE=$(cat coverage_percentage.txt)" >> $GITHUB_ENV
         echo "GITHUB_TEST_COVERAGE_COLOR=$(cat coverage_color.txt)" >> $GITHUB_ENV
     - name: Create Awesome Badge
