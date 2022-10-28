@@ -4,9 +4,6 @@ jobs:
   coverage:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    env:
-      COVERAGE_LOW_THRESHOLD: 60
-      COVERAGE_HIGH_THRESHOLD: 80
     steps:
     - uses: actions/checkout@v2
     - name: Get branch name
@@ -37,8 +34,8 @@ jobs:
       run: |
         cat coverage.log | grep "Percentage Coverage:" | awk '{print $3}' | sed 's/%//g' > coverage_percentage.txt
         echo -n "orange" > coverage_color.txt
-        if [ $(echo "$(cat coverage_percentage.txt) >= ${{ env.COVERAGE_HIGH_THRESHOLD }}" |bc -l) ]; then echo -n "green" > coverage_color.txt; fi
-        if [ $(echo "$(cat coverage_percentage.txt) < ${{ env.COVERAGE_LOW_THRESHOLD }}" |bc -l) ]; then echo -n "red" > coverage_color.txt; fi
+        if [ $(echo "$(cat coverage_percentage.txt) >= 80" |bc -l) ]; then echo -n "green" > coverage_color.txt; fi
+        if [ $(echo "$(cat coverage_percentage.txt) < 60" |bc -l) ]; then echo -n "red" > coverage_color.txt; fi
         echo "GITHUB_TEST_COVERAGE=$(cat coverage_percentage.txt)" >> $GITHUB_ENV
         echo "GITHUB_TEST_COVERAGE_COLOR=$(cat coverage_color.txt)" >> $GITHUB_ENV
     - name: Create Awesome Badge
