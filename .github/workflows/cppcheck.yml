@@ -15,3 +15,35 @@ jobs:
         gist_id: 8bbff6da2e3c92e00414d698b4345248
         file_path: cppcheck_report.txt
         inline_suppression: enable
+    - name: Prepare Error badge data
+      run: |
+        cat cppcheck_report.txt | grep "error:" | wc -l > cppcheck_error.txt
+        echo -n "green" > cppcheck_error_color.txt;
+        if [ "$(cat cppcheck_error.txt)" -gt 0 ]; then echo -n "red" > cppcheck_error_color.txt; fi
+        echo "GITHUB_CPPCHECK_ERROR=$(cat cppcheck_error.txt)" >> $GITHUB_ENV
+        echo "GITHUB_CPPCHECK_ERROR_COLOR=$(cat cppcheck_error_color.txt)" >> $GITHUB_ENV
+    - name: Create Awesome Error Badge
+      uses: schneegans/dynamic-badges-action@v1.6.0
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: 8bbff6da2e3c92e00414d698b4345248
+        filename: cppcheck_error.json
+        label: CppCheck Errors
+        message: ${{ env.GITHUB_CPPCHECK_ERROR }}
+        color: ${{ env.GITHUB_CPPCHECK_ERROR_COLOR }}    
+    - name: Prepare Warning badge data
+      run: |
+        cat cppcheck_report.txt | grep "warning:" | wc -l > cppcheck_warning.txt
+        echo -n "green" > cppcheck_warning_color.txt;        
+        if [ "$(cat cppcheck_warning.txt)" -gt 0 ]; then echo -n "orange" > cppcheck_warning_color.txt; fi
+        echo "GITHUB_CPPCHECK_WARNING=$(cat cppcheck_warning.txt)" >> $GITHUB_ENV
+        echo "GITHUB_CPPCHECK_WARNING_COLOR=$(cat cppcheck_warning_color.txt)" >> $GITHUB_ENV            
+    - name: Create Awesome Warning Badge
+      uses: schneegans/dynamic-badges-action@v1.6.0
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: 8bbff6da2e3c92e00414d698b4345248
+        filename: cppcheck_warning.json
+        label: CppCheck Warnings
+        message: ${{ env.GITHUB_CPPCHECK_WARNING }}
+        color: ${{ env.GITHUB_CPPCHECK_WARNING_COLOR }}           

@@ -3,6 +3,8 @@
 <a href="https://gist.github.com/stefanofiorentino/8bbff6da2e3c92e00414d698b4345248/#file-cppcheck_report-txt">
         <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/stefanofiorentino/8bbff6da2e3c92e00414d698b4345248/raw/cppcheck.json"
             alt="coverage"></a>
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/stefanofiorentino/8bbff6da2e3c92e00414d698b4345248/raw/cppcheck_error.json)             
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/stefanofiorentino/8bbff6da2e3c92e00414d698b4345248/raw/cppcheck_warning.json)             
 
 # Experimental repo
 
