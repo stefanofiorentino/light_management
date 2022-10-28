@@ -18,8 +18,8 @@ jobs:
     - name: Prepare Error badge data
       run: |
         cat cppcheck_report.txt | grep "error:" | wc -l > cppcheck_error.txt
-        echo -n "Green" > cppcheck_error_color.txt;
-        if [ "$(cat cppcheck_error.txt)" -gt 0 ]; then echo -n "Red" > cppcheck_error_color.txt; fi
+        echo -n "green" > cppcheck_error_color.txt;
+        if [ "$(cat cppcheck_error.txt)" -gt 0 ]; then echo -n "red" > cppcheck_error_color.txt; fi
         echo "GITHUB_CPPCHECK_ERROR=$(cat cppcheck_error.txt)" >> $GITHUB_ENV
         echo "GITHUB_CPPCHECK_ERROR_COLOR=$(cat cppcheck_error_color.txt)" >> $GITHUB_ENV
     - name: Create Awesome Error Badge
@@ -34,8 +34,8 @@ jobs:
     - name: Prepare Warning badge data
       run: |
         cat cppcheck_report.txt | grep "warning:" | wc -l > cppcheck_warning.txt
-        echo -n "Green" > cppcheck_warning_color.txt;        
-        if [ "$(cat cppcheck_warning.txt)" -gt 0 ]; then echo -n "Orange" > cppcheck_warning_color.txt; fi
+        echo -n "green" > cppcheck_warning_color.txt;        
+        if [ "$(cat cppcheck_warning.txt)" -gt 0 ]; then echo -n "orange" > cppcheck_warning_color.txt; fi
         echo "GITHUB_CPPCHECK_WARNING=$(cat cppcheck_warning.txt)" >> $GITHUB_ENV
         echo "GITHUB_CPPCHECK_WARNING_COLOR=$(cat cppcheck_warning_color.txt)" >> $GITHUB_ENV            
     - name: Create Awesome Warning Badge

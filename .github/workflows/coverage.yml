@@ -53,9 +53,9 @@ jobs:
     - name: Extract Coverage Percentage
       run: |
         cat code-coverage-results.md | egrep "\*\*Summary" | awk '{print $3}' | sed 's/\*//g' | sed 's/%//g' > coverage_percentage.txt
-        if [ "$(cat coverage_percentage.txt)" -ge "${{ env.COVERAGE_LOW_THRESHOLD }}" ]; then echo -n "Orange" > coverage_color.txt; fi
-        if [ "$(cat coverage_percentage.txt)" -ge "${{ env.COVERAGE_HIGH_THRESHOLD }}" ]; then echo -n "Green" > coverage_color.txt; fi
-        if [ "$(cat coverage_percentage.txt)" -lt "${{ env.COVERAGE_LOW_THRESHOLD }}" ]; then echo -n "Red" > coverage_color.txt; fi
+        if [ "$(cat coverage_percentage.txt)" -ge "${{ env.COVERAGE_LOW_THRESHOLD }}" ]; then echo -n "orange" > coverage_color.txt; fi
+        if [ "$(cat coverage_percentage.txt)" -ge "${{ env.COVERAGE_HIGH_THRESHOLD }}" ]; then echo -n "green" > coverage_color.txt; fi
+        if [ "$(cat coverage_percentage.txt)" -lt "${{ env.COVERAGE_LOW_THRESHOLD }}" ]; then echo -n "red" > coverage_color.txt; fi
         echo "GITHUB_TEST_COVERAGE=$(cat coverage_percentage.txt)" >> $GITHUB_ENV
         echo "GITHUB_TEST_COVERAGE_COLOR=$(cat coverage_color.txt)" >> $GITHUB_ENV
     - name: Create Awesome Badge
