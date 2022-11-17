@@ -9,24 +9,25 @@ jobs:
 
     strategy:
       matrix:
-        compiler: [
-            g++-9, clang++-10
-        ]
+        compiler:
+          - pkg: g++-9
+            exe: g++-9
+          - pkg: clang-9
+            exe: clang++-9
         mode: ["", "-DUSE_ASAN:BOOL=TRUE", "-DUSE_UBSAN:BOOL=TRUE", "-DUSE_THSAN:BOOL=TRUE"]
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install compilers and deps
+    - name: Install compiler
       run: |
-        sudo apt-get update \
-        && sudo apt-get install clang-10 g++-9 libubsan0 -y \
-        && sudo rm -rf /var/lib/apt/lists/*
+        sudo apt update
+        sudo apt install -y ${{ matrix.compiler.pkg }} libubsan0
     - name: Create Build folder
       run: mkdir -p build
     - name: Compile tests
       working-directory: build
       env:
-        CXX: ${{ matrix.compiler }}
+        CXX: ${{ matrix.compiler.exe }}
       run: |
         cmake -DCMAKE_BUILD_TYPE:STRING=MinSizeRel -DFETCH_3RD_PARTY_REPOS:BOOL=TRUE ${{ matrix.mode }} ..
         make -j2
