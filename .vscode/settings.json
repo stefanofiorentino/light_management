@@ -1,6 +1,5 @@
 {
     "cmake.configureArgs": [
-        "-DENABLE_COVERAGE:BOOL=TRUE",
         "-DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE",
         "-DFETCH_3RD_PARTY_REPOS:BOOL=TRUE",
         "-DUSE_UBSAN:BOOL=FALSE",

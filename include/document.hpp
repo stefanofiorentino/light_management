@@ -48,7 +48,7 @@ private:
   template<typename T>
   struct model_t final : concept_t
   {
-    model_t(T x)
+    explicit model_t(T x)
       : data_(std::move(x))
     {}
     void draw(std::ostream& out, size_t position) const override
