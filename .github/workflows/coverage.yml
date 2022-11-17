@@ -3,7 +3,7 @@ on: [push, pull_request]
 jobs:
   coverage:
     timeout-minutes: 60
-    runs-on: runs-on: ubuntu-20.04.5
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - name: Get branch name
