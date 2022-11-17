@@ -22,7 +22,7 @@ struct ArenaAllocator
   {}
 
   template<typename U>
-  ArenaAllocator(ArenaAllocator<U, Arena> const& rhs) noexcept
+  explicit ArenaAllocator(ArenaAllocator<U, Arena> const& rhs) noexcept
     : arena(rhs.arena)
   {}
 
