@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         compiler: [
-            g++-9, clang++-8
+            g++-9, clang++-9
         ]
         mode: ["", "-DUSE_ASAN:BOOL=TRUE", "-DUSE_UBSAN:BOOL=TRUE", "-DUSE_THSAN:BOOL=TRUE"]
 
@@ -19,7 +19,7 @@ jobs:
     - name: Install compilers and deps
       run: |
         sudo apt-get update \
-        && sudo apt-get install clang-8 g++-9 libubsan0 -y \
+        && sudo apt-get install clang-9 g++-9 libubsan0 -y \
         && sudo rm -rf /var/lib/apt/lists/*
     - name: Create Build folder
       run: mkdir -p build
