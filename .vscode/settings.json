@@ -15,10 +15,14 @@
         "-T",
         "Coverage"
     ],
+    "cmake.generator": "Unix Makefiles",
     "C_Cpp.intelliSenseEngine": "disabled",
     "C_Cpp.formatting": "clangFormat",
-    "cmake.generator": "Unix Makefiles",
-    "cmake.buildDirectory": "${workspaceFolder}/cmake-build-debug",
+    "clangd.arguments": [
+        "-log=verbose",
+        "-pretty",
+        "--background-index"
+    ],
     "files.associations": {
         "scoped_allocator": "cpp",
         "*.tcc": "cpp",
