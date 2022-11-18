@@ -15,6 +15,7 @@
         "-T",
         "Coverage"
     ],
+    "C_Cpp.intelliSenseEngine": "disabled",
     "C_Cpp.formatting": "clangFormat",
     "cmake.generator": "Unix Makefiles",
     "cmake.buildDirectory": "${workspaceFolder}/cmake-build-debug",
