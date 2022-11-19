@@ -51,7 +51,6 @@ if (FETCH_3RD_PARTY_REPOS)
 
 else(FETCH_3RD_PARTY_REPOS)
     set(entt_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/entt-src")
-    set(stlab_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/stlab-src")
     set(googletest_SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rd/googletest-src")
     set(googletest_BINARY_DIR "${CMAKE_BINARY_DIR}/_deps/googletest-build")
     if(NOT EXISTS  ${googletest_SOURCE_DIR})
@@ -104,7 +103,6 @@ function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
         "${CMAKE_SOURCE_DIR}/include"
         "${googletest_SOURCE_DIR}/googlemock/include"
         "${entt_SOURCE_DIR}/src"
-        "${stlab_SOURCE_DIR}"
     )
     add_test(NAME gtest_${TEST_NAME} COMMAND $<TARGET_FILE:${TEST_NAME}>)
 
