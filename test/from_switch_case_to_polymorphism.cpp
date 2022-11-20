@@ -4,7 +4,6 @@
 #include <exception>
 #include <memory>
 #include <string>
-#include <exception>
 
 namespace details {
 std::string
