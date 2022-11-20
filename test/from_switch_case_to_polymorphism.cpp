@@ -70,5 +70,5 @@ TEST(from_switch_case_to_polymorphism, Cpp_style_polymorphism)
 {
   ASSERT_EQ("char* details::print_foo()", factory("foo")->print());
   ASSERT_EQ("char* details::print_bar()", factory("bar")->print());
-  ASSERT_THROW(factory("")->print(), std::runtime_error);
+  ASSERT_THROW(factory(""), std::runtime_error);
 }
