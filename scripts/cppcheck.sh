@@ -28,7 +28,7 @@ cppcheck-htmlreport --file=${TMP_ERR_FILE} \
 
 cd cppcheck_reports \
     && (killall python3 || true) \
-    && /bin/bash -c 'python3 -m http.server &' &
+    && /bin/bash -c 'python3 -m http.server &'
 
 cd ${OLDPWD}
 rm ${TMP_INC_FILE}
