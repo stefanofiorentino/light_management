@@ -11,6 +11,7 @@ EOF
  
 find . -type f \( -name "*.h" -o -name "*.hpp" \) \
     | xargs dirname \
+    | sort \
     | uniq > ${TMP_INC_FILE}
 
 cppcheck --suppress=missingInclude \
@@ -28,7 +29,7 @@ cppcheck-htmlreport --file=${TMP_ERR_FILE} \
 
 cd cppcheck_reports \
     && (killall python3 || true) \
-    && /bin/bash -c 'python3 -m http.server &' &
+    && /bin/bash -c 'python3 -m http.server &'
 
 cd ${OLDPWD}
 rm ${TMP_INC_FILE}
