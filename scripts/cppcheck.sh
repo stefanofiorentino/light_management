@@ -11,6 +11,7 @@ EOF
  
 find . -type f \( -name "*.h" -o -name "*.hpp" \) \
     | xargs dirname \
+    | sort \
     | uniq > ${TMP_INC_FILE}
 
 cppcheck --suppress=missingInclude \
