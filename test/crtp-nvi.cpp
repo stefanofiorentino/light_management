@@ -18,10 +18,7 @@ public:
 class foo final : public wrap<foo>
 {
 public:
-  std::string to_string_impl() const
-  {
-    return "inside";
-  }
+  std::string to_string_impl() const { return "inside"; }
 };
 
 TEST(crtp, nvi)
