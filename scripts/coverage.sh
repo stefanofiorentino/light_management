@@ -19,4 +19,4 @@ cd ${TMP_NAME} \
         --output-on-failure \
         2>&1
 
-cd ${OLDPWD} && rm -r ${TMP_NAME}
+cd ${OLDPWD} && rm -rf ${TMP_NAME}
