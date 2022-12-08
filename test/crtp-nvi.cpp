@@ -4,25 +4,25 @@ template<typename T>
 class wrap
 {
 
-  std::string to_string_pre() const { return "pre-"; }
+  std::string paragraph_start() const { return "<p>"; }
 
-  std::string to_string_post() const { return "-post"; }
+  std::string paragraph_end() const { return "</p>"; }
 
 public:
-  std::string to_string() const
+  std::string paragraph(std::string const& text) const
   {
-    return to_string_pre() + static_cast<const T*>(this)->to_string_impl() +
-           to_string_post();
+    return paragraph_start() +
+           static_cast<const T*>(this)->to_string_impl(text) + paragraph_end();
   }
 };
 
 class foo final : public wrap<foo>
 {
   friend class wrap<foo>;
-  std::string to_string_impl() const { return "inside"; }
+  std::string to_string_impl(std::string const& text) const { return text; }
 };
 
 TEST(crtp, nvi)
 {
-  ASSERT_EQ("pre-inside-post", wrap<foo>().to_string());
+  ASSERT_EQ("<p>text</p>", wrap<foo>().paragraph("text"));
 }
