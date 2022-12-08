@@ -12,14 +12,18 @@ public:
   std::string paragraph(std::string const& text) const
   {
     return paragraph_start() +
-           static_cast<const T*>(this)->paragraph_customization(text) + paragraph_end();
+           static_cast<const T*>(this)->paragraph_customization(text) +
+           paragraph_end();
   }
 };
 
 class foo final : public wrap<foo>
 {
   friend class wrap<foo>;
-  std::string paragraph_customization(std::string const& text) const { return text; }
+  std::string paragraph_customization(std::string const& text) const
+  {
+    return text;
+  }
 };
 
 TEST(crtp, nvi)
