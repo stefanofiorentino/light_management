@@ -12,17 +12,18 @@ public:
   std::string paragraph(std::string const& text) const
   {
     return paragraph_start() +
-           static_cast<const T*>(this)->to_string_impl(text) + paragraph_end();
+           static_cast<const T*>(this)->paragraph_customization(text) + paragraph_end();
   }
 };
 
 class foo final : public wrap<foo>
 {
   friend class wrap<foo>;
-  std::string to_string_impl(std::string const& text) const { return text; }
+  std::string paragraph_customization(std::string const& text) const { return text; }
 };
 
 TEST(crtp, nvi)
 {
-  ASSERT_EQ("<p>text</p>", wrap<foo>().paragraph("text"));
+  foo f;
+  ASSERT_EQ("<p>text</p>", f.paragraph("text"));
 }
