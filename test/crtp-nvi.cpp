@@ -3,10 +3,12 @@
 template<typename T>
 class wrap
 {
+  const std::string P_START_TAG{ "<p>" };
+  const std::string P_END_TAG{ "</p>" };
 
-  std::string paragraph_start() const { return "<p>"; }
+  std::string paragraph_start() const { return P_START_TAG; }
 
-  std::string paragraph_end() const { return "</p>"; }
+  std::string paragraph_end() const { return P_END_TAG; }
 
 public:
   std::string paragraph(std::string const& text) const
