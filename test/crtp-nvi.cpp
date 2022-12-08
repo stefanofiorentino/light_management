@@ -9,7 +9,6 @@ class wrap
   std::string to_string_post() const { return "-post"; }
 
 public:
-  friend T;
   std::string to_string() const
   {
     return to_string_pre() + static_cast<const T*>(this)->to_string_impl() +
