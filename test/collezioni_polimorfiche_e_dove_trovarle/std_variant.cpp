@@ -7,8 +7,8 @@
 
 #include <light_management/color_dimmable_light_bulb.hpp>
 #include <light_management/dimmable_light_bulb.hpp>
-#include <light_management/light_bulb.hpp>
 #include <light_management/include/type_traits.hpp>
+#include <light_management/light_bulb.hpp>
 
 using light_concept_t = std::
   variant<light_bulb_t, dimmable_light_bulb_t, color_dimmable_light_bulb_t>;
