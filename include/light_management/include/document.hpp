@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "light_management/type_traits.hpp"
+#include "type_traits.hpp"
 
 template<typename T>
 void
@@ -79,7 +79,7 @@ draw(const T& x, std::ostream& out, size_t position)
 }
 
 template<>
-void
+inline void
 draw(const collection_t& x, std::ostream& out, size_t position)
 {
   for (const auto& e : x)
@@ -94,7 +94,7 @@ do_switch(T& x, bool status)
 }
 
 template<>
-void
+inline void
 do_switch(collection_t& x, bool status)
 {
   for (auto& e : x)

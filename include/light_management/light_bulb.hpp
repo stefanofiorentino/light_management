@@ -1,6 +1,6 @@
 #pragma once
 
-#include <document.hpp>
+#include "include/document.hpp"
 #include <iostream>
 
 struct light_bulb_t final
@@ -20,14 +20,14 @@ private:
 };
 
 template<>
-void
+inline void
 draw(const light_bulb_t& light, std::ostream& out, size_t /*position*/)
 {
   light.draw(out);
 }
 
 template<>
-void
+inline void
 do_switch(light_bulb_t& light, bool status)
 {
   light.do_switch(status);

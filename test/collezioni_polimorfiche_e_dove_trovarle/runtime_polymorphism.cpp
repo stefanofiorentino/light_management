@@ -1,11 +1,11 @@
 #include <gmock/gmock.h>
 
-#include <document.hpp> // https://www.youtube.com/watch?v=QGcVXgEVMJg
+#include <light_management/include/document.hpp> // https://www.youtube.com/watch?v=QGcVXgEVMJg
 #include <light_management/color_dimmable_light_bulb.hpp>
 #include <light_management/dimmable_light_bulb.hpp>
 #include <light_management/light_bulb.hpp>
 #include <light_management/room.hpp>
-#include <light_management/type_traits.hpp>
+#include <light_management/include/type_traits.hpp>
 
 TEST(runtime_polymorphism, draw_plain_plant)
 {
