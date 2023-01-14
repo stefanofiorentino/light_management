@@ -25,8 +25,7 @@ target_compile_options(
     -fexperimental-new-pass-manager
     -fpass-plugin=/usr/lib/mull-ir-frontend-12
 )
-add_custom_command(
-    TARGET mull POST_BUILD
+add_test(
+    NAME mull_mull 
     COMMAND mull-runner-12 -ide-reporter-show-killed $<TARGET_FILE:mull>
-    VERBATIM
 )

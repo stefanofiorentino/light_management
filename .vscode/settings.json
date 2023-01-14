@@ -3,7 +3,10 @@
         "-DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE",
         "-DFETCH_3RD_PARTY_REPOS:BOOL=TRUE",
         "-DUSE_UBSAN:BOOL=FALSE",
-        "-DUSE_TEST_COVERAGE:BOOL=TRUE"
+        "-DUSE_ASAN:BOOL=FALSE",
+        "-DUSE_THSAN:BOOL=FALSE",
+        "-DUSE_MULL:BOOL=FALSE",
+        "-DUSE_TEST_COVERAGE:BOOL=FALSE"
     ],
     "cmake.configureOnOpen": false,
     "cmake.configureOnEdit": false,
@@ -11,9 +14,7 @@
         "--timeout",
         "1",
         "-T",
-        "Test",
-        "-T",
-        "Coverage"
+        "Test"
     ],
     "cmake.generator": "Unix Makefiles",
     "C_Cpp.intelliSenseEngine": "disabled",
