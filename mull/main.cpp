@@ -1,11 +1,15 @@
-bool valid_age(int age) {
+bool
+valid_age(int age)
+{
   if (age >= 21) {
     return true;
   }
   return false;
 }
 
-int main() {
+int
+main()
+{
   bool test1 = valid_age(25) == true;
   if (!test1) {
     /// test failed
@@ -20,8 +24,8 @@ int main() {
 
   bool test3 = valid_age(21) == true;
   if (!test3) {
-     /// test failed
-     return 1;
+    /// test failed
+    return 1;
   }
 
   /// success
