@@ -10,11 +10,9 @@ jobs:
     strategy:
       matrix:
         compiler:
-          - pkg: g++-9
-            exe: g++-9
-          - pkg: clang-9
-            exe: clang++-9
-        mode: ["", "-D CI_MODE:STRING=ASAN", "-D CI_MODE:STRING=UBSAN", "-D CI_MODE:STRING=THSAN"]
+          - pkg: clang-12
+            exe: clang++-12
+        mode: ["-D CI_MODE:STRING=MUTATION"]
 
     steps:
     - uses: actions/checkout@v2
@@ -22,7 +20,7 @@ jobs:
       run: |
         sudo apt-get update -y
         sudo apt install -y ${{ matrix.compiler.pkg }}
-        sudo apt-get install -y libubsan0
+        sudo apt-get install -y libubsan0 mull-12
     - name: Create Build folder
       run: mkdir -p build
     - name: Compile tests
