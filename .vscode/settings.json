@@ -1,12 +1,8 @@
 {
     "cmake.configureArgs": [
-        "-DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE",
-        "-DFETCH_3RD_PARTY_REPOS:BOOL=TRUE",
-        "-DUSE_UBSAN:BOOL=FALSE",
-        "-DUSE_ASAN:BOOL=FALSE",
-        "-DUSE_THSAN:BOOL=FALSE",
-        "-DUSE_MULL:BOOL=FALSE",
-        "-DUSE_TEST_COVERAGE:BOOL=FALSE"
+        "-D CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE",
+        "-D FETCH_3RD_PARTY_REPOS:BOOL=TRUE",
+        "-D CI_MODE:STRING=MUTATION",
     ],
     "cmake.configureOnOpen": false,
     "cmake.configureOnEdit": false,
