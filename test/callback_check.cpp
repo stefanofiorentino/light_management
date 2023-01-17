@@ -48,7 +48,6 @@ timeout_cb(uv_timer_t* handle)
   } else {
     std::_Exit(1);
   }
-
 }
 
 static void
