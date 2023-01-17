@@ -125,9 +125,11 @@ function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
             -fexperimental-new-pass-manager
             -fpass-plugin=/usr/lib/mull-ir-frontend-12
         )
+    endif()
+    if(CI_MODE STREQUAL "MUTATION")        
         add_test(
             NAME mull_${TEST_NAME}
-            COMMAND mull-runner-12 -ide-reporter-show-killed $<TARGET_FILE:${TEST_NAME}>
+            COMMAND /bin/bash ${CMAKE_SOURCE_DIR}/scripts/mull.sh $<TARGET_FILE:${TEST_NAME}>
         )
     else()
         add_test(
