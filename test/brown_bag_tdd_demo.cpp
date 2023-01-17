@@ -9,9 +9,7 @@ struct my_stack_t
   my_stack_t() noexcept
     : size_(0)
   {
-    for (auto i = 0u; i < N; i++) {
-      v_[i] = std::numeric_limits<int>::min();
-    }
+    std::fill(std::begin(v_), std::end(v_), std::numeric_limits<int>::min());
   }
   bool isEmpty() const noexcept { return size_ == 0; }
 
@@ -27,7 +25,7 @@ struct my_stack_t
 
   void push(int v) noexcept { v_[size_++] = v; }
   static const size_t N = 100;
-  int v_[N];
+  std::array<int, N> v_;
   int size_;
 };
 
