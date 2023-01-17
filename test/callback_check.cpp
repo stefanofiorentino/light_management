@@ -45,7 +45,10 @@ timeout_cb(uv_timer_t* handle)
     if (!uv_is_closing((uv_handle_t*)handle)) {
       uv_close((uv_handle_t*)handle, pass_through_cb);
     }
+  } else {
+    std::_Exit(1);
   }
+
 }
 
 static void
