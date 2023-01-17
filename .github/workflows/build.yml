@@ -21,6 +21,7 @@ jobs:
     - name: Install compiler
       run: |
         sudo apt-get update -y
+        curl -1sLf 'https://dl.cloudsmith.io/public/mull-project/mull-stable/setup.deb.sh' | sudo -E bash
         sudo apt install -y ${{ matrix.compiler.pkg }}
         sudo apt-get install -y libubsan0
     - name: Create Build folder
