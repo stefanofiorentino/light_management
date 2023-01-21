@@ -10,10 +10,7 @@ alloc_data(int** data, int* count)
   (*data) = new int[10];
   ;
 
-  for (int i = 0; i < *count; ++i) {
-    cout << "i: " << i << endl;
-    (*data)[i] = i;
-  }
+  std::fill((*data), (*data) + *count, 42);
 }
 
 void

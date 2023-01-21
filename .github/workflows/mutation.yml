@@ -10,19 +10,18 @@ jobs:
     strategy:
       matrix:
         compiler:
-          - pkg: g++-9
-            exe: g++-9
-          - pkg: clang-9
-            exe: clang++-9
-        mode: ["", "-DCI_MODE:STRING=ASAN", "-DCI_MODE:STRING=UBSAN", "-DCI_MODE:STRING=THSAN"]
+          - pkg: clang-12
+            exe: clang++-12
+        mode: ["-DCI_MODE:STRING=MUTATION"]
 
     steps:
     - uses: actions/checkout@v2
     - name: Install compiler
       run: |
         sudo apt-get update -y
+        curl -1sLf 'https://dl.cloudsmith.io/public/mull-project/mull-stable/setup.deb.sh' | sudo -E bash
         sudo apt install -y ${{ matrix.compiler.pkg }}
-        sudo apt-get install -y libubsan0
+        sudo apt-get install -y libubsan0 mull-12
     - name: Create Build folder
       run: mkdir -p build
     - name: Compile tests

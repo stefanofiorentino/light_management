@@ -19,3 +19,8 @@ The git history will be broken several times
 
 # ATTENTION 2
 The main branch I'll work on is `develop'.
+
+# Available CI modes
+```
+https://stackoverflow.com/a/62995653/2794395
+```

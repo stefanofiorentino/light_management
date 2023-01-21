@@ -75,15 +75,11 @@ target_compile_features(gtest_main PUBLIC cxx_std_17)
 target_compile_features(gmock PUBLIC cxx_std_17)
 target_compile_features(gmock_main PUBLIC cxx_std_17)
 
-option(USE_ASAN "Use address sanitizer by adding -fsanitize=address " OFF)
-option(USE_UBSAN "Use undefined behavior sanitizer by adding -fsanitize=undefined" OFF)
-option(USE_THSAN "Use thread sanitizer by adding -fsanitize=thread" OFF)
-
 if(WIN32)
     set(WINSOCK2 ws2_32)
 endif()
 
-function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
+function(ADD_UNIT_TEST_IMPL TEST_NAME TEST_SOURCE SHALL_FAIL)
     add_executable(${TEST_NAME} "${TEST_SOURCE}")
 
     target_compile_options(${TEST_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -101,32 +97,60 @@ function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
         ${TEST_NAME}
             PRIVATE
         "${CMAKE_SOURCE_DIR}/include"
-        "${googletest_SOURCE_DIR}/googlemock/include"
         "${entt_SOURCE_DIR}/src"
     )
-    add_test(NAME gtest_${TEST_NAME} COMMAND $<TARGET_FILE:${TEST_NAME}>)
 
-    if(USE_TEST_COVERAGE)
+    target_include_directories(
+        ${TEST_NAME}
+            PUBLIC
+        "${googletest_SOURCE_DIR}/googlemock/include"
+    )
+
+    if(CI_MODE STREQUAL "COVERAGE")
         target_compile_options(${TEST_NAME} PUBLIC --coverage)
         target_link_libraries(${TEST_NAME} PUBLIC --coverage)
-    endif()
-
-    if(USE_ASAN AND NOT ${TEST_NAME} MATCHES "memory_allocation")
+    elseif(CI_MODE STREQUAL "ASAN" AND NOT ${TEST_NAME} MATCHES "memory_allocation")
         target_compile_options(${TEST_NAME} PUBLIC -fsanitize=address -fno-sanitize-recover=all -fno-omit-frame-pointer)
         target_link_libraries(${TEST_NAME} PUBLIC -fsanitize=address)
-    endif()
-
-    if(USE_UBSAN)
+    elseif(CI_MODE STREQUAL "UBSAN")
         target_compile_options(${TEST_NAME} PUBLIC -fsanitize=undefined -fsanitize-undefined-trap-on-error -fno-sanitize-recover=all -fno-omit-frame-pointer)
         target_link_libraries(${TEST_NAME} PUBLIC -fsanitize=undefined -fsanitize-undefined-trap-on-error)
-    endif()
-
-    if(USE_THSAN AND NOT ${TEST_NAME} MATCHES "memory_allocation")
+    elseif(CI_MODE STREQUAL "THSAN" AND NOT ${TEST_NAME} MATCHES "memory_allocation")
         target_compile_options(${TEST_NAME} PUBLIC -fsanitize=thread -fno-sanitize-recover=all -fno-omit-frame-pointer)
         target_link_libraries(${TEST_NAME} PUBLIC -fsanitize=thread)
+    elseif(CI_MODE STREQUAL "MUTATION")
+        target_compile_options(
+            ${TEST_NAME} 
+                PUBLIC 
+            -fexperimental-new-pass-manager
+            -fpass-plugin=/usr/lib/mull-ir-frontend-12
+        )
+    endif()
+    if (CI_MODE STREQUAL "THSAN" AND SHALL_FAIL)    
+        add_test(
+            NAME shall_fail_${TEST_NAME}
+            COMMAND /bin/bash ${CMAKE_SOURCE_DIR}/scripts/shall_fail.sh $<TARGET_FILE:${TEST_NAME}>
+        )
+    elseif(CI_MODE STREQUAL "MUTATION")        
+        add_test(
+            NAME mull_${TEST_NAME}
+            COMMAND /bin/bash ${CMAKE_SOURCE_DIR}/scripts/mull.sh $<TARGET_FILE:${TEST_NAME}>
+        )
+    else()
+        add_test(
+            NAME gtest_${TEST_NAME} 
+            COMMAND $<TARGET_FILE:${TEST_NAME}>)
     endif()
 
     target_compile_features(${TEST_NAME} PUBLIC cxx_std_17)
+endfunction()
+
+function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
+    ADD_UNIT_TEST_IMPL(${TEST_NAME} ${TEST_SOURCE} OFF)
+endfunction()
+
+function(ADD_FAILING_UNIT_TEST TEST_NAME TEST_SOURCE)
+    ADD_UNIT_TEST_IMPL(${TEST_NAME} ${TEST_SOURCE} ON)
 endfunction()
 
 option(BUILD_GOOGLE_BASED_TESTS "Enable building googletest-based unit tests." ON)
@@ -146,10 +170,13 @@ if (${BUILD_GOOGLE_BASED_TESTS})
     ADD_UNIT_TEST(visitor_guide_allocators_astring visitor_guide_allocators_astring.cpp)
     ADD_UNIT_TEST(statically_allocated_string statically_allocated_string.cpp)
     ADD_UNIT_TEST(hexagolal hexagonal.cpp)
+    ADD_UNIT_TEST(mull mull.cpp)
     if(NOT USE_UBSAN AND NOT USE_ASAN)
         ADD_UNIT_TEST(pure_virtual_call pure_virtual_call.cpp)
     endif(NOT USE_UBSAN AND NOT USE_ASAN)
+    ADD_UNIT_TEST(thread_safe_class thread_safe_class.cpp)
     
+    ADD_FAILING_UNIT_TEST(thread_unsafe_class thread_unsafe_class.cpp)
 endif (${BUILD_GOOGLE_BASED_TESTS})
 
 add_subdirectory(collezioni_polimorfiche_e_dove_trovarle)
