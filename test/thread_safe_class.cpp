@@ -5,7 +5,7 @@
 class thread_safe
 {
   bool status;
-  // mutable std::mutex mtx; // concurrency got wrong by Sean Parent
+  mutable std::mutex mtx; // concurrency got wrong by Sean Parent (efficiency)
 
 public:
   thread_safe()
@@ -13,13 +13,13 @@ public:
   {}
   bool getStatus() const
   {
-    // std::lock_guard<std::mutex> lg{ mtx };
+    std::lock_guard<std::mutex> lg{ mtx };
     return status;
   }
 
   void setStatus(bool status)
   {
-    // std::lock_guard<std::mutex> lg{ mtx };
+    std::lock_guard<std::mutex> lg{ mtx };
     thread_safe::status = status;
   }
 };
@@ -51,6 +51,6 @@ TEST(thread_safe, thsan)
 
   auto th2 = reallyAsync(
     [](thread_safe const& ts, bool& status) { status = ts.getStatus(); },
-    ts,
+    std::cref(ts),
     std::ref(status));
 }

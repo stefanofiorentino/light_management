@@ -79,7 +79,7 @@ if(WIN32)
     set(WINSOCK2 ws2_32)
 endif()
 
-function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
+function(ADD_UNIT_TEST_IMPL TEST_NAME TEST_SOURCE SHALL_FAIL)
     add_executable(${TEST_NAME} "${TEST_SOURCE}")
 
     target_compile_options(${TEST_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -126,7 +126,12 @@ function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
             -fpass-plugin=/usr/lib/mull-ir-frontend-12
         )
     endif()
-    if(CI_MODE STREQUAL "MUTATION")        
+    if (ARGC EQUAL 3 AND SHALL_FAIL)    
+        add_test(
+            NAME shall_fail_${TEST_NAME}
+            COMMAND /bin/bash ${CMAKE_SOURCE_DIR}/scripts/shall_fail.sh $<TARGET_FILE:${TEST_NAME}>
+        )
+    elseif(CI_MODE STREQUAL "MUTATION")        
         add_test(
             NAME mull_${TEST_NAME}
             COMMAND /bin/bash ${CMAKE_SOURCE_DIR}/scripts/mull.sh $<TARGET_FILE:${TEST_NAME}>
@@ -138,6 +143,14 @@ function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
     endif()
 
     target_compile_features(${TEST_NAME} PUBLIC cxx_std_17)
+endfunction()
+
+function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
+    ADD_UNIT_TEST_IMPL(${TEST_NAME} ${TEST_SOURCE} OFF)
+endfunction()
+
+function(ADD_FAILING_UNIT_TEST TEST_NAME TEST_SOURCE)
+    ADD_UNIT_TEST_IMPL(${TEST_NAME} ${TEST_SOURCE} ON)
 endfunction()
 
 option(BUILD_GOOGLE_BASED_TESTS "Enable building googletest-based unit tests." ON)
@@ -163,6 +176,7 @@ if (${BUILD_GOOGLE_BASED_TESTS})
     endif(NOT USE_UBSAN AND NOT USE_ASAN)
     ADD_UNIT_TEST(thread_safe_class thread_safe_class.cpp)
     
+    ADD_FAILING_UNIT_TEST(thread_unsafe_class thread_unsafe_class.cpp)
 endif (${BUILD_GOOGLE_BASED_TESTS})
 
 add_subdirectory(collezioni_polimorfiche_e_dove_trovarle)
