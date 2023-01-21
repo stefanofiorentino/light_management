@@ -12,7 +12,7 @@ jobs:
         compiler:
           - pkg: clang-12
             exe: clang++-12
-        mode: ["-D CI_MODE:STRING=MUTATION"]
+        mode: ["-DCI_MODE:STRING=MUTATION"]
 
     steps:
     - uses: actions/checkout@v2
