@@ -1,6 +1,6 @@
 #pragma once
 
-#include <document.hpp>
+#include "include/document.hpp"
 #include <iostream>
 
 struct color_dimmable_light_bulb_t final
@@ -12,7 +12,7 @@ struct color_dimmable_light_bulb_t final
 };
 
 template<>
-void
+inline void
 draw(const color_dimmable_light_bulb_t& light,
      std::ostream& out,
      size_t /*position*/)

@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "light_bulb.hpp"
-#include <document.hpp>
 
 struct room_t final
 {
@@ -29,7 +28,7 @@ struct room_t final
 };
 
 template<>
-void
+inline void
 draw(const room_t& room, std::ostream& out, size_t /* position */)
 {
   room.draw(out);
