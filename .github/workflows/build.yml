@@ -14,7 +14,7 @@ jobs:
             exe: g++-9
           - pkg: clang-9
             exe: clang++-9
-        mode: ["", "-D CI_MODE:STRING=ASAN", "-D CI_MODE:STRING=UBSAN", "-D CI_MODE:STRING=THSAN"]
+        mode: ["", "-DCI_MODE:STRING=ASAN", "-DCI_MODE:STRING=UBSAN", "-DCI_MODE:STRING=THSAN"]
 
     steps:
     - uses: actions/checkout@v2
