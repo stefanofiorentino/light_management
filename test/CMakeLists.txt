@@ -161,6 +161,7 @@ if (${BUILD_GOOGLE_BASED_TESTS})
     if(NOT USE_UBSAN AND NOT USE_ASAN)
         ADD_UNIT_TEST(pure_virtual_call pure_virtual_call.cpp)
     endif(NOT USE_UBSAN AND NOT USE_ASAN)
+    ADD_UNIT_TEST(thread_safe_class thread_safe_class.cpp)
     
 endif (${BUILD_GOOGLE_BASED_TESTS})
 

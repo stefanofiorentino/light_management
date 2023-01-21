@@ -1,8 +1,8 @@
 {
     "cmake.configureArgs": [
-        "-D CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE",
-        "-D FETCH_3RD_PARTY_REPOS:BOOL=TRUE",
-        "-D CI_MODE:STRING=MUTATION"
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE",
+        "-DFETCH_3RD_PARTY_REPOS:BOOL=TRUE",
+        "-DCI_MODE:STRING=THSAN"
     ],
     "cmake.configureOnOpen": false,
     "cmake.configureOnEdit": false,
