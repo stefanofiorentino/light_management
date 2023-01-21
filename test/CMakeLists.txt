@@ -126,7 +126,7 @@ function(ADD_UNIT_TEST_IMPL TEST_NAME TEST_SOURCE SHALL_FAIL)
             -fpass-plugin=/usr/lib/mull-ir-frontend-12
         )
     endif()
-    if (ARGC EQUAL 3 AND SHALL_FAIL)    
+    if (CI_MODE STREQUAL "THSAN" AND SHALL_FAIL)    
         add_test(
             NAME shall_fail_${TEST_NAME}
             COMMAND /bin/bash ${CMAKE_SOURCE_DIR}/scripts/shall_fail.sh $<TARGET_FILE:${TEST_NAME}>
