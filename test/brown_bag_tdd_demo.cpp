@@ -1,5 +1,6 @@
 // integer stack LIFO
 
+#include <array>
 #include <gmock/gmock.h>
 #include <limits>
 #include <mutex>
