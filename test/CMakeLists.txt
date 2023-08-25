@@ -79,7 +79,7 @@ if(WIN32)
     set(WINSOCK2 ws2_32)
 endif()
 
-function(ADD_UNIT_TEST_IMPL TEST_NAME TEST_SOURCE SHALL_FAIL)
+function(ADD_UNIT_TEST_IMPL TEST_NAME TEST_SOURCE SHALL_FAIL CXX_STD)
     add_executable(${TEST_NAME} "${TEST_SOURCE}")
 
     target_compile_options(${TEST_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -120,37 +120,41 @@ function(ADD_UNIT_TEST_IMPL TEST_NAME TEST_SOURCE SHALL_FAIL)
         target_link_libraries(${TEST_NAME} PUBLIC -fsanitize=thread)
     elseif(CI_MODE STREQUAL "MUTATION")
         target_compile_options(
-            ${TEST_NAME} 
-                PUBLIC 
+            ${TEST_NAME}
+                PUBLIC
             -fexperimental-new-pass-manager
             -fpass-plugin=/usr/lib/mull-ir-frontend-12
         )
     endif()
-    if (CI_MODE STREQUAL "THSAN" AND SHALL_FAIL)    
+    if (CI_MODE STREQUAL "THSAN" AND SHALL_FAIL)
         add_test(
             NAME shall_fail_${TEST_NAME}
             COMMAND /bin/bash ${CMAKE_SOURCE_DIR}/scripts/shall_fail.sh $<TARGET_FILE:${TEST_NAME}>
         )
-    elseif(CI_MODE STREQUAL "MUTATION")        
+    elseif(CI_MODE STREQUAL "MUTATION")
         add_test(
             NAME mull_${TEST_NAME}
             COMMAND /bin/bash ${CMAKE_SOURCE_DIR}/scripts/mull.sh $<TARGET_FILE:${TEST_NAME}>
         )
     else()
         add_test(
-            NAME gtest_${TEST_NAME} 
+            NAME gtest_${TEST_NAME}
             COMMAND $<TARGET_FILE:${TEST_NAME}>)
     endif()
 
-    target_compile_features(${TEST_NAME} PUBLIC cxx_std_17)
+    target_compile_features(${TEST_NAME} PUBLIC ${CXX_STD})
 endfunction()
 
 function(ADD_UNIT_TEST TEST_NAME TEST_SOURCE)
-    ADD_UNIT_TEST_IMPL(${TEST_NAME} ${TEST_SOURCE} OFF)
+    ADD_UNIT_TEST_IMPL(${TEST_NAME} ${TEST_SOURCE} OFF cxx_std_17)
 endfunction()
 
 function(ADD_FAILING_UNIT_TEST TEST_NAME TEST_SOURCE)
-    ADD_UNIT_TEST_IMPL(${TEST_NAME} ${TEST_SOURCE} ON)
+    ADD_UNIT_TEST_IMPL(${TEST_NAME} ${TEST_SOURCE} ON cxx_std_17)
+endfunction()
+
+function(ADD_UNIT_TEST_CPP20 TEST_NAME TEST_SOURCE)
+    ADD_UNIT_TEST_IMPL(${TEST_NAME} ${TEST_SOURCE} OFF cxx_std_20)
 endfunction()
 
 option(BUILD_GOOGLE_BASED_TESTS "Enable building googletest-based unit tests." ON)
@@ -179,7 +183,8 @@ if (${BUILD_GOOGLE_BASED_TESTS})
         ADD_UNIT_TEST(pure_virtual_call pure_virtual_call.cpp)
     endif(NOT USE_UBSAN AND NOT USE_ASAN)
     ADD_UNIT_TEST(thread_safe_class thread_safe_class.cpp)
-    
+    ADD_UNIT_TEST_CPP20(cppstories_concept cppstories_concept.cpp)
+
     ADD_FAILING_UNIT_TEST(thread_unsafe_class thread_unsafe_class.cpp)
 endif (${BUILD_GOOGLE_BASED_TESTS})
 
