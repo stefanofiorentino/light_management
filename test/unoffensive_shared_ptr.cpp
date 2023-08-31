@@ -22,8 +22,7 @@ class unoffensive_shared_ptr
 public:
   explicit unoffensive_shared_ptr(std::shared_ptr<int> const& sp)
     : sp(sp)
-  {
-  }
+  {}
   int* get() const noexcept { return get_raw_ptr_or_default(); }
 
   int& operator*() const noexcept { return *get_raw_ptr_or_default(); }
