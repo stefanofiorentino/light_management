@@ -1,6 +1,5 @@
 #include <concepts>
 
-
 template<typename T>
 concept has_draw_member_function = requires(T v)
 {
