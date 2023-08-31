@@ -183,7 +183,8 @@ if (${BUILD_GOOGLE_BASED_TESTS})
         ADD_UNIT_TEST(pure_virtual_call pure_virtual_call.cpp)
     endif(NOT USE_UBSAN AND NOT USE_ASAN)
     ADD_UNIT_TEST(thread_safe_class thread_safe_class.cpp)
-    ADD_UNIT_TEST_CPP20(cppstories_concept cppstories_concept.cpp)
+
+    ADD_UNIT_TEST_CPP20(first_concept first_concept.cpp)
 
     ADD_FAILING_UNIT_TEST(thread_unsafe_class thread_unsafe_class.cpp)
 endif (${BUILD_GOOGLE_BASED_TESTS})
