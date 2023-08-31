@@ -9,11 +9,14 @@ class unoffensive_shared_ptr
 {
   std::shared_ptr<int> sp;
 
-  int* get_default() const
+  int* get_raw_ptr_or_default() const
   {
-    static auto local_sp =
-      std::make_shared<int>(std::numeric_limits<int>::min());
-    return local_sp.get();
+    if (!sp) {
+      static auto local_sp =
+        std::make_shared<int>(std::numeric_limits<int>::min());
+      return local_sp.get();
+    }
+    return sp.get();
   }
 
 public:
@@ -21,39 +24,14 @@ public:
     : sp(sp)
   {
   }
-  int* get() const noexcept
-  {
-    if (!sp) {
-      return get_default();
-    }
-    return sp.get();
-  }
+  int* get() const noexcept { return get_raw_ptr_or_default(); }
 
-  int& operator*() const noexcept
-  {
-    if (!sp) {
-      return *get_default();
-    }
-    return *sp;
-  }
+  int& operator*() const noexcept { return *get_raw_ptr_or_default(); }
 
-  int* operator->() const noexcept
-  {
-    if (!sp) {
-      return get_default();
-    }
-    return sp.get();
-  }
+  int* operator->() const noexcept { return get_raw_ptr_or_default(); }
 };
 
-TEST(unoffensive_shared_ptr, nullptr)
-{
-  std::shared_ptr<int> sp;
-  unoffensive_shared_ptr usp{ sp };
-  EXPECT_NE(nullptr, usp.get());
-}
-
-TEST(unoffensive_shared_ptr, point_to_one)
+TEST(unoffensive_shared_ptr, pointer_to_one)
 {
   std::shared_ptr<int> sp = std::make_shared<int>(1);
   unoffensive_shared_ptr usp{ sp };
@@ -64,7 +42,7 @@ TEST(unoffensive_shared_ptr, point_to_one)
 
 TEST(unoffensive_shared_ptr, return_default_if_nullptr)
 {
-  std::shared_ptr<int> sp;
+  std::shared_ptr<int> sp = nullptr;
   unoffensive_shared_ptr usp{ sp };
   EXPECT_EQ(std::numeric_limits<int>::min(), *usp.get());
   EXPECT_EQ(std::numeric_limits<int>::min(), usp.operator*());
