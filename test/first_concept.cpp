@@ -1,7 +1,5 @@
 #include <concepts>
-#include <iostream>
-#include <numeric>
-#include <vector>
+
 
 template<typename T>
 concept has_draw_member_function = requires(T v)
