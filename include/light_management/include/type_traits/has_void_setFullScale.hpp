@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 template<typename T, class Enable>
 struct has_void_setFullScale_impl : std::false_type
 {};
