@@ -1,0 +1,72 @@
+#include <gmock/gmock.h>
+
+#include <concepts>
+#include <limits>
+#include <memory>
+#include <numeric>
+
+class unoffensive_shared_ptr
+{
+  std::shared_ptr<int> sp;
+
+  int* get_default() const
+  {
+    static auto local_sp =
+      std::make_shared<int>(std::numeric_limits<int>::min());
+    return local_sp.get();
+  }
+
+public:
+  explicit unoffensive_shared_ptr(std::shared_ptr<int> const& sp)
+    : sp(sp)
+  {
+  }
+  int* get() const noexcept
+  {
+    if (!sp) {
+      return get_default();
+    }
+    return sp.get();
+  }
+
+  int& operator*() const noexcept
+  {
+    if (!sp) {
+      return *get_default();
+    }
+    return *sp;
+  }
+
+  int* operator->() const noexcept
+  {
+    if (!sp) {
+      return get_default();
+    }
+    return sp.get();
+  }
+};
+
+TEST(unoffensive_shared_ptr, nullptr)
+{
+  std::shared_ptr<int> sp;
+  unoffensive_shared_ptr usp{ sp };
+  EXPECT_NE(nullptr, usp.get());
+}
+
+TEST(unoffensive_shared_ptr, point_to_one)
+{
+  std::shared_ptr<int> sp = std::make_shared<int>(1);
+  unoffensive_shared_ptr usp{ sp };
+  EXPECT_EQ(1, *usp.get());
+  EXPECT_EQ(1, usp.operator*());
+  EXPECT_EQ(1, *usp.operator->());
+}
+
+TEST(unoffensive_shared_ptr, return_default_if_nullptr)
+{
+  std::shared_ptr<int> sp;
+  unoffensive_shared_ptr usp{ sp };
+  EXPECT_EQ(std::numeric_limits<int>::min(), *usp.get());
+  EXPECT_EQ(std::numeric_limits<int>::min(), usp.operator*());
+  EXPECT_EQ(std::numeric_limits<int>::min(), *usp.operator->());
+}

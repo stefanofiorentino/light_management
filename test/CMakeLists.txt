@@ -185,6 +185,7 @@ if (${BUILD_GOOGLE_BASED_TESTS})
     ADD_UNIT_TEST(thread_safe_class thread_safe_class.cpp)
 
     ADD_UNIT_TEST_CPP20(first_concept first_concept.cpp)
+    ADD_UNIT_TEST_CPP20(unoffensive_shared_ptr unoffensive_shared_ptr.cpp)
 
     ADD_FAILING_UNIT_TEST(thread_unsafe_class thread_unsafe_class.cpp)
 endif (${BUILD_GOOGLE_BASED_TESTS})
