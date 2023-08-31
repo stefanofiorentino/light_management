@@ -3,7 +3,6 @@
 #include <concepts>
 #include <limits>
 #include <memory>
-#include <numeric>
 
 template<typename T>
 class unoffensive_shared_ptr
