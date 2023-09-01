@@ -107,7 +107,7 @@ function(ADD_UNIT_TEST_IMPL TEST_NAME TEST_SOURCE SHALL_FAIL CXX_STD)
     )
 
     if(CI_MODE STREQUAL "COVERAGE")
-        target_compile_options(${TEST_NAME} PUBLIC --coverage)
+        target_compile_options(${TEST_NAME} PUBLIC -fprofile-arcs -ftest-coverage)
         target_link_libraries(${TEST_NAME} PUBLIC --coverage)
     elseif(CI_MODE STREQUAL "ASAN" AND NOT ${TEST_NAME} MATCHES "memory_allocation")
         target_compile_options(${TEST_NAME} PUBLIC -fsanitize=address -fno-sanitize-recover=all -fno-omit-frame-pointer)
