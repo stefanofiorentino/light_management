@@ -77,7 +77,8 @@
                 "lcov.info",
                 "--output-file",
                 "lcov.info"
-            ]
+            ],
+            "problemMatcher": []
         },
         {
             "label": "Coverage: filter",
