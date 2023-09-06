@@ -4,5 +4,18 @@
 	"name": "C++",
 	"build": {
 		"dockerfile": "Dockerfile"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"xaver.clang-format",
+				"llvm-vs-code-extensions.vscode-clangd",
+				"ms-vscode.cmake-tools",
+				"rogalmic.bash-debug",
+				"davidanson.vscode-markdownlint",
+				"ms-vscode-remote.remote-containers",
+				"ryanluker.vscode-coverage-gutters"
+			]
+		}
 	}
 }
