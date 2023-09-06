@@ -5,3 +5,4 @@
 /cmake-build-debug
 /cppcheck_reports
 /lcov*
+/coverage/
