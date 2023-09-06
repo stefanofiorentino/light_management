@@ -11,4 +11,9 @@ RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
     && rm -f /tmp/reinstall-cmake.sh
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends lcov clang-format clangd
+    && apt-get -y install --no-install-recommends lcov clang-format clangd curl
+
+COPY ./reinstall-git-extensions.sh /tmp/
+
+RUN chmod +x /tmp/reinstall-git-extensions.sh && /tmp/reinstall-git-extensions.sh \
+    && rm -f /tmp/reinstall-git-extensions.sh
