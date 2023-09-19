@@ -3,17 +3,17 @@
 // prod.h
 struct context_interface
 {
-  virtual void* zmq_ctx_new() = 0;
+  virtual void* ctx_new() = 0;
 };
 
 bool
-monitor_PUB_ZMQ(context_interface* context);
+thread_func(context_interface* context);
 
 // prod.cpp
 bool
-monitor_PUB_ZMQ(context_interface* context)
+thread_func(context_interface* context)
 {
-  void* ctx = context->zmq_ctx_new();
+  void* ctx = context->ctx_new();
   if (!ctx) {
     return false;
   }
@@ -23,22 +23,22 @@ monitor_PUB_ZMQ(context_interface* context)
 // test.cpp
 struct context_mock : context_interface
 {
-  MOCK_METHOD(void*, zmq_ctx_new, (), (override));
+  MOCK_METHOD(void*, ctx_new, (), (override));
 };
 
-TEST(mob, givenValidContext_whenCallMonitorPubZMQ_thenReturnTrue)
+TEST(mob, givenValidContext_whenCallMonitorPubthenReturnTrue)
 {
   context_mock c;
-  EXPECT_CALL(c, zmq_ctx_new).WillOnce([] {
+  EXPECT_CALL(c, ctx_new).WillOnce([] {
     static int i;
     return &i;
   });
-  ASSERT_TRUE(monitor_PUB_ZMQ(&c));
+  ASSERT_TRUE(thread_func(&c));
 }
 
-TEST(mob, givenInvalidContext_whenCallMonitorPubZMQ_thenReturnFalse)
+TEST(mob, givenInvalidContext_whenCallMonitorPubthenReturnFalse)
 {
   context_mock c;
-  EXPECT_CALL(c, zmq_ctx_new).WillOnce([] { return nullptr; });
-  ASSERT_FALSE(monitor_PUB_ZMQ(&c));
+  EXPECT_CALL(c, ctx_new).WillOnce([] { return nullptr; });
+  ASSERT_FALSE(thread_func(&c));
 }
