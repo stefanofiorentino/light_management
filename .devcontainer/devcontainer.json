@@ -5,6 +5,9 @@
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
+	"mounts": [
+		"source=${localWorkspaceFolder}/build,target=/workspaces/experimental/build,type=bind,consistency=cached"
+	],
 	"customizations": {
 		"vscode": {
 			"extensions": [
