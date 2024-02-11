@@ -1,7 +1,14 @@
-// integer stack LIFO
-
 #include <gmock/gmock.h>
 #include <stdexcept>
+
+// struct stack
+// {
+//   bool empty() const;
+//   bool full() const;
+//   size_t pop();
+//   void push(size_t);
+// ...
+// };
 
 struct exceptional_stack_t
 {
