@@ -192,6 +192,7 @@ if (${BUILD_GOOGLE_BASED_TESTS})
     ADD_UNIT_TEST_CPP20(overload_set_macro overload_set_macro.cpp)
     ADD_UNIT_TEST_CPP20(overload_set_lambda overload_set_lambda.cpp)
     ADD_UNIT_TEST_CPP20(exceptional_stack exceptional_stack.cpp)
+    ADD_UNIT_TEST_CPP20(atomic_thread_fence_cppref atomic_thread_fence.cppref.cpp)
 
 
     ADD_FAILING_UNIT_TEST(thread_unsafe_class thread_unsafe_class.cpp)

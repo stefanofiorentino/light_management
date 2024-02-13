@@ -2,7 +2,7 @@
     "cmake.configureArgs": [
         "-DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE",
         "-DFETCH_3RD_PARTY_REPOS:BOOL=TRUE",
-        "-DCI_MODE:STRING=COVERAGE"
+        "-DCI_MODE:STRING=THSAN"
     ],
     "cmake.configureOnOpen": false,
     "cmake.configureOnEdit": false,
@@ -87,5 +87,6 @@
         "future": "cpp",
         "shared_mutex": "cpp"
     },
-    "pomodoro.workTime": 7
+    "pomodoro.workTime": 7,
+    "terminal.integrated.scrollback": 1000000000
 }
