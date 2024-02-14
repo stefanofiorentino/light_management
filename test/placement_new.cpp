@@ -1,0 +1,44 @@
+#include <gmock/gmock.h>
+
+#include <gtest/gtest.h>
+#include <memory>
+
+struct Widget
+{
+  Widget(const char** pctor)
+    : ptr(pctor)
+  {
+    static std::string ctor(__PRETTY_FUNCTION__);
+    *ptr = ctor.c_str();
+  }
+  virtual ~Widget()
+  {
+    static std::string dtor(__PRETTY_FUNCTION__);
+    *ptr = dtor.c_str();
+  }
+  const char** ptr;
+};
+
+template<typename _Tp, typename _Deleter, typename... _Args>
+inline std::unique_ptr<_Tp, _Deleter>
+make_placement_unique_ptr(unsigned char* __pointer,
+                          _Deleter&& __deleter,
+                          _Args&&... __args)
+{
+  return std::unique_ptr<_Tp, _Deleter>(new (__pointer)
+                                          _Tp(std::forward<_Args>(__args)...),
+                                        std::forward<_Deleter>(__deleter));
+}
+
+TEST(placement_new, unique_ptr)
+{
+
+  alignas(Widget) unsigned char buf[sizeof(Widget)];
+  const char* probe;
+  {
+    [[maybe_unused]] auto p = make_placement_unique_ptr<Widget>(
+      buf, [](Widget* t) { t->~Widget(); }, &probe); // deleter moved
+    ASSERT_STREQ(probe, "Widget::Widget(const char **)");
+  }
+  ASSERT_STREQ(probe, "virtual Widget::~Widget()");
+}
