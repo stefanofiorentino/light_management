@@ -8,18 +8,24 @@ struct Widget
   Widget(const char** pctor)
     : ptr(pctor)
   {
-    static std::string ctor(__PRETTY_FUNCTION__);
+    static std::string ctor("ctor");
     *ptr = ctor.c_str();
   }
   virtual ~Widget()
   {
-    static std::string dtor(__PRETTY_FUNCTION__);
+    static std::string dtor("dtor");
     *ptr = dtor.c_str();
   }
   const char** ptr;
 };
 
-template<typename _Tp, typename _Deleter, typename... _Args>
+template<typename D>
+concept Deleter = requires(D&& d)
+{
+  std::forward<D>(d)(nullptr);
+};
+
+template<typename _Tp, Deleter _Deleter, typename... _Args>
 inline std::unique_ptr<_Tp, _Deleter>
 make_placement_unique_ptr(unsigned char* __pointer,
                           _Deleter&& __deleter,
@@ -37,8 +43,8 @@ TEST(placement_new, unique_ptr)
   const char* probe;
   {
     [[maybe_unused]] auto p = make_placement_unique_ptr<Widget>(
-      buf, [](Widget* t) { t->~Widget(); }, &probe); // deleter moved
-    ASSERT_STREQ(probe, "Widget::Widget(const char**)");
+      buf, [](Widget* w) { w->~Widget(); }, &probe); // deleter moved
+    ASSERT_STREQ(probe, "ctor");
   }
-  ASSERT_STREQ(probe, "virtual Widget::~Widget()");
+  ASSERT_STREQ(probe, "dtor");
 }
