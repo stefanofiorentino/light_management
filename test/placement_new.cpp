@@ -38,7 +38,7 @@ TEST(placement_new, unique_ptr)
   {
     [[maybe_unused]] auto p = make_placement_unique_ptr<Widget>(
       buf, [](Widget* t) { t->~Widget(); }, &probe); // deleter moved
-    ASSERT_STREQ(probe, "Widget::Widget(const char **)");
+    ASSERT_STREQ(probe, "Widget::Widget(const char**)");
   }
   ASSERT_STREQ(probe, "virtual Widget::~Widget()");
 }
