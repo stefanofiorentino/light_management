@@ -13,7 +13,8 @@ struct not_null_ptr
 {
   explicit not_null_ptr(T* t)
     : pointee(t)
-  {}
+  {
+  }
   explicit not_null_ptr(std::nullptr_t) = delete;
 
   T& operator*() const

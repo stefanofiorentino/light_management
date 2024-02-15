@@ -9,7 +9,8 @@ class thread_unsafe
 public:
   thread_unsafe()
     : status(false)
-  {}
+  {
+  }
   bool getStatus() const { return status; }
 
   void setStatus(bool status) { thread_unsafe::status = status; }

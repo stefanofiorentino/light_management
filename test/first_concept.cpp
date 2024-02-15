@@ -5,8 +5,7 @@ concept has_draw_member_function = requires(T v)
 {
   {
     v.draw()
-  }
-  ->std::convertible_to<void>;
+    } -> std::convertible_to<void>;
 };
 
 int

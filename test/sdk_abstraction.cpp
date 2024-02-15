@@ -26,7 +26,8 @@ struct DirectiveSequencerWrapper : public DirectiveSequencerInterface
   explicit DirectiveSequencerWrapper(
     DirectiveSequencerInterface& directiveSequencer)
     : m_directiveSequencer(directiveSequencer)
-  {}
+  {
+  }
   void onDirective(const std::string& directive) const override
   {
     // precondition

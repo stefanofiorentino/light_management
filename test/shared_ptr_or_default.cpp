@@ -21,7 +21,8 @@ class shared_ptr_or_default
 public:
   explicit shared_ptr_or_default(std::shared_ptr<T> const& sp)
     : sp(sp)
-  {}
+  {
+  }
   T* get() const noexcept { return get_raw_ptr_or_default(); }
 
   T& operator*() const noexcept { return *get_raw_ptr_or_default(); }

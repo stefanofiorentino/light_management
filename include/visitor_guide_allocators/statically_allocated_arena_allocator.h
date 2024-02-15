@@ -19,12 +19,14 @@ struct ArenaAllocator
 
   explicit ArenaAllocator(Arena* a) noexcept
     : arena(a)
-  {}
+  {
+  }
 
   template<typename U>
   explicit ArenaAllocator(ArenaAllocator<U, Arena> const& rhs) noexcept
     : arena(rhs.arena)
-  {}
+  {
+  }
 
   pointer allocate(std::size_t n)
   {

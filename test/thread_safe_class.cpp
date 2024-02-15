@@ -10,7 +10,8 @@ class thread_safe
 public:
   thread_safe()
     : status(false)
-  {}
+  {
+  }
   bool getStatus() const
   {
     std::lock_guard<std::mutex> lg{ mtx };
