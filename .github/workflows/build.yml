@@ -10,10 +10,8 @@ jobs:
     strategy:
       matrix:
         compiler:
-          - pkg: g++-9
-            exe: g++-9
-          - pkg: clang-9
-            exe: clang++-9
+          - pkg: clang-12
+            exe: clang++-12
         mode: ["", "-DCI_MODE:STRING=ASAN", "-DCI_MODE:STRING=UBSAN", "-DCI_MODE:STRING=THSAN"]
 
     steps:

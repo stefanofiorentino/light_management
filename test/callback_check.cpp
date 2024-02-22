@@ -23,7 +23,8 @@ static std::size_t timeout = 0;
 
 static void
 pass_through_cb(uv_handle_t* /*handle*/)
-{}
+{
+}
 static void
 failing_cb(uv_handle_t* /*handle*/)
 {

@@ -20,7 +20,8 @@ public:
   template<typename T>
   explicit object_t(T x)
     : self_(std::make_unique<model_t<T>>(std::move(x)))
-  {}
+  {
+  }
 
   object_t(object_t const& x) = delete;
   object_t& operator=(object_t const& x) = delete;
@@ -50,7 +51,8 @@ private:
   {
     explicit model_t(T x)
       : data_(std::move(x))
-    {}
+    {
+    }
     void draw(std::ostream& out, size_t position) const override
     {
       if constexpr (has_void_draw_v<T>) {

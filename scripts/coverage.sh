@@ -6,7 +6,7 @@ cd ${TMP_NAME} \
     && cmake \
         -DCMAKE_BUILD_TYPE:STRING=Debug \
         -DFETCH_3RD_PARTY_REPOS:BOOL=TRUE \
-        -DUSE_TEST_COVERAGE:BOOL=TRUE \
+        -DCI_MODE="COVERAGE" \
         ${OLDPWD} \
     && make \
         -j$(nproc) \

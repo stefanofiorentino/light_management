@@ -6,6 +6,8 @@ cmake_policy(SET CMP0054 NEW)
 add_subdirectory(cmake/check)
 add_subdirectory(cmake/mull)
 
+add_subdirectory(src)
+
 include(CTest)
 enable_testing()
 add_subdirectory(test)

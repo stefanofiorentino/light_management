@@ -1,0 +1,24 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/cpp
+{
+	"name": "C++",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"mounts": [
+		"source=${localWorkspaceFolder}/build,target=/workspaces/experimental/build,type=bind,consistency=cached"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"xaver.clang-format",
+				"llvm-vs-code-extensions.vscode-clangd",
+				"ms-vscode.cmake-tools",
+				"rogalmic.bash-debug",
+				"davidanson.vscode-markdownlint",
+				"ms-vscode-remote.remote-containers",
+				"ryanluker.vscode-coverage-gutters"
+			]
+		}
+	}
+}

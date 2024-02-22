@@ -26,7 +26,8 @@ class Hexagon : public InPort
 public:
   explicit Hexagon(OutPort& outPort)
     : outPort(outPort)
-  {}
+  {
+  }
   bool inCall() const override { return outPort.outCall(); }
 };
 

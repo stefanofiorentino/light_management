@@ -3,7 +3,6 @@
 #include <array>
 #include <gmock/gmock.h>
 #include <limits>
-#include <mutex>
 
 struct my_stack_t
 {
