@@ -200,6 +200,8 @@ if (${BUILD_GOOGLE_BASED_TESTS})
     ADD_UNIT_TEST_CPP20(exceptional_stack exceptional_stack.cpp)
     ADD_UNIT_TEST_CPP20(atomic_thread_fence_cppref atomic_thread_fence.cppref.cpp)
     ADD_UNIT_TEST_CPP20(placement_new placement_new.cpp)
+    ADD_UNIT_TEST_CPP20(sdk_impl sdk_impl.cpp)
+    target_link_libraries(sdk_impl PRIVATE sdk)
 
 
     ADD_FAILING_UNIT_TEST(thread_unsafe_class thread_unsafe_class.cpp)
