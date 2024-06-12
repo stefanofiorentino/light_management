@@ -118,6 +118,23 @@ function(ADD_UNIT_TEST_IMPL TEST_NAME TEST_SOURCE SHALL_FAIL CXX_STD)
     elseif(CI_MODE STREQUAL "THSAN" AND NOT ${TEST_NAME} MATCHES "memory_allocation")
         target_compile_options(${TEST_NAME} PUBLIC -fsanitize=thread -fno-sanitize-recover=all -fno-omit-frame-pointer)
         target_link_libraries(${TEST_NAME} PUBLIC -fsanitize=thread)
+    elseif(CI_MODE STREQUAL "BOUNDS")
+        target_compile_options(${TEST_NAME} PUBLIC -fsanitize=bounds)
+        target_link_libraries(${TEST_NAME} PUBLIC -fsanitize=bounds)
+    elseif(CI_MODE STREQUAL "TYPE_SAFETY")
+        if (NOT ${TEST_NAME} MATCHES "entt")    
+            target_compile_options(
+                ${TEST_NAME}
+                    PUBLIC
+                -Wall 
+                -Wextra 
+                -Wpedantic 
+                -Wconversion 
+                -Wsign-conversion 
+                -Wshadow 
+                -Werror
+            )
+        endif()
     elseif(CI_MODE STREQUAL "MUTATION")
         target_compile_options(
             ${TEST_NAME}
@@ -155,6 +172,11 @@ endfunction()
 
 function(ADD_UNIT_TEST_CPP20 TEST_NAME TEST_SOURCE)
     ADD_UNIT_TEST_IMPL(${TEST_NAME} ${TEST_SOURCE} OFF cxx_std_20)
+endfunction()
+function(ADD_UNIT_TEST_FREESTANDING TEST_NAME TEST_SOURCE)
+    ADD_UNIT_TEST_IMPL(${TEST_NAME} ${TEST_SOURCE} OFF cxx_std_20)
+    target_compile_options(${TEST_NAME} PUBLIC -fno-exceptions -fno-rtti -ffreestanding)
+    target_link_libraries(${TEST_NAME} PUBLIC -fno-exceptions -fno-rtti -ffreestanding)
 endfunction()
 
 function(ADD_FAILING_UNIT_TEST_CPP20 TEST_NAME TEST_SOURCE)
@@ -198,9 +220,13 @@ if (${BUILD_GOOGLE_BASED_TESTS})
     ADD_UNIT_TEST_CPP20(overload_set_macro overload_set_macro.cpp)
     ADD_UNIT_TEST_CPP20(overload_set_lambda overload_set_lambda.cpp)
     ADD_UNIT_TEST_CPP20(exceptional_stack exceptional_stack.cpp)
+    ADD_UNIT_TEST_CPP20(atomic_thread_fence_davide atomic_thread_fence.davide.cpp)
     ADD_UNIT_TEST_CPP20(atomic_thread_fence_cppref atomic_thread_fence.cppref.cpp)
+    ADD_UNIT_TEST_CPP20(consteval consteval.cpp)
+    ADD_UNIT_TEST_CPP20(mkstemp mkstemp.cpp)
     ADD_UNIT_TEST_CPP20(placement_new placement_new.cpp)
     ADD_UNIT_TEST_CPP20(sdk_impl sdk_impl.cpp)
+    ADD_UNIT_TEST_FREESTANDING(freestanding_array freestanding_array.cpp)
     target_link_libraries(sdk_impl PRIVATE sdk)
 
 

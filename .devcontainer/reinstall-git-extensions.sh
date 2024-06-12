@@ -25,5 +25,6 @@ curl -sSL "https://github.com/stefanofiorentino/git-extensions/archive/refs/head
 unzip ${BINARY_NAME}
 
 mkdir -p /home/vscode/.local/bin
+chown -R vscode:vscode /home/vscode/.local
 mv git-extensions-main/* /home/vscode/.local/bin/
 find /home/vscode/.local/bin -name "git-*" | xargs -r -n1 chmod +x
