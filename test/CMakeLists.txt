@@ -122,19 +122,28 @@ function(ADD_UNIT_TEST_IMPL TEST_NAME TEST_SOURCE SHALL_FAIL CXX_STD)
         target_compile_options(${TEST_NAME} PUBLIC -fsanitize=bounds)
         target_link_libraries(${TEST_NAME} PUBLIC -fsanitize=bounds)
     elseif(CI_MODE STREQUAL "TYPE_SAFETY")
-        if (NOT ${TEST_NAME} MATCHES "entt")    
+        if (NOT ${TEST_NAME} MATCHES "entt")
             target_compile_options(
                 ${TEST_NAME}
                     PUBLIC
-                -Wall 
-                -Wextra 
-                -Wpedantic 
-                -Wconversion 
-                -Wsign-conversion 
-                -Wshadow 
+                -Wall
+                -Wextra
+                -Wpedantic
+                -Wconversion
+                -Wsign-conversion
+                -Wshadow
                 -Werror
             )
         endif()
+    elseif(CI_MODE STREQUAL "UNINITIALIZED")
+        target_compile_options(
+            ${TEST_NAME}
+                PUBLIC
+                -Wall
+                -Wextra
+                -Wuninitialized
+                -Wmaybe-uninitialized
+        )
     elseif(CI_MODE STREQUAL "MUTATION")
         target_compile_options(
             ${TEST_NAME}

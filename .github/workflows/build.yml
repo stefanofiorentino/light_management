@@ -12,7 +12,7 @@ jobs:
         compiler:
           - pkg: clang-12
             exe: clang++-12
-        mode: ["", "-DCI_MODE:STRING=ASAN", "-DCI_MODE:STRING=UBSAN", "-DCI_MODE:STRING=THSAN", "-DCI_MODE:STRING=BOUNDS", "-DCI_MODE:STRING=TYPE_SAFETY"]
+        mode: ["", "-DCI_MODE:STRING=ASAN", "-DCI_MODE:STRING=UBSAN", "-DCI_MODE:STRING=THSAN", "-DCI_MODE:STRING=BOUNDS", "-DCI_MODE:STRING=TYPE_SAFETY", "-DCI_MODE:STRING=UNINITIALIZED"]
 
     steps:
     - uses: actions/checkout@v2
