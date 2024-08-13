@@ -1,6 +1,8 @@
 #include <gmock/gmock.h>
 
 #include <future>
+#include <gtest/gtest.h>
+#include <sstream>
 #include <thread>
 
 // concurrency by Scott Meyers
@@ -15,6 +17,7 @@ reallyAsync(F&& f, Args&&... args)
 TEST(atomic_thread_fence, cppreference)
 {
   const int expected = 4;
+  std::ostringstream probe;
 
   std::atomic<int> done = 0;
   int result = -1;
@@ -34,6 +37,12 @@ TEST(atomic_thread_fence, cppreference)
 
     std::atomic_thread_fence(std::memory_order_acquire);
 
-    std::cout << (result == expected ? "PASSED" : "FAILED") << std::endl;
+    probe << (result == expected ? "PASSED" : "FAILED");;
   });
+
+  f1.get();
+  f2.get();
+
+  ASSERT_EQ("PASSED", probe.str());
+
 }
