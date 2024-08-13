@@ -235,6 +235,7 @@ if (${BUILD_GOOGLE_BASED_TESTS})
     ADD_UNIT_TEST_CPP20(mkstemp mkstemp.cpp)
     ADD_UNIT_TEST_CPP20(placement_new placement_new.cpp)
     ADD_UNIT_TEST_CPP20(sdk_impl sdk_impl.cpp)
+    ADD_UNIT_TEST_CPP20(out out.cpp)
     ADD_UNIT_TEST_FREESTANDING(freestanding_array freestanding_array.cpp)
     target_link_libraries(sdk_impl PRIVATE sdk)
 
