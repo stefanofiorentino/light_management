@@ -72,6 +72,7 @@ TEST(visitor_guide_allocators_astring, whenDestroyThenSpaceIsFreed)
                    "\0\0",
                    s0.c_str(),
                    100));
+  [[maybe_unused]]
   auto s2 =
     make_astring(experimental::constants::VERY_LONG_STRING_2, arenaAllocator);
   ASSERT_EQ(0,

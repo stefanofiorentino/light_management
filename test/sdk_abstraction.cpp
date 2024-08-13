@@ -55,5 +55,6 @@ TEST(sdk_abstraction, test)
 {
   DirectiveSequencer directiveSequencer;
   DirectiveSequencerWrapper directiveSequencerWrapper(directiveSequencer);
+  [[maybe_unused]]
   SampleApp sampleApp(directiveSequencerWrapper);
 }
