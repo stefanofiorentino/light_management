@@ -20,10 +20,10 @@ struct valid
 TEST(first_concept, simple){
 
   if constexpr (has_draw_member_function<invalid>) {
-    FAIL();
+    ASSERT_TRUE(false);
   }
 
   if constexpr (!has_draw_member_function<valid>) {
-    FAIL();
+    ASSERT_TRUE(false);
   }
 }
