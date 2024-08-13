@@ -14,7 +14,7 @@ reallyAsync(F&& f, Args&&... args)
     std::launch::async, std::forward<F>(f), std::forward<Args>(args)...);
 }
 
-TEST(atomic_thread_fence, cppreference)
+TEST(atomic_thread_fence, davide)
 {
   const int expected = 4;
   std::ostringstream probe;
