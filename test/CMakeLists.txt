@@ -136,14 +136,24 @@ function(ADD_UNIT_TEST_IMPL TEST_NAME TEST_SOURCE SHALL_FAIL CXX_STD)
             )
         endif()
     elseif(CI_MODE STREQUAL "UNINITIALIZED")
-        target_compile_options(
-            ${TEST_NAME}
-                PUBLIC
-                -Wall
-                -Wextra
-                -Wuninitialized
-                -Wmaybe-uninitialized
-        )
+        if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+            target_compile_options(
+                ${TEST_NAME}
+                    PUBLIC
+                    -Wall
+                    -Wextra
+                    -Wuninitialized
+            )
+        else()
+            target_compile_options(
+                ${TEST_NAME}
+                    PUBLIC
+                    -Wall
+                    -Wextra
+                    -Wuninitialized
+                    -Wmaybe-uninitialized
+            )
+        endif()
     elseif(CI_MODE STREQUAL "MUTATION")
         target_compile_options(
             ${TEST_NAME}
