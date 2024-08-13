@@ -5,7 +5,7 @@ TMP_ERR_FILE=/tmp/err.xml
 TMP_SUPPRESSIONS=/tmp/suppressions.txt
 
 cat > ${TMP_SUPPRESSIONS} <<EOF
-*:*folder-1-to-suppress*/*
+*:*build/_deps*/*
 *:*folder-2-to-suppress*/*
 EOF
  
