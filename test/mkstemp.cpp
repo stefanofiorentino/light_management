@@ -1,4 +1,5 @@
-#include <cassert>
+#include <gmock/gmock.h>
+
 #include <cstdlib>
 #include <experimental/array>
 #include <unistd.h>
@@ -16,10 +17,9 @@ tempfd(char const (&tmpl)[N])
   return fd;
 }
 
-int
-main()
+TEST(mkstemp, simple)
 {
   int fd = tempfd("/tmp/test.XXXXXX");
   int rt = close(fd);
-  assert(rt == 0);
+  ASSERT_EQ(0, rt);
 }
