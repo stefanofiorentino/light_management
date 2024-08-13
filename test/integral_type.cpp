@@ -1,3 +1,4 @@
+#include <gmock/gmock.h>
 #include <type_traits>
 
 template<typename T>
@@ -15,10 +16,6 @@ struct B : A<B>
   using Value = int;
 };
 
-int
-main()
-{
-  B b;
-  (void)b;
-  return 0;
+TEST(integral_type, simple) {
+  ASSERT_TRUE(std::is_integral_v<typename B::Value>);
 }
