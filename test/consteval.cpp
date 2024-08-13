@@ -1,3 +1,5 @@
+#include <gmock/gmock.h>
+
 #include <array>
 #include <iostream>
 
@@ -24,13 +26,11 @@ combination(unsigned m, unsigned n)
 static_assert(factorial(6) == 720);
 static_assert(combination(4, 8) == 70);
 
-int
-main(int argc, const char*[])
+TEST(consteval, simple)
 {
   constexpr unsigned x{ factorial(4) };
-  std::cout << x << '\n';
+  ASSERT_EQ(24, x);
 
-  [[maybe_unused]] unsigned y = factorial(static_cast<unsigned>(argc)); // OK
-  // unsigned z = combination(argc, 7); // error: 'argc' is not a constant
-  // expression
+  //[[maybe_unused]] unsigned y = factorial(static_cast<unsigned>(argc)); // OK
+  // unsigned z = combination(argc, 7); // error: 'argc' is not a constant expression
 }
