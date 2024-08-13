@@ -37,12 +37,12 @@ TEST(atomic_thread_fence, davide)
 
     std::atomic_thread_fence(std::memory_order_acquire);
 
-    probe << (result == expected ? "PASSED" : "FAILED");;
+    probe << (result == expected ? "PASSED" : "FAILED");
+    ;
   });
 
   f1.get();
   f2.get();
 
   ASSERT_EQ("PASSED", probe.str());
-
 }

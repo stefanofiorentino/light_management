@@ -12,11 +12,15 @@ struct DirectiveSequencerInterface
 struct DirectiveSequencer final : public DirectiveSequencerInterface
 {                                          // check 2 classi final
   virtual ~DirectiveSequencer() = default; // check 1 distruttore virtuale
-  explicit DirectiveSequencer(std::ostringstream& _probe) : probe(_probe) {}
+  explicit DirectiveSequencer(std::ostringstream& _probe)
+    : probe(_probe)
+  {
+  }
   void onDirective(const std::string& directive) const override
   {
     probe << directive;
   }
+
 private:
   std::ostringstream& probe;
 };
@@ -60,7 +64,6 @@ TEST(sdk_abstraction, test)
   std::ostringstream probe;
   DirectiveSequencer directiveSequencer(probe);
   DirectiveSequencerWrapper directiveSequencerWrapper(directiveSequencer);
-  [[maybe_unused]]
-  SampleApp sampleApp(directiveSequencerWrapper);
+  [[maybe_unused]] SampleApp sampleApp(directiveSequencerWrapper);
   ASSERT_EQ("directive", probe.str());
 }

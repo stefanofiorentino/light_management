@@ -32,5 +32,6 @@ TEST(consteval, simple)
   ASSERT_EQ(24, x);
 
   //[[maybe_unused]] unsigned y = factorial(static_cast<unsigned>(argc)); // OK
-  // unsigned z = combination(argc, 7); // error: 'argc' is not a constant expression
+  // unsigned z = combination(argc, 7); // error: 'argc' is not a constant
+  // expression
 }

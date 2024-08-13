@@ -16,6 +16,7 @@ struct B : A<B>
   using Value = int;
 };
 
-TEST(integral_type, simple) {
+TEST(integral_type, simple)
+{
   ASSERT_TRUE(std::is_integral_v<typename B::Value>);
 }

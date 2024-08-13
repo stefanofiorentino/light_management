@@ -17,7 +17,8 @@ struct valid
   void draw() {}
 };
 
-TEST(first_concept, simple){
+TEST(first_concept, simple)
+{
 
   if constexpr (has_draw_member_function<invalid>) {
     ASSERT_TRUE(false);

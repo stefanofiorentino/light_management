@@ -1,8 +1,8 @@
 #include <gmock/gmock.h>
 
+#include <concepts>
 #include <string>
 #include <utility>
-#include <concepts>
 
 template<typename T>
 concept has_pre_increment_operator = requires(T v)
@@ -16,11 +16,10 @@ concept has_post_increment_operator = requires(T v)
   v++;
 };
 
-struct check {
+struct check
+{
   check& operator++() = delete;
-  check operator++(int) {
-    return {};
-  }
+  check operator++(int) { return {}; }
 };
 
 static_assert(!has_pre_increment_operator<check>,

@@ -38,7 +38,8 @@ overload(Fs&&... xs)
   return overload_set<Fs...>(std::forward<Fs>(xs)...);
 }
 
-TEST(overload_set_lambda, simple) {
+TEST(overload_set_lambda, simple)
+{
   std::ostringstream probe;
   auto o = overload([&probe](int) { probe << "Hello, "; },
                     [&probe](double) { probe << "World!\n"; });
