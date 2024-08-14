@@ -162,7 +162,7 @@ function(ADD_UNIT_TEST_IMPL TEST_NAME TEST_SOURCE SHALL_FAIL CXX_STD)
             -fpass-plugin=/usr/lib/mull-ir-frontend-12
         )
     endif()
-    if (CI_MODE STREQUAL "THSAN" AND SHALL_FAIL)
+    if ((CI_MODE STREQUAL "THSAN" OR CI_MODE STREQUAL "UBSAN") AND SHALL_FAIL)
         add_test(
             NAME shall_fail_${TEST_NAME}
             COMMAND /bin/bash ${CMAKE_SOURCE_DIR}/scripts/shall_fail.sh $<TARGET_FILE:${TEST_NAME}>
@@ -244,10 +244,13 @@ if (${BUILD_GOOGLE_BASED_TESTS})
     ADD_UNIT_TEST_CPP20(atomic_thread_fence_cppref atomic_thread_fence.cppref.cpp)
     ADD_UNIT_TEST_CPP20(consteval consteval.cpp)
     ADD_UNIT_TEST_CPP20(placement_new placement_new.cpp)
+    
     ADD_UNIT_TEST_CPP20(sdk_impl sdk_impl.cpp)
+    target_link_libraries(sdk_impl PRIVATE sdk)
+
     ADD_UNIT_TEST_CPP20(out out.cpp)
     ADD_UNIT_TEST_FREESTANDING(freestanding_array freestanding_array.cpp)
-    target_link_libraries(sdk_impl PRIVATE sdk)
+    
 
 
     ADD_FAILING_UNIT_TEST(thread_unsafe_class thread_unsafe_class.cpp)
