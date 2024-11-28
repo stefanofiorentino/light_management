@@ -2,7 +2,7 @@
     "cmake.configureArgs": [
         "-DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE",
         "-DFETCH_3RD_PARTY_REPOS:BOOL=TRUE",
-        "-DCI_MODE:STRING=NOCHECKS"
+        "-DCI_MODE:STRING=THSAN"
     ],
     "cmake.configureOnOpen": false,
     "cmake.configureOnEdit": false,
