@@ -18,7 +18,8 @@
 				"davidanson.vscode-markdownlint",
 				"ms-vscode-remote.remote-containers",
 				"ryanluker.vscode-coverage-gutters",
-				"github.vscode-github-actions"
+				"github.vscode-github-actions",
+				"mhutchie.git-graph"
 			]
 		}
 	}
